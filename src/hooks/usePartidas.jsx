@@ -13,7 +13,7 @@ export default function usePartidas(){
 
     useEffect(() => {
         setPartidasFiltradas(user.partidas.filter(partida =>
-            partida.nombre.toLowerCase().includes(filtro.toLowerCase())
+            partida.titulo.toLowerCase().includes(filtro.toLowerCase())
         ));
     }, []);
 
