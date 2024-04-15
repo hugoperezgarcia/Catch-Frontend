@@ -1,23 +1,29 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useAsyncError, useLocation, useNavigate } from "react-router-dom";
 import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect } from "react";
+import Loader from './Loader';
 import axios from "axios";
 
 export function CatchIt() {
+  //Variables iniciales
   const navigate = useNavigate();
   const location = useLocation();
   const codigoSala = location.state?.codigoSala;
-  const nickname = location.state?.nickname;
+  const [loading, setLoading] = useState(false);
+  const response = null;
+  
+  //Variables a pintar
+  const [tiempo, setTiempo] = useState();
   const [marcadorPuntos, setMarcadorPuntos] = useState(1000);
-  const [tiempoRestante, setTiempoRestante] = useState(60);
-  const [puntosApostados, setPuntosApostados] = useState([0, 0, 0, 0]);
-  const [pregunta, setPregunta] = useState({});
-  const [numPreguntaActual, setNumPreguntaActual] = useState(1);
+  const [rondas, setRondas] = useState();
   const [rondaActual, setRondaActual] = useState(1);
-  const [numVidas, setNumVidas] = useState();
-  const [rondas, SetRondas] = useState();
-  const vidas = [];
+  const [vidas, setVidas] = useState();
+  const [pregunta, setPregunta] = useState();
+  const [puntosApostados, setPuntosApostados] = useState();
+ 
+  //Manejo del back
 
+  //Redirigir si no existe codigo de sala
   useEffect(() => {
     if (!codigoSala) {
       navigate("/");
@@ -25,99 +31,39 @@ export function CatchIt() {
   }, [codigoSala, navigate]);
 
   useEffect(() => {
-    empezarPregunta();
-  }, [])
+    peticionBD();
+    declararVariables();
+  },[]);
 
-  async function empezarPregunta() {
+  //Coger info de la base de datos
+  async function peticionBD() {
     try {
-      const response = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
-      setPregunta(response.data.preguntas[1]);
-      setNumVidas(response.data.numVidas);
-      SetRondas(response.data.numRondas);
-      console.log(response.data);
-      console.log("Pregunta:" + pregunta.tiempo);
-      pintarVidas();
+      setLoading(true);
+      response = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
     } catch (e) {
-      console.log("Errorrrrrrrrrrrrrrrrrrrrrrrrr" + e);
-    }
-    animacionesPantalla();
-  }
-
-  function skipTiempo() {
-    setNumVidas(numVidas - 1);
-    setTiempoRestante(0);
-    animacionCaida(2);
-    animacionCaida(3);
-    animacionCaida(4);
-    setTimeout(() => {
-      siguientePregunta();
-    }, 3000);
-  }
-
-  function animacionesPantalla() {
-    //Se ha intentado con bucle pero delay no funciona
-    //limpiar
-    let res1 = document.getElementById(`res1`);
-    let res2 = document.getElementById(`res2`);
-    let res3 = document.getElementById(`res3`);
-    let res4 = document.getElementById(`res4`);
-    res1.classList.remove("animate-fade-down");
-    res1.classList.remove("animate-ease-in");
-    res1.classList.remove(`animate-delay-[1000ms]`);
-    res2.classList.remove("animate-fade-down");
-    res2.classList.remove("animate-ease-in");
-    res2.classList.remove(`animate-delay-[2000ms]`);
-    res3.classList.remove("animate-fade-down");
-    res3.classList.remove("animate-ease-in");
-    res3.classList.remove(`animate-delay-[3000ms]`);
-    res4.classList.remove("animate-fade-down");
-    res4.classList.remove("animate-ease-in");
-    res4.classList.remove(`animate-delay-[4000ms]`);
-    document.getElementById("enunciadoPregunta").classList.remove("animate-fade-down");
-    document.getElementById("enunciadoPregunta").classList.remove("animate-ease-in");
-    //poner
-    res1.classList.add("animate-fade-down");
-    res1.classList.add("animate-ease-in");
-    res1.classList.add(`animate-delay-[1000ms]`);
-    res2.classList.add("animate-fade-down");
-    res2.classList.add("animate-ease-in");
-    res2.classList.add(`animate-delay-[2000ms]`);
-    res3.classList.add("animate-fade-down");
-    res3.classList.add("animate-ease-in");
-    res3.classList.add(`animate-delay-[3000ms]`);
-    res4.classList.add("animate-fade-down");
-    res4.classList.add("animate-ease-in");
-    res4.classList.add(`animate-delay-[4000ms]`);
-    document.getElementById("enunciadoPregunta").classList.add("animate-fade-down");
-    document.getElementById("enunciadoPregunta").classList.add("animate-ease-in");
-  }
-
-  function animacionCaida(i) {
-    document.getElementById(`cont${i}`).classList.add("animate-flip-up");
-    document.getElementById(`cont${i}`).classList.add("animate-ease-out");
-    document.getElementById(`cont${i}`).classList.add("animate-reverse");
-  }
-
-  function resetearCaida() {
-    for (let i = 1; i < 5; i++) {
-      if (document.getElementById(`cont${i}`).classList.contains('animate-flip-up')) {
-        document.getElementById(`cont${i}`).classList.replace("animate-flip-up", "animate-flip-down");
-        document.getElementById(`cont${i}`).classList.replace("animate-ease-out", "animate-ease-in");
-        document.getElementById(`cont${i}`).classList.replace("animate-reverse", "animate-normal");
-      }
+      console.log("Error" + e);
+    }finally{
+      setLoading(false);
     }
   }
 
+  //declaracion de variables una vez hecha la peticion en la bd
+  function declararVariables(){
+    setPregunta(response.data.preguntas[0]);
+    setTiempo(pregunta.tiempo);
+    setRondas(response.data.numRondas);
+    setVidas(response.data.numVidas);
+  }
+
+  //Manejo de puntos
   function handleIncrement(index) {
     if (marcadorPuntos >= 100) {
-      //Cambia el valor de los nuevos puntos del recuadro correspondiente
       const newPuntosApostados = [...puntosApostados];
       newPuntosApostados[index] = Math.min(newPuntosApostados[index] + 100, 1000);
       setPuntosApostados(newPuntosApostados);
       actualizarMarcador(newPuntosApostados);
     }
   }
-
 
   function handleDecrement(index) {
     const newPuntosApostados = [...puntosApostados];
@@ -132,28 +78,8 @@ export function CatchIt() {
     setMarcadorPuntos(1000 - totalPuntosApostados);
   }
 
-  //Manejo de preguntas y rondas
-  function siguientePregunta() {
-    if (numPreguntaActual <= 8) {
-      cambiarColorPregunta(numPreguntaActual);
-      setNumPreguntaActual(numPreguntaActual + 1);
-      setTiempoRestante(60);
-      resetearCaida();
-      animacionesPantalla();
-    } else {
-      {/*Mirar numero de rondas de la bd*/ }
-      if (rondaActual < 3) {
-        setRondaActual(rondaActual + 1);
-        setNumPreguntaActual(1);
-        resetearColorPreguntas();
-        setTiempoRestante(60);
-        resetearCaida();
-      } else {
-        navigate("/ranking");
-      }
-    }
-  }
-
+  //Manejo del front
+  //Manejo de colores de las preguntas
   function cambiarColorPregunta(i) {
     console.log(i);
     document.getElementById(`numPreg${i}`).classList.replace("border-red-500", "border-green-300");
@@ -169,27 +95,30 @@ export function CatchIt() {
     }
   }
 
-  function pintarVidas(){
-    for(let i = 0; i < numVidas; i++){
-      vidas.push(<LogoSiVida key={i} />);
-    }
-  }
-
   return (
-    <section className="bg-gradient-to-b from-blue-300 to-zinc-300 max-h-screen h-screen">
+    <>
+    {loading ? <Loader /> : (
+      <section className="bg-gradient-to-b from-blue-300 to-zinc-300 max-h-screen h-screen">
       <header className="flex justify-between h-3/5">
         <div className="mx-5">
           <div className="flex items-center">
             <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
-              {pregunta.tiempo}
+              {tiempo}
             </div>
-            <button onClick={skipTiempo} className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
+            <button className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
               <LogoSkip />
             </button>
           </div>
           <div className="flex gap-1 justify-between m-2">
+             {/*hay q cambiarlo por un bucle*/}
+             {
+              vidas >= 1 ? <LogoSiVida /> : <LogoNoVida />
+            }
+           {
+              vidas >= 2 ? <LogoSiVida /> : <LogoNoVida />
+            }
             {
-              vidas
+              vidas >= 3 ? <LogoSiVida /> : <LogoNoVida />
             }
           </div>
           <div className="flex gap-3 justify-start m-3 text-5xl">
@@ -273,5 +202,7 @@ export function CatchIt() {
         </div>
       </main>
     </section >
+    )}
+    </>
   );
 }
