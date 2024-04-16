@@ -18,7 +18,7 @@ export function CatchIt() {
   const [vidas, setVidas] = useState();
   const [puntosApostados, setPuntosApostados] = useState([0,0,0,0]);
   const [numPreguntaActual, setNumPreguntaActual] = useState(0);
-  let preguntas = [];
+  const [preguntas, setPreguntas] = useState();
  
   //Manejo del back
 
@@ -50,9 +50,7 @@ export function CatchIt() {
   function declararVariablesFijas(respuesta){
     setRondas(respuesta.data.numRondas);
     setVidas(respuesta.data.numVidas);
-    preguntas = respuesta.data.preguntas;
-    console.log(preguntas);
-    console.log(preguntas[numPreguntaActual].pregunta);
+    setPreguntas(respuesta.data.preguntas);
   }
 
   //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
@@ -106,7 +104,7 @@ export function CatchIt() {
         <div className="mx-5">
           <div className="flex items-center">
             <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
-              {/*preguntas[numPreguntaActual].tiempo*/}
+              {preguntas[numPreguntaActual].tiempo}
             </div>
             <button className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
               <LogoSkip />
