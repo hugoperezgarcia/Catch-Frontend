@@ -9,9 +9,10 @@ export function CatchIt() {
   const navigate = useNavigate();
   const location = useLocation();
   const codigoSala = location.state?.codigoSala;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   //Variables a pintar
+  const [tiempo, setTiempo] = useState();
   const [marcadorPuntos, setMarcadorPuntos] = useState(1000);
   const [rondas, setRondas] = useState();
   const [rondaActual, setRondaActual] = useState(1);
@@ -19,30 +20,24 @@ export function CatchIt() {
   const [puntosApostados, setPuntosApostados] = useState([0,0,0,0]);
   const [numPreguntaActual, setNumPreguntaActual] = useState(0);
   const [preguntas, setPreguntas] = useState([]);
+  const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState(1);
  
   //Manejo del back
 
   //Redirigir si no existe codigo de sala
-  
+
   useEffect(() => {
     if (!codigoSala) {
       navigate("/");
     }
-  }, []);
-  
-
-  useEffect(() => {
     peticionBD();
   },[]);
 
   //Coger info de la base de datos
   async function peticionBD() {
     try {
-      setLoading(true);
       const respuesta = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
-      setRondas(respuesta.data.numRondas);
-      setVidas(respuesta.data.numVidas);
-      setPreguntas(respuesta.data.preguntas);
+      declararVariablesIniciales(respuesta);
   } catch (e) {
       console.log("Error" + e);
     }finally{
@@ -51,12 +46,22 @@ export function CatchIt() {
   }
 
   //declaracion de variables fijas una vez hecha la peticion en la bd
-  function declararVariablesFijas(respuesta){
-    
+  function declararVariablesIniciales(respuesta){
+    setRondas(respuesta.data.numRondas);
+    setVidas(respuesta.data.numVidas);
+    setPreguntas(respuesta.data.preguntas);
+    setTiempo(respuesta.data.preguntas[numPreguntaActual].tiempo);
   }
 
   //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
- 
+ function jugar(){
+  animarTrampillas(numTrampillaCorrecta);
+  setTimeout(function() {
+    resetearTrampillas(numTrampillaCorrecta);
+    cambiarColorPregunta(numPreguntaActual+1);
+    setNumPreguntaActual(numPreguntaActual+1);
+  }, 3000);
+ }
 
   //Manejo de puntos
   function handleIncrement(index) {
@@ -82,9 +87,8 @@ export function CatchIt() {
   }
 
   //Manejo del front
-  //Manejo de colores de las preguntas
+  //Manejo de colores del indicador de preguntas
   function cambiarColorPregunta(i) {
-    console.log(i);
     document.getElementById(`numPreg${i}`).classList.replace("border-red-500", "border-green-300");
     document.getElementById(`numPreg${i}`).classList.replace("bg-red-200", "bg-green-600");
     document.getElementById(`numPreg${i}`).classList.add("text-white");
@@ -98,6 +102,36 @@ export function CatchIt() {
     }
   }
 
+  //manejo de animaciones
+  function animarTrampillas(buena){ 
+    let delay = 0;
+    for(let i = 1; i < 5; i++){
+    if(document.getElementById(`cont${i}`) !== document.getElementById(`cont${buena}`)){
+      document.getElementById(`cont${i}`).classList.add("animate-flip-up");
+      document.getElementById(`cont${i}`).classList.add("animate-ease-in-out");
+      document.getElementById(`cont${i}`).classList.add("animate-reverse");
+      document.getElementById(`cont${i}`).classList.add(`animate-duration-[${delay}ms]`);
+      console.log(delay);
+      delay+=1000;
+    }
+    }
+  }
+
+  function resetearTrampillas(buena){
+    let delay = 0;
+    for(let i = 1; i < 5; i++){
+    if(document.getElementById(`cont${i}`) !== document.getElementById(`cont${buena}`)){
+      document.getElementById(`cont${i}`).classList.remove("animate-flip-up");
+      document.getElementById(`cont${i}`).classList.remove("animate-ease-in-out");
+      document.getElementById(`cont${i}`).classList.remove("animate-reverse");
+      document.getElementById(`cont${i}`).classList.remove(`animate-duration-[${delay}ms]`);
+      console.log(delay);
+      delay+=1000;
+    }
+    }
+  }
+
+
   return (
    <>
     {loading ? <Loader /> : (
@@ -106,9 +140,9 @@ export function CatchIt() {
         <div className="mx-5">
           <div className="flex items-center">
             <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
-              {console.log(preguntas[numPreguntaActual])}
+              {tiempo}
             </div>
-            <button className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
+            <button onClick={jugar}  className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
               <LogoSkip />
             </button>
           </div>
@@ -144,13 +178,13 @@ export function CatchIt() {
             <div id="numPreg8" className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200">8</div>
           </div>
           <div id="enunciadoPregunta" className="p-8 font-medium text-4xl w-full text-center">
-            {/*preguntas[numPreguntaActual].pregunta*/}
+            {preguntas[numPreguntaActual].pregunta}
           </div>
           <div className="flex justify-around w-full mb-2 gap-1 m-1">
-            <div id="res1" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">A</div><div>{/*preguntas[numPreguntaActual].respuestaCorrecta*/}</div></div>
-            <div id="res2" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">B</div><div>{/*preguntas[numPreguntaActual].respuesta1*/}</div></div>
-            <div id="res3" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">C</div><div>{/*preguntas[numPreguntaActual].respuesta2*/}</div></div>
-            <div id="res4" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">D</div><div>{/*preguntas[numPreguntaActual].respuesta3*/}</div></div>
+            <div id="res1" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">A</div><div>{preguntas[numPreguntaActual].respuestaCorrecta}</div></div>
+            <div id="res2" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">B</div><div>{preguntas[numPreguntaActual].respuesta1}</div></div>
+            <div id="res3" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">C</div><div>{preguntas[numPreguntaActual].respuesta2}</div></div>
+            <div id="res4" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">D</div><div>{preguntas[numPreguntaActual].respuesta3}</div></div>
           </div>
         </div>
       </header>
