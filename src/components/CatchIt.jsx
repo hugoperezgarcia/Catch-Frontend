@@ -18,16 +18,18 @@ export function CatchIt() {
   const [vidas, setVidas] = useState();
   const [puntosApostados, setPuntosApostados] = useState([0,0,0,0]);
   const [numPreguntaActual, setNumPreguntaActual] = useState(0);
-  const [preguntas, setPreguntas] = useState();
+  const [preguntas, setPreguntas] = useState([]);
  
   //Manejo del back
 
   //Redirigir si no existe codigo de sala
+  
   useEffect(() => {
     if (!codigoSala) {
       navigate("/");
     }
   }, []);
+  
 
   useEffect(() => {
     peticionBD();
@@ -38,7 +40,9 @@ export function CatchIt() {
     try {
       setLoading(true);
       const respuesta = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
-      declararVariablesFijas(respuesta);
+      setRondas(respuesta.data.numRondas);
+      setVidas(respuesta.data.numVidas);
+      setPreguntas(respuesta.data.preguntas);
   } catch (e) {
       console.log("Error" + e);
     }finally{
@@ -48,9 +52,7 @@ export function CatchIt() {
 
   //declaracion de variables fijas una vez hecha la peticion en la bd
   function declararVariablesFijas(respuesta){
-    setRondas(respuesta.data.numRondas);
-    setVidas(respuesta.data.numVidas);
-    setPreguntas(respuesta.data.preguntas);
+    
   }
 
   //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
@@ -104,7 +106,7 @@ export function CatchIt() {
         <div className="mx-5">
           <div className="flex items-center">
             <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
-              {preguntas[numPreguntaActual].tiempo}
+              {console.log(preguntas[numPreguntaActual])}
             </div>
             <button className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
               <LogoSkip />
