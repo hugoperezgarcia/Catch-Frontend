@@ -5,14 +5,17 @@ import { UseUser } from "../hooks/UseUser";
 import usePartidas from "../hooks/usePartidas";
 
 function RepositorioAdmin() {
-    const navigate = useNavigate();
-    const{user, resetUser} = UseUser();
+    const{user} = UseUser();
     const{filtrarPartidas, partidasFiltradas} = usePartidas();
 
+    function switchInicio() {
+        const newValue = !sessionStorage.getItem("estaInicio");
+        sessionStorage.setItem("estaInicio", newValue);
+    }
 
     return (
         <>
-            <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-fit">
+            <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-fit min-h-screen">
                 <header className="pt-16">
                     <div className="text-center p-8">
                         <h1 className="font-extrabold animate-flip-down animate-ease-in-out text-5xl">HOLA {user.username.toUpperCase()}, ESTAS SON TUS PARTIDAS</h1>
@@ -23,7 +26,7 @@ function RepositorioAdmin() {
                             <Link to="/createPartida" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold">CREAR PARTIDA</Link>
                             <Link to="/createPregunta" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold">INTRODUCIR PREGUNTAS</Link>
                             {
-                                user ?  (<Link to="/" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold"><LogoHome/>Inicio</Link>) : (<Link to="/" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold"><LogoHome/>Inicio</Link>)
+                                !sessionStorage.getItem("estaInicio") ? <Link to="/" onClick={switchInicio} className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold"><LogoHome/>Inicio</Link> : <div></div>
                             }
                         </div>
                 </div>

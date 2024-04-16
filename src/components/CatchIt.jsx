@@ -10,16 +10,15 @@ export function CatchIt() {
   const location = useLocation();
   const codigoSala = location.state?.codigoSala;
   const [loading, setLoading] = useState(false);
-  const response = null;
   
   //Variables a pintar
-  const [tiempo, setTiempo] = useState();
   const [marcadorPuntos, setMarcadorPuntos] = useState(1000);
   const [rondas, setRondas] = useState();
   const [rondaActual, setRondaActual] = useState(1);
   const [vidas, setVidas] = useState();
-  const [pregunta, setPregunta] = useState();
-  const [puntosApostados, setPuntosApostados] = useState();
+  const [puntosApostados, setPuntosApostados] = useState([0,0,0,0]);
+  const [numPreguntaActual, setNumPreguntaActual] = useState(0);
+  let preguntas = [];
  
   //Manejo del back
 
@@ -28,32 +27,36 @@ export function CatchIt() {
     if (!codigoSala) {
       navigate("/");
     }
-  }, [codigoSala, navigate]);
+  }, []);
 
   useEffect(() => {
     peticionBD();
-    declararVariables();
   },[]);
 
   //Coger info de la base de datos
   async function peticionBD() {
     try {
       setLoading(true);
-      response = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
-    } catch (e) {
+      const respuesta = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
+      declararVariablesFijas(respuesta);
+  } catch (e) {
       console.log("Error" + e);
     }finally{
       setLoading(false);
     }
   }
 
-  //declaracion de variables una vez hecha la peticion en la bd
-  function declararVariables(){
-    setPregunta(response.data.preguntas[0]);
-    setTiempo(pregunta.tiempo);
-    setRondas(response.data.numRondas);
-    setVidas(response.data.numVidas);
+  //declaracion de variables fijas una vez hecha la peticion en la bd
+  function declararVariablesFijas(respuesta){
+    setRondas(respuesta.data.numRondas);
+    setVidas(respuesta.data.numVidas);
+    preguntas = respuesta.data.preguntas;
+    console.log(preguntas);
+    console.log(preguntas[numPreguntaActual].pregunta);
   }
+
+  //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
+ 
 
   //Manejo de puntos
   function handleIncrement(index) {
@@ -96,14 +99,14 @@ export function CatchIt() {
   }
 
   return (
-    <>
+   <>
     {loading ? <Loader /> : (
       <section className="bg-gradient-to-b from-blue-300 to-zinc-300 max-h-screen h-screen">
       <header className="flex justify-between h-3/5">
         <div className="mx-5">
           <div className="flex items-center">
             <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
-              {tiempo}
+              {/*preguntas[numPreguntaActual].tiempo*/}
             </div>
             <button className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center">
               <LogoSkip />
@@ -141,13 +144,13 @@ export function CatchIt() {
             <div id="numPreg8" className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200">8</div>
           </div>
           <div id="enunciadoPregunta" className="p-8 font-medium text-4xl w-full text-center">
-            {pregunta.pregunta}
+            {/*preguntas[numPreguntaActual].pregunta*/}
           </div>
           <div className="flex justify-around w-full mb-2 gap-1 m-1">
-            <div id="res1" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">A</div><div>{pregunta.respuestaCorrecta}</div></div>
-            <div id="res2" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">B</div><div>{pregunta.respuesta1}</div></div>
-            <div id="res3" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">C</div><div>{pregunta.respuesta2}</div></div>
-            <div id="res4" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">D</div><div>{pregunta.respuesta3}</div></div>
+            <div id="res1" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">A</div><div>{/*preguntas[numPreguntaActual].respuestaCorrecta*/}</div></div>
+            <div id="res2" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">B</div><div>{/*preguntas[numPreguntaActual].respuesta1*/}</div></div>
+            <div id="res3" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">C</div><div>{/*preguntas[numPreguntaActual].respuesta2*/}</div></div>
+            <div id="res4" className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"><div className="font-medium">D</div><div>{/*preguntas[numPreguntaActual].respuesta3*/}</div></div>
           </div>
         </div>
       </header>

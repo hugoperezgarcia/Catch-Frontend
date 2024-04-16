@@ -3,10 +3,11 @@ import Pregunta from './Pregunta';
 import { Link, useNavigate,  } from 'react-router-dom';
 import { LogoHome, LogoAtras } from './Icons';
 import usePreguntas from '../hooks/usePreguntas';
+import LoaderIntegrado from './LoaderIntegrado';
 
 function Preguntas() {
     const navigate = useNavigate();
-    const{preguntasFiltradas, filtrarPreguntas, preguntasUser} = usePreguntas();
+    const{preguntasFiltradas, filtrarPreguntas, preguntasUser, loading} = usePreguntas();
 
     const goBack = () => {
         navigate("/bienvenida");
@@ -32,7 +33,7 @@ function Preguntas() {
                 </div>
             </header>
             <main className="p-10 flex flex-wrap gap-5">
-            {
+            {loading ? <LoaderIntegrado /> :
                 preguntasFiltradas.map((pregunta) =>{
                     const esMia = preguntasUser.some(p => p.id === pregunta.id)
                     if(esMia){

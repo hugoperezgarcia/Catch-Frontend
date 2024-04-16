@@ -7,19 +7,23 @@ export default function usePreguntas(){
     const[preguntasUser, setPreguntasUser] = useState([]);
     const [filtro, setFiltro] = useState("");
     const {user} = UseUser();
+    const [loading, setLoading] = useState(false);
 
     const getPreguntas = async () =>{
         try{
+            setLoading(true);
             const response = await axios.get("https://catchit-back-production.up.railway.app/api/preguntas");
             setPreguntas(response.data);
         }catch(e){
             console.log(e);
+        }finally{
+            setLoading(false);
         }
     }
 
     const getPreguntasUser = async () =>{
         try{
-            const response = await axios.get("http://localhost:8080/api/preguntaAdmin/" + user.id);
+            const response = await axios.get("http://catchit-back-production.up.railway.app/api/preguntaAdmin/" + user.id);
             setPreguntasUser(response.data);
         }catch(e){
             console.log(e);
@@ -39,5 +43,5 @@ export default function usePreguntas(){
         setFiltro(event.target.value)
     }
 
-    return {preguntasFiltradas, filtrarPreguntas, preguntasUser}
+    return {preguntasFiltradas, filtrarPreguntas, preguntasUser, loading}
 }

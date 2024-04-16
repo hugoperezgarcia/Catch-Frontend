@@ -37,6 +37,7 @@ export function Sala() {
       }
     */}
     } catch (e) {
+      console.log(e);
       setError("Es necesario introducir un Nickname");
     } finally {
       setLoading(false);

@@ -22,7 +22,7 @@ export function IntroducirPreguntas() {
     const [loading, setLoading] = useState(false);
     const userId = sessionStorage.getItem("userId");
     const { preguntaId } = useParams();
-    const { pregunta } = usePregunta(preguntaId);
+    const { pregunta, loadingEdit } = usePregunta(preguntaId);
 
     const { register, handleSubmit, setValue } = useForm();
 
@@ -74,7 +74,7 @@ export function IntroducirPreguntas() {
 
     return (
         <>
-            {loading ? <Loader /> : (
+            {loading || loadingEdit ? <Loader /> : (
                 <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-screen">
                     <header className="flex justify-between font-extrabold animate-flip-down animate-ease-in-out text-5xl text-center p-10">
                         <button className='w-10' onClick={goBack}>
