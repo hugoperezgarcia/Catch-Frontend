@@ -21,6 +21,7 @@ export function CatchIt() {
   const [numPreguntaActual, setNumPreguntaActual] = useState(0);
   const [preguntas, setPreguntas] = useState([]);
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState(1);
+  const [contadorIniciado, setContadorIniciado] = useState(false);
  
   //Manejo del back
 
@@ -31,6 +32,10 @@ export function CatchIt() {
       navigate("/");
     }
     peticionBD();
+    //Se da un tiempo al principio y ya empieza
+    setTimeout(function() {
+      empezarContador();
+    },2000)
   },[]);
 
   //Coger info de la base de datos
@@ -56,12 +61,41 @@ export function CatchIt() {
   //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
  function jugar(){
   animarTrampillas(numTrampillaCorrecta);
+  setTiempo(0);
   setTimeout(function() {
     resetearTrampillas(numTrampillaCorrecta);
     cambiarColorPregunta(numPreguntaActual+1);
     setNumPreguntaActual(numPreguntaActual+1);
+    setTiempo(preguntas[numPreguntaActual+1].tiempo);
+    empezarContador();
   }, 3000);
  }
+
+  //Manejo del contador
+  const empezarContador = () => {
+    setContadorIniciado(true);
+  };
+
+  useEffect(() => {
+    let intervalId;
+
+    if (contadorIniciado) {
+      intervalId = setInterval(() => {
+        setTiempo(prevTiempo => {
+          if (prevTiempo === 0) {
+            clearInterval(intervalId);
+            setContadorIniciado(false);
+            jugar();
+            return prevTiempo;
+          }
+          return prevTiempo - 1;
+        });
+      }, 1000);
+    }
+
+    // Limpiar el intervalo cuando el componente se desmonte
+    return () => clearInterval(intervalId);
+  }, [contadorIniciado]);
 
   //Manejo de puntos
   function handleIncrement(index) {
@@ -111,7 +145,6 @@ export function CatchIt() {
       document.getElementById(`cont${i}`).classList.add("animate-ease-in-out");
       document.getElementById(`cont${i}`).classList.add("animate-reverse");
       document.getElementById(`cont${i}`).classList.add(`animate-duration-[${delay}ms]`);
-      console.log(delay);
       delay+=1000;
     }
     }
@@ -125,7 +158,6 @@ export function CatchIt() {
       document.getElementById(`cont${i}`).classList.remove("animate-ease-in-out");
       document.getElementById(`cont${i}`).classList.remove("animate-reverse");
       document.getElementById(`cont${i}`).classList.remove(`animate-duration-[${delay}ms]`);
-      console.log(delay);
       delay+=1000;
     }
     }
