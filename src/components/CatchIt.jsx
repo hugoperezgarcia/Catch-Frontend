@@ -22,6 +22,7 @@ export function CatchIt() {
   const [preguntas, setPreguntas] = useState([]);
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState(1);
   const [contadorIniciado, setContadorIniciado] = useState(false);
+  const [maxPuntos, setMaxPuntos] = useState(1000);
  
   //Manejo del back
 
@@ -62,6 +63,8 @@ export function CatchIt() {
  function jugar(){
   animarTrampillas(numTrampillaCorrecta);
   setTiempo(0);
+  setPuntosApostados([0,0,0,0]);
+  setMaxPuntos(marcadorPuntos);
   setTimeout(function() {
     resetearTrampillas(numTrampillaCorrecta);
     cambiarColorPregunta(numPreguntaActual+1);
@@ -99,9 +102,9 @@ export function CatchIt() {
 
   //Manejo de puntos
   function handleIncrement(index) {
-    if (marcadorPuntos >= 100) {
+    if (marcadorPuntos >= 100 && marcadorPuntos <= maxPuntos) {
       const newPuntosApostados = [...puntosApostados];
-      newPuntosApostados[index] = Math.min(newPuntosApostados[index] + 100, 1000);
+      newPuntosApostados[index] = Math.min(newPuntosApostados[index] + 100, maxPuntos);
       setPuntosApostados(newPuntosApostados);
       actualizarMarcador(newPuntosApostados);
     }
@@ -117,7 +120,7 @@ export function CatchIt() {
 
   function actualizarMarcador(newPuntosApostados) {
     const totalPuntosApostados = newPuntosApostados.reduce((total, puntos) => total + puntos, 0);
-    setMarcadorPuntos(1000 - totalPuntosApostados);
+    setMarcadorPuntos(maxPuntos - totalPuntosApostados);
   }
 
   //Manejo del front
