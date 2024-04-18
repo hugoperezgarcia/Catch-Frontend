@@ -26,7 +26,8 @@ export function Sala() {
     event.preventDefault();
     try {
       setLoading(true);
-      const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
+      // const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
+      sessionStorage.setItem("numPreguntaActual", 0);
       navigate("/CatchIt", { state: { nickname, codigoSala } });
       {/*
       if(nombreDisponible(response)){
