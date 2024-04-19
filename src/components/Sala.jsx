@@ -28,6 +28,7 @@ export function Sala() {
       setLoading(true);
       // const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
       sessionStorage.setItem("numPreguntaActual", 0);
+      sessionStorage.setItem("puntosJugador", 1000);
       navigate("/CatchIt", { state: { nickname, codigoSala } });
       {/*
       if(nombreDisponible(response)){
