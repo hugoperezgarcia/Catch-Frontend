@@ -22,8 +22,8 @@ export function CatchIt() {
   const [respuestas, setRespuestas] = useState([]);
   const [preguntas, setPreguntas] = useState([]);
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState();
-  const [maxPuntos, setMaxPuntos] = useState(1000);
-  const [valoresIniciados, setValoresniciados] = useState(false);
+  const [maxPuntos, setMaxPuntos] = useState();
+  const [valoresIniciados, setValoresIniciados] = useState(false);
 
   const puntosActuales = sessionStorage.getItem("puntosJugador");
 
@@ -51,7 +51,7 @@ export function CatchIt() {
       setRondas(respuesta.data.numRondas);
       setVidas(respuesta.data.numVidas);
       setPreguntas(respuesta.data.preguntas);
-      setValoresniciados(true);
+      setValoresIniciados(true);
     } catch (e) {
       console.log("Error" + e);
     } finally {
@@ -71,41 +71,14 @@ export function CatchIt() {
   }, [numPreguntaActual, valoresIniciados]);
 
   //Manejo de preguntas y respuestas
-  const cargarNuevaPregunta = () => {
+  function cargarNuevaPregunta(){
     setTiempo(preguntas[numPreguntaActual].tiempo);
     setPuntosApostados([0, 0, 0, 0]);
     setMaxPuntos(puntosActuales);
     setMarcadorPuntos(puntosActuales);
     randomizarRespuestas();
     setColorPreguntaInRonda();
-  };
-
-  const animarRespuestas = (arrayRespuestas) => {
-    var delay = 1000;
-    for (let i = 1; i <= arrayRespuestas.length; i++) {
-      document
-        .getElementById("res" + i)
-        .classList.add(
-          "animate-fade-down",
-          "animate-delay-[" + delay + "ms]",
-          "animate-ease-in"
-        );
-      delay += 1000;
-    }
-  };
-
-  const quitarAnimacionesRespuestas = () => {
-    var delay = 1000;
-    for (let i = 1; i <= respuestas.length; i++) {
-      document
-        .getElementById("res" + i)
-        .classList.remove(
-          "animate-fade-down",
-          "animate-delay-[" + delay + "ms]",
-          "animate-ease-in"
-        );
-      delay += 1000;
-    }
+    setPuntosGanados();
   };
 
   const randomizarRespuestas = () => {
@@ -121,17 +94,19 @@ export function CatchIt() {
     });
     arrayRespuestas.sort(() => Math.random() - 0.5);
 
-    animarRespuestas(arrayRespuestas);
-
     setRespuestas(arrayRespuestas);
 
     getRespuestaCorrecta(arrayRespuestas, respuestaCorrecta);
+
+    animarRespuestas(arrayRespuestas);
   };
 
   function getRespuestaCorrecta(arrayRespuestas, respuestaCorrecta) {
     for (let i = 0; i < arrayRespuestas.length; i++) {
       if (arrayRespuestas[i] === respuestaCorrecta) {
         setNumTrampillaCorrecta(i + 1);
+        console.log("CORRECTA  "+(i+1));
+        console.log("Se setea el numero de trampilla correcta   "+numTrampillaCorrecta);
       }
     }
   }
@@ -139,9 +114,11 @@ export function CatchIt() {
   //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
 
   const setPuntosGanados = () => {
-    for (let i = 1; i <= respuestas.length; i++) {
+        for (let i = 1; i <= respuestas.length; i++) {
       if (i == numTrampillaCorrecta) {
         sessionStorage.setItem("puntosJugador", puntosApostados[i - 1]);
+        setMaxPuntos(puntosApostados[i-1]);
+        setMarcadorPuntos(puntosApostados[i-1]);
       }
     }
   };
@@ -151,8 +128,9 @@ export function CatchIt() {
     setTiempo(0);
   }
 
-  const empezarContador = () => {
+  function empezarContador(){
     setContadorIniciado(true);
+    console.log("se inicia el contador   "+numTrampillaCorrecta);
   };
 
   useEffect(() => {
@@ -164,6 +142,7 @@ export function CatchIt() {
           if (prevTiempo === 0) {
             clearInterval(intervalId);
             setContadorIniciado(false);
+            console.log("se llama a resetear   "+numTrampillaCorrecta);
             resetear();
             return prevTiempo;
           }
@@ -178,7 +157,6 @@ export function CatchIt() {
 
   //Manejo de puntos
   function handleIncrement(index) {
-    console.log(puntosApostados);
     if (marcadorPuntos >= 100 && marcadorPuntos <= maxPuntos) {
       const newPuntosApostados = puntosApostados;
       newPuntosApostados[index] = Math.min(
@@ -206,13 +184,16 @@ export function CatchIt() {
     setMarcadorPuntos(maxPuntos - totalPuntosApostados);
   }
 
+  useEffect(()=>{
+    console.log("cambia el valor de numTrampillaCorrecta   " +numTrampillaCorrecta);
+  },[numTrampillaCorrecta]);
+
   function resetear() {
-    console.log(puntosApostados);
     deshabilitarBotones();
     quitarAnimacionesRespuestas();
+    console.log("se llama a animarTrampilla   "+numTrampillaCorrecta);
     animarTrampillas();
     setTimeout(function () {
-      setPuntosGanados();
       resetearTrampillas();
       empezarContador();
       habilitarBotones();
@@ -276,18 +257,14 @@ export function CatchIt() {
   //manejo de animaciones
   function animarTrampillas() {
     for (let i = 1; i <= respuestas.length; i++) {
-      if (
-        document.getElementById(`cont${i}`) !==
-        document.getElementById(`cont${numTrampillaCorrecta}`)
-      ) {
+      if (i !== numTrampillaCorrecta) {
         document.getElementById(`cont${i}`).classList.add("animate-flip-up");
-        document
-          .getElementById(`cont${i}`)
-          .classList.add("animate-ease-in-out");
+        document.getElementById(`cont${i}`).classList.add("animate-ease-in-out");
         document.getElementById(`cont${i}`).classList.add("animate-reverse");
       }
     }
   }
+  
 
   function resetearTrampillas() {
     for (let i = 1; i <= respuestas.length; i++) {
@@ -303,6 +280,34 @@ export function CatchIt() {
       }
     }
   }
+
+  const animarRespuestas = (arrayRespuestas) => {
+    var delay = 1000;
+    for (let i = 1; i <= arrayRespuestas.length; i++) {
+      document
+        .getElementById("res" + i)
+        .classList.add(
+          "animate-fade-down",
+          "animate-delay-[" + delay + "ms]",
+          "animate-ease-in"
+        );
+      delay += 1000;
+    }
+  };
+
+  const quitarAnimacionesRespuestas = () => {
+    var delay = 1000;
+    for (let i = 1; i <= respuestas.length; i++) {
+      document
+        .getElementById("res" + i)
+        .classList.remove(
+          "animate-fade-down",
+          "animate-delay-[" + delay + "ms]",
+          "animate-ease-in"
+        );
+      delay += 1000;
+    }
+  };
 
   return (
     <>
