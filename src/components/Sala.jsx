@@ -29,7 +29,11 @@ export function Sala() {
       // const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
       sessionStorage.setItem("numPreguntaActual", 0);
       sessionStorage.setItem("puntosJugador", 1000);
-      navigate("/CatchIt", { state: { nickname, codigoSala } });
+      if(nickname  !== ""){
+        navigate("/CatchIt", { state: { nickname, codigoSala } });
+      }else{
+        setError("Es necesario introducir un nickname");
+      }
       {/*
       if(nombreDisponible(response)){
         navigate("/CatchIt", { state: { nickname, codigoSala } });
@@ -40,7 +44,6 @@ export function Sala() {
     */}
     } catch (e) {
       console.log(e);
-      setError("Es necesario introducir un Nickname");
     } finally {
       setLoading(false);
     }
@@ -49,15 +52,6 @@ export function Sala() {
   const handleChange = (event) => {
     setNickname(event.target.value);
   };
-
-  const nombreDisponible = (response) => {
-    for (const jugador of response.data.jugadores) {
-      if (nickname === jugador.nombre) {
-        return false;
-      }
-    }
-    return true;
-  }
   
 
   return (

@@ -23,11 +23,13 @@ export function CatchIt() {
   const [preguntas, setPreguntas] = useState([]);
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState();
   const [maxPuntos, setMaxPuntos] = useState();
-  const [valoresIniciados, setValoresIniciados] = useState(false);
+  const [valoresIniciados, setValoresniciados] = useState(false);
 
   const puntosActuales = sessionStorage.getItem("puntosJugador");
+  const [numPreguntaActual, setNumPreguntaActual] = useState(
+    sessionStorage.getItem("numPreguntaActual")
+  );
 
-  const numPreguntaActual = sessionStorage.getItem("numPreguntaActual");
   const botones = document.querySelectorAll("button");
 
   //Manejo del back
@@ -51,7 +53,7 @@ export function CatchIt() {
       setRondas(respuesta.data.numRondas);
       setVidas(respuesta.data.numVidas);
       setPreguntas(respuesta.data.preguntas);
-      setValoresIniciados(true);
+      setValoresniciados(true);
     } catch (e) {
       console.log("Error" + e);
     } finally {
@@ -66,19 +68,79 @@ export function CatchIt() {
       cargarNuevaPregunta();
       setTimeout(() => {
         empezarContador();
-      }, 5000);
+      }, 3000);
     }
   }, [numPreguntaActual, valoresIniciados]);
 
+  useEffect(() => {
+    if (tiempo == 0) {
+      deshabilitarBotones();
+      quitarAnimacionesRespuestas();
+      animarTrampillas();
+      setTimeout(function () {
+        setPuntosGanados();
+        if (numPreguntaActual < preguntas.length) {
+          sessionStorage.setItem(
+            "numPreguntaActual",
+            Number(numPreguntaActual) + 1
+          );
+          setNumPreguntaActual(Number(numPreguntaActual) + 1);
+        } else {
+          sessionStorage.setItem("numPreguntaActual", 0);
+        }
+      }, 3000);
+    }
+  }, [contadorIniciado]);
+
+  //Control de victoria o derrota
+  function finalizado(){
+    if(rondaActual > rondas || vidas <= 0){
+      console.log("finalizado");
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  //Manejo de vidas
+  function perdidoVida(){
+    if(marcadorPuntos <= 0){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
   //Manejo de preguntas y respuestas
-  function cargarNuevaPregunta(){
-    setTiempo(preguntas[numPreguntaActual].tiempo);
-    setPuntosApostados([0, 0, 0, 0]);
-    setMaxPuntos(puntosActuales);
-    setMarcadorPuntos(puntosActuales);
-    randomizarRespuestas();
-    setColorPreguntaInRonda();
-    setPuntosGanados();
+  const cargarNuevaPregunta = () => {
+    if (finalizado()) {
+      navigate("/ranking");
+    } else {
+      if(perdidoVida()){
+        setVidas(vidas-1);
+        sessionStorage.setItem("puntosJugador", 1000);
+        setMaxPuntos(1000);
+        setMarcadorPuntos(1000);
+      }else{
+        setMaxPuntos(puntosActuales);
+        setMarcadorPuntos(puntosActuales);
+      }
+      habilitarBotones();
+      setTiempo(preguntas[numPreguntaActual].tiempo);
+      setPuntosApostados([0, 0, 0, 0]);
+      randomizarRespuestas();
+      setColorPreguntaInRonda();
+      resetearTrampillas();
+      animarPuntos(true);
+      setTimeout(() => {
+        animarPuntos(false);
+      }, 1000);
+    }
+
+    console.log("Preg  "+numPreguntaActual);
+    console.log("ronda  "+rondaActual);
+    console.log("puntos  "+marcadorPuntos);
+    console.log("vidas  "+vidas);
   };
 
   const randomizarRespuestas = () => {
@@ -94,43 +156,38 @@ export function CatchIt() {
     });
     arrayRespuestas.sort(() => Math.random() - 0.5);
 
+    animarRespuestas(arrayRespuestas);
+
     setRespuestas(arrayRespuestas);
 
     getRespuestaCorrecta(arrayRespuestas, respuestaCorrecta);
-
-    animarRespuestas(arrayRespuestas);
   };
 
   function getRespuestaCorrecta(arrayRespuestas, respuestaCorrecta) {
     for (let i = 0; i < arrayRespuestas.length; i++) {
       if (arrayRespuestas[i] === respuestaCorrecta) {
         setNumTrampillaCorrecta(i + 1);
-        console.log("CORRECTA  "+(i+1));
-        console.log("Se setea el numero de trampilla correcta   "+numTrampillaCorrecta);
       }
     }
   }
 
-  //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
-
   const setPuntosGanados = () => {
-        for (let i = 1; i <= respuestas.length; i++) {
+    for (let i = 1; i <= respuestas.length; i++) {
       if (i == numTrampillaCorrecta) {
         sessionStorage.setItem("puntosJugador", puntosApostados[i - 1]);
-        setMaxPuntos(puntosApostados[i-1]);
-        setMarcadorPuntos(puntosApostados[i-1]);
+        setMaxPuntos(puntosApostados[i - 1]);
+        setMarcadorPuntos(puntosApostados[i - 1]);
       }
     }
   };
 
   //Manejo del contador
-  function handleSkip(){
+  function handleSkip() {
     setTiempo(0);
   }
 
-  function empezarContador(){
+  const empezarContador = () => {
     setContadorIniciado(true);
-    console.log("se inicia el contador   "+numTrampillaCorrecta);
   };
 
   useEffect(() => {
@@ -138,12 +195,10 @@ export function CatchIt() {
 
     if (contadorIniciado) {
       intervalId = setInterval(() => {
-        setTiempo(prevTiempo => {
+        setTiempo((prevTiempo) => {
           if (prevTiempo === 0) {
             clearInterval(intervalId);
             setContadorIniciado(false);
-            console.log("se llama a resetear   "+numTrampillaCorrecta);
-            resetear();
             return prevTiempo;
           }
           return prevTiempo - 1;
@@ -183,31 +238,6 @@ export function CatchIt() {
     );
     setMarcadorPuntos(maxPuntos - totalPuntosApostados);
   }
-
-  useEffect(()=>{
-    console.log("cambia el valor de numTrampillaCorrecta   " +numTrampillaCorrecta);
-  },[numTrampillaCorrecta]);
-
-  function resetear() {
-    deshabilitarBotones();
-    quitarAnimacionesRespuestas();
-    console.log("se llama a animarTrampilla   "+numTrampillaCorrecta);
-    animarTrampillas();
-    setTimeout(function () {
-      resetearTrampillas();
-      empezarContador();
-      habilitarBotones();
-      if (numPreguntaActual < preguntas.length) {
-        sessionStorage.setItem(
-          "numPreguntaActual",
-          Number(numPreguntaActual) + 1
-        );
-      } else {
-        sessionStorage.setItem("numPreguntaActual", 0);
-      }
-    }, 3000);
-  }
-
   //Manejo de botones
   function deshabilitarBotones() {
     botones.forEach((boton) => {
@@ -257,14 +287,18 @@ export function CatchIt() {
   //manejo de animaciones
   function animarTrampillas() {
     for (let i = 1; i <= respuestas.length; i++) {
-      if (i !== numTrampillaCorrecta) {
+      if (
+        document.getElementById(`cont${i}`) !==
+        document.getElementById(`cont${numTrampillaCorrecta}`)
+      ) {
         document.getElementById(`cont${i}`).classList.add("animate-flip-up");
-        document.getElementById(`cont${i}`).classList.add("animate-ease-in-out");
+        document
+          .getElementById(`cont${i}`)
+          .classList.add("animate-ease-in-out");
         document.getElementById(`cont${i}`).classList.add("animate-reverse");
       }
     }
   }
-  
 
   function resetearTrampillas() {
     for (let i = 1; i <= respuestas.length; i++) {
@@ -282,13 +316,16 @@ export function CatchIt() {
   }
 
   const animarRespuestas = (arrayRespuestas) => {
+    document
+      .getElementById("enunciadoPregunta")
+      .classList.add("animate-fade-down", "animate-ease-in");
     var delay = 1000;
     for (let i = 1; i <= arrayRespuestas.length; i++) {
       document
         .getElementById("res" + i)
         .classList.add(
           "animate-fade-down",
-          "animate-delay-[" + delay + "ms]",
+          "animate-delay-[1500ms]",
           "animate-ease-in"
         );
       delay += 1000;
@@ -296,18 +333,38 @@ export function CatchIt() {
   };
 
   const quitarAnimacionesRespuestas = () => {
+    document
+      .getElementById("enunciadoPregunta")
+      .classList.remove("animate-fade-down", "animate-ease-in");
+
     var delay = 1000;
     for (let i = 1; i <= respuestas.length; i++) {
       document
         .getElementById("res" + i)
         .classList.remove(
           "animate-fade-down",
-          "animate-delay-[" + delay + "ms]",
+          "animate-delay-[1500ms]",
           "animate-ease-in"
         );
       delay += 1000;
     }
   };
+
+  function animarPuntos(animar) {
+    if (animar) {
+      document
+        .getElementById("puntos")
+        .classList.add("animate-rotate-y", "animate-once", "animate-ease-in");
+    } else {
+      document
+        .getElementById("puntos")
+        .classList.remove(
+          "animate-rotate-y",
+          "animate-once",
+          "animate-ease-in"
+        );
+    }
+  }
 
   return (
     <>
@@ -335,7 +392,12 @@ export function CatchIt() {
                 {vidas >= 3 ? <LogoSiVida /> : <LogoNoVida />}
               </div>
               <div className="flex gap-3 justify-start m-3 text-5xl">
-                <LogoPuntos />
+                <div
+                  id="puntos"
+                  className="animate-rotate-y animate-once animate-ease-in"
+                >
+                  <LogoPuntos />
+                </div>
                 {marcadorPuntos}
               </div>
               <div className="flex gap-3 justify-start ms-4 m-3 text-4xl font-medium">
@@ -395,7 +457,7 @@ export function CatchIt() {
               </div>
               <div
                 id="enunciadoPregunta"
-                className="p-8 font-medium text-4xl w-full text-center animate-fade-down animate-ease-in"
+                className="p-8 font-medium text-4xl w-full text-center"
               >
                 {preguntas[numPreguntaActual].pregunta}
               </div>
@@ -445,15 +507,15 @@ export function CatchIt() {
                     id="cont1"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl h-fit"
                         onClick={() => handleIncrement(0)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(0)}
                       >
                         -
@@ -467,15 +529,15 @@ export function CatchIt() {
                     id="cont2"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(1)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(1)}
                       >
                         -
@@ -489,15 +551,15 @@ export function CatchIt() {
                     id="cont3"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(2)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(2)}
                       >
                         -
@@ -511,15 +573,15 @@ export function CatchIt() {
                     id="cont4"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(3)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(3)}
                       >
                         -
