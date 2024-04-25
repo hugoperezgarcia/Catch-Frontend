@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import axios from "axios";
 import Loader from './Loader';
+import { UseUser } from '../hooks/UseUser';
 
 
 export function CrearPartida() {
@@ -17,7 +18,7 @@ export function CrearPartida() {
     const title = useId();
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
-    const userId = sessionStorage.getItem("userId");
+    const {user} = UseUser();
 
     const goBack = () => {
         navigate(-1);
@@ -29,7 +30,7 @@ export function CrearPartida() {
             if (info[param] !== "mezcla") {
                 infoParams[param] = info[param];
             }
-            infoParams["idAdmin"] = userId;
+            infoParams["idAdmin"] = user;
         }
         try {
             setLoading(true);

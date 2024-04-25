@@ -24,7 +24,7 @@ export function CatchIt() {
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState();
   const [maxPuntos, setMaxPuntos] = useState();
   const [valoresIniciados, setValoresniciados] = useState(false);
-
+  const[maxVidas, setMaxVidas] = useState([]);
   const puntosActuales = sessionStorage.getItem("puntosJugador");
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
@@ -51,8 +51,17 @@ export function CatchIt() {
           codigoSala
       );
       setRondas(respuesta.data.numRondas);
-      setVidas(respuesta.data.numVidas);
+      if(sessionStorage.getItem("vidas")){
+        setVidas(sessionStorage.getItem("vidas"))
+      }else{
+        setVidas(respuesta.data.numVidas);
+      }
       setPreguntas(respuesta.data.preguntas);
+      let arrayVidas = [];
+      for(let i = 1; i <= respuesta.data.numVidas; i++){
+        arrayVidas.push(i);
+      }
+      setMaxVidas(arrayVidas);
       setValoresniciados(true);
     } catch (e) {
       console.log("Error" + e);
@@ -92,32 +101,15 @@ export function CatchIt() {
     }
   }, [contadorIniciado]);
 
-  //Control de victoria o derrota
-  function finalizado(){
-    if(rondaActual > rondas || vidas <= 0){
-      console.log("finalizado");
-      return true;
-    }else{
-      return false;
-    }
-  }
-
-  //Manejo de vidas
-  function perdidoVida(){
-    if(marcadorPuntos <= 0){
-      return true;
-    }else{
-      return false;
-    }
-  }
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    if (finalizado()) {
-      navigate("/ranking");
-    } else {
-      if(perdidoVida()){
-        setVidas(vidas-1);
+    if ((numPreguntaActual > 8 && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
+        navigate("/ranking");
+    }else{
+      if(marcadorPuntos <= 0){
+        sessionStorage.setItem("vidas", (Number(vidas) - 1));
+        setVidas(sessionStorage.getItem("vidas"));
         sessionStorage.setItem("puntosJugador", 1000);
         setMaxPuntos(1000);
         setMarcadorPuntos(1000);
@@ -125,22 +117,17 @@ export function CatchIt() {
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
+      setColorPreguntaInRonda();
       habilitarBotones();
       setTiempo(preguntas[numPreguntaActual].tiempo);
       setPuntosApostados([0, 0, 0, 0]);
       randomizarRespuestas();
-      setColorPreguntaInRonda();
       resetearTrampillas();
       animarPuntos(true);
       setTimeout(() => {
         animarPuntos(false);
       }, 1000);
     }
-
-    console.log("Preg  "+numPreguntaActual);
-    console.log("ronda  "+rondaActual);
-    console.log("puntos  "+marcadorPuntos);
-    console.log("vidas  "+vidas);
   };
 
   const randomizarRespuestas = () => {
@@ -387,9 +374,13 @@ export function CatchIt() {
               </div>
               <div className="flex gap-1 justify-between m-2">
                 {/*hay q cambiarlo por un bucle*/}
-                {vidas >= 1 ? <LogoSiVida /> : <LogoNoVida />}
-                {vidas >= 2 ? <LogoSiVida /> : <LogoNoVida />}
-                {vidas >= 3 ? <LogoSiVida /> : <LogoNoVida />}
+                {maxVidas.map((index) =>{
+                  if(vidas >= index){
+                    return <LogoSiVida />
+                  }else{
+                    return <LogoNoVida />
+                  }
+                })}
               </div>
               <div className="flex gap-3 justify-start m-3 text-5xl">
                 <div

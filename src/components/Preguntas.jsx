@@ -1,4 +1,3 @@
-import { UseUser } from '../hooks/UseUser';
 import Pregunta from './Pregunta';
 import { Link, useNavigate,  } from 'react-router-dom';
 import { LogoHome, LogoAtras } from './Icons';

@@ -24,29 +24,23 @@ export function Sala() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      setLoading(true);
-      // const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
-      sessionStorage.setItem("numPreguntaActual", 0);
-      sessionStorage.setItem("puntosJugador", 1000);
-      if(nickname  !== ""){
+    if(nickname  == ""){
+      setError("Es necesario introducir un nickname");
+    }else{
+      try {
+        setLoading(true);
+        // const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
+        sessionStorage.setItem("numPreguntaActual", 0);
+        sessionStorage.setItem("puntosJugador", 1000);
+        sessionStorage.removeItem("vidas");
         navigate("/CatchIt", { state: { nickname, codigoSala } });
-      }else{
-        setError("Es necesario introducir un nickname");
+      } catch (e) {
+        setError(e.response.data.errorMessage);
+      } finally {
+        setLoading(false);
       }
-      {/*
-      if(nombreDisponible(response)){
-        navigate("/CatchIt", { state: { nickname, codigoSala } });
-      }else{
-        console.log(nombreDisponible)
-        setError("Este Nickname ya ha sido utilizado en esta sala, prueba con otro!!");
-      }
-    */}
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
     }
+    
   };
 
   const handleChange = (event) => {

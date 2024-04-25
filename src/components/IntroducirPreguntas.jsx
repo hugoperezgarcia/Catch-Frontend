@@ -7,6 +7,7 @@ import { LogoAtras, LogoHome } from './Icons';
 import { Link } from 'react-router-dom';
 import usePregunta from '../hooks/usePregunta';
 import Loader from './Loader';
+import { UseUser } from '../hooks/UseUser';
 
 export function IntroducirPreguntas() {
     const enunciado = useId();
@@ -20,7 +21,7 @@ export function IntroducirPreguntas() {
     const tiempo = useId();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
-    const userId = sessionStorage.getItem("userId");
+    const{user} = UseUser();
     const { preguntaId } = useParams();
     const { pregunta, loadingEdit } = usePregunta(preguntaId);
 
@@ -37,7 +38,7 @@ export function IntroducirPreguntas() {
             dificultad: info.dificultad,
             asignatura: info.asignatura,
             tiempo: Number(info.tiempo),
-            idAdmin: userId
+            idAdmin: user
         }
         try {
             if (preguntaId) {

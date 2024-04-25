@@ -3,7 +3,6 @@ import {ToGame} from './ToGame.jsx'
 import {Rules} from './Rules.jsx'
 import {LogIn} from './LogIn.jsx'
 import React from 'react'
-import Footer from './Footer.jsx'
 import { UseUser } from '../hooks/UseUser.jsx'
 import RepositorioAdmin from './RepositorioAdmin.jsx'
 
@@ -28,7 +27,6 @@ function Home() {
                         )
                     }
                     </div>
-                    {/* <Footer></Footer> */}
                 </main>
         </div>
     )

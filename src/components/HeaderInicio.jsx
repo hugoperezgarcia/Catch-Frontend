@@ -10,12 +10,13 @@ export function HeaderInicio() {
         }
     }
 
-    const{user, resetUser} = UseUser();
+    const{user, setUser} = UseUser();
     const navigate = useNavigate();
 
     const cerrarSesion = () =>{
+        sessionStorage.clear();
+        setUser();
         navigate("/");
-        resetUser();
     }
 
     return (

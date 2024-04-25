@@ -23,7 +23,7 @@ export default function usePreguntas(){
 
     const getPreguntasUser = async () =>{
         try{
-            const response = await axios.get("http://catchit-back-production.up.railway.app/api/preguntaAdmin/" + user.id);
+            const response = await axios.get("http://catchit-back-production.up.railway.app/api/preguntaAdmin/" + user);
             setPreguntasUser(response.data);
         }catch(e){
             console.log(e);
@@ -36,7 +36,7 @@ export default function usePreguntas(){
     }, []);
 
     const preguntasFiltradas = preguntas.filter(pregunta =>
-        pregunta.pregunta.toLowerCase().includes(filtro.toLowerCase())
+        (pregunta.pregunta.toLowerCase().includes(filtro.toLowerCase()) || pregunta.asignatura.toLowerCase().includes(filtro.toLowerCase()))
     );
 
     const filtrarPreguntas = (event) => {

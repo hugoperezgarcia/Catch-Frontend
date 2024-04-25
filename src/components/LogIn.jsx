@@ -24,7 +24,7 @@ export function LogIn(props) {
             });
             setError();
             sessionStorage.setItem("userId", response.data.id);
-            setUser(response.data);
+            setUser(response.data.id);
             navigate("/bienvenida");
         } catch (e) {
             if (e.response.status && e.response.status === 404) {
