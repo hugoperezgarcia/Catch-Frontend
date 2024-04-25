@@ -9,17 +9,17 @@ export function Ranking() {
                     <div className="h-2/4 flex justify-center items-center">
                         <div class="flex justify-center items-end space-x-0.5">
                             <div class="flex flex-col items-center">
-                                <p className="text-white">Hugo M.</p>
+                                <p className="text-white animate-bounce">Hugo M.</p>
                                 <div class="bg-yellow-400 h-40 w-20 shadow-xl rounded-md"></div>
                                 <p class="text-center font-bold text-lg text-white">2º</p>
                             </div>
                             <div class="flex flex-col items-center">
-                                <p className="text-white">Hugo P.</p>
+                                <p className="text-white animate-bounce">Hugo P.</p>
                                 <div class="bg-yellow-400 h-48 w-20 shadow-xl rounded-md"></div>
                                 <p class="text-center font-bold text-lg text-white">1º</p>
                             </div>
                             <div class="flex flex-col items-center">
-                                <p className="text-white">Elon Musk</p>
+                                <p className="text-white animate-bounce">Elon Musk</p>
                                 <div class="bg-yellow-400 h-32 w-20 shadow-xl rounded-md"></div>
                                 <p class="text-center font-bold text-lg text-white">3º</p>
                             </div>
