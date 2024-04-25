@@ -22,12 +22,14 @@ export function CatchIt() {
   const [respuestas, setRespuestas] = useState([]);
   const [preguntas, setPreguntas] = useState([]);
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState();
-  const [maxPuntos, setMaxPuntos] = useState(1000);
+  const [maxPuntos, setMaxPuntos] = useState();
   const [valoresIniciados, setValoresniciados] = useState(false);
-
+  const[maxVidas, setMaxVidas] = useState([]);
   const puntosActuales = sessionStorage.getItem("puntosJugador");
+  const [numPreguntaActual, setNumPreguntaActual] = useState(
+    sessionStorage.getItem("numPreguntaActual")
+  );
 
-  const numPreguntaActual = sessionStorage.getItem("numPreguntaActual");
   const botones = document.querySelectorAll("button");
 
   //Manejo del back
@@ -49,8 +51,17 @@ export function CatchIt() {
           codigoSala
       );
       setRondas(respuesta.data.numRondas);
-      setVidas(respuesta.data.numVidas);
+      if(sessionStorage.getItem("vidas")){
+        setVidas(sessionStorage.getItem("vidas"))
+      }else{
+        setVidas(respuesta.data.numVidas);
+      }
       setPreguntas(respuesta.data.preguntas);
+      let arrayVidas = [];
+      for(let i = 1; i <= respuesta.data.numVidas; i++){
+        arrayVidas.push(i);
+      }
+      setMaxVidas(arrayVidas);
       setValoresniciados(true);
     } catch (e) {
       console.log("Error" + e);
@@ -66,45 +77,56 @@ export function CatchIt() {
       cargarNuevaPregunta();
       setTimeout(() => {
         empezarContador();
-      }, 5000);
+      }, 3000);
     }
   }, [numPreguntaActual, valoresIniciados]);
 
+  useEffect(() => {
+    if (tiempo == 0) {
+      deshabilitarBotones();
+      quitarAnimacionesRespuestas();
+      animarTrampillas();
+      setTimeout(function () {
+        setPuntosGanados();
+        if (numPreguntaActual < preguntas.length) {
+          sessionStorage.setItem(
+            "numPreguntaActual",
+            Number(numPreguntaActual) + 1
+          );
+          setNumPreguntaActual(Number(numPreguntaActual) + 1);
+        } else {
+          sessionStorage.setItem("numPreguntaActual", 0);
+        }
+      }, 3000);
+    }
+  }, [contadorIniciado]);
+
+
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    setTiempo(preguntas[numPreguntaActual].tiempo);
-    setPuntosApostados([0, 0, 0, 0]);
-    setMaxPuntos(puntosActuales);
-    setMarcadorPuntos(puntosActuales);
-    randomizarRespuestas();
-    setColorPreguntaInRonda();
-  };
-
-  const animarRespuestas = (arrayRespuestas) => {
-    var delay = 1000;
-    for (let i = 1; i <= arrayRespuestas.length; i++) {
-      document
-        .getElementById("res" + i)
-        .classList.add(
-          "animate-fade-down",
-          "animate-delay-[" + delay + "ms]",
-          "animate-ease-in"
-        );
-      delay += 1000;
-    }
-  };
-
-  const quitarAnimacionesRespuestas = () => {
-    var delay = 1000;
-    for (let i = 1; i <= respuestas.length; i++) {
-      document
-        .getElementById("res" + i)
-        .classList.remove(
-          "animate-fade-down",
-          "animate-delay-[" + delay + "ms]",
-          "animate-ease-in"
-        );
-      delay += 1000;
+    if ((numPreguntaActual > 8 && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
+        navigate("/ranking");
+    }else{
+      if(marcadorPuntos <= 0){
+        sessionStorage.setItem("vidas", (Number(vidas) - 1));
+        setVidas(sessionStorage.getItem("vidas"));
+        sessionStorage.setItem("puntosJugador", 1000);
+        setMaxPuntos(1000);
+        setMarcadorPuntos(1000);
+      }else{
+        setMaxPuntos(puntosActuales);
+        setMarcadorPuntos(puntosActuales);
+      }
+      setColorPreguntaInRonda();
+      habilitarBotones();
+      setTiempo(preguntas[numPreguntaActual].tiempo);
+      setPuntosApostados([0, 0, 0, 0]);
+      randomizarRespuestas();
+      resetearTrampillas();
+      animarPuntos(true);
+      setTimeout(() => {
+        animarPuntos(false);
+      }, 1000);
     }
   };
 
@@ -136,18 +158,18 @@ export function CatchIt() {
     }
   }
 
-  //Funcion que se llama cada vez que se cambia de pregunta para resetear todo y cambiar a nuevos valores
-
   const setPuntosGanados = () => {
     for (let i = 1; i <= respuestas.length; i++) {
       if (i == numTrampillaCorrecta) {
         sessionStorage.setItem("puntosJugador", puntosApostados[i - 1]);
+        setMaxPuntos(puntosApostados[i - 1]);
+        setMarcadorPuntos(puntosApostados[i - 1]);
       }
     }
   };
 
   //Manejo del contador
-  function handleSkip(){
+  function handleSkip() {
     setTiempo(0);
   }
 
@@ -160,11 +182,10 @@ export function CatchIt() {
 
     if (contadorIniciado) {
       intervalId = setInterval(() => {
-        setTiempo(prevTiempo => {
+        setTiempo((prevTiempo) => {
           if (prevTiempo === 0) {
             clearInterval(intervalId);
             setContadorIniciado(false);
-            resetear();
             return prevTiempo;
           }
           return prevTiempo - 1;
@@ -178,7 +199,6 @@ export function CatchIt() {
 
   //Manejo de puntos
   function handleIncrement(index) {
-    console.log(puntosApostados);
     if (marcadorPuntos >= 100 && marcadorPuntos <= maxPuntos) {
       const newPuntosApostados = puntosApostados;
       newPuntosApostados[index] = Math.min(
@@ -205,28 +225,6 @@ export function CatchIt() {
     );
     setMarcadorPuntos(maxPuntos - totalPuntosApostados);
   }
-
-  function resetear() {
-    console.log(puntosApostados);
-    deshabilitarBotones();
-    quitarAnimacionesRespuestas();
-    animarTrampillas();
-    setTimeout(function () {
-      setPuntosGanados();
-      resetearTrampillas();
-      empezarContador();
-      habilitarBotones();
-      if (numPreguntaActual < preguntas.length) {
-        sessionStorage.setItem(
-          "numPreguntaActual",
-          Number(numPreguntaActual) + 1
-        );
-      } else {
-        sessionStorage.setItem("numPreguntaActual", 0);
-      }
-    }, 3000);
-  }
-
   //Manejo de botones
   function deshabilitarBotones() {
     botones.forEach((boton) => {
@@ -304,6 +302,57 @@ export function CatchIt() {
     }
   }
 
+  const animarRespuestas = (arrayRespuestas) => {
+    document
+      .getElementById("enunciadoPregunta")
+      .classList.add("animate-fade-down", "animate-ease-in");
+    var delay = 1000;
+    for (let i = 1; i <= arrayRespuestas.length; i++) {
+      document
+        .getElementById("res" + i)
+        .classList.add(
+          "animate-fade-down",
+          "animate-delay-[1500ms]",
+          "animate-ease-in"
+        );
+      delay += 1000;
+    }
+  };
+
+  const quitarAnimacionesRespuestas = () => {
+    document
+      .getElementById("enunciadoPregunta")
+      .classList.remove("animate-fade-down", "animate-ease-in");
+
+    var delay = 1000;
+    for (let i = 1; i <= respuestas.length; i++) {
+      document
+        .getElementById("res" + i)
+        .classList.remove(
+          "animate-fade-down",
+          "animate-delay-[1500ms]",
+          "animate-ease-in"
+        );
+      delay += 1000;
+    }
+  };
+
+  function animarPuntos(animar) {
+    if (animar) {
+      document
+        .getElementById("puntos")
+        .classList.add("animate-rotate-y", "animate-once", "animate-ease-in");
+    } else {
+      document
+        .getElementById("puntos")
+        .classList.remove(
+          "animate-rotate-y",
+          "animate-once",
+          "animate-ease-in"
+        );
+    }
+  }
+
   return (
     <>
       {loading ? (
@@ -325,12 +374,21 @@ export function CatchIt() {
               </div>
               <div className="flex gap-1 justify-between m-2">
                 {/*hay q cambiarlo por un bucle*/}
-                {vidas >= 1 ? <LogoSiVida /> : <LogoNoVida />}
-                {vidas >= 2 ? <LogoSiVida /> : <LogoNoVida />}
-                {vidas >= 3 ? <LogoSiVida /> : <LogoNoVida />}
+                {maxVidas.map((index) =>{
+                  if(vidas >= index){
+                    return <LogoSiVida />
+                  }else{
+                    return <LogoNoVida />
+                  }
+                })}
               </div>
               <div className="flex gap-3 justify-start m-3 text-5xl">
-                <LogoPuntos />
+                <div
+                  id="puntos"
+                  className="animate-rotate-y animate-once animate-ease-in"
+                >
+                  <LogoPuntos />
+                </div>
                 {marcadorPuntos}
               </div>
               <div className="flex gap-3 justify-start ms-4 m-3 text-4xl font-medium">
@@ -390,7 +448,7 @@ export function CatchIt() {
               </div>
               <div
                 id="enunciadoPregunta"
-                className="p-8 font-medium text-4xl w-full text-center animate-fade-down animate-ease-in"
+                className="p-8 font-medium text-4xl w-full text-center"
               >
                 {preguntas[numPreguntaActual].pregunta}
               </div>
@@ -440,15 +498,15 @@ export function CatchIt() {
                     id="cont1"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl h-fit"
                         onClick={() => handleIncrement(0)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(0)}
                       >
                         -
@@ -462,15 +520,15 @@ export function CatchIt() {
                     id="cont2"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(1)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(1)}
                       >
                         -
@@ -484,15 +542,15 @@ export function CatchIt() {
                     id="cont3"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(2)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(2)}
                       >
                         -
@@ -506,15 +564,15 @@ export function CatchIt() {
                     id="cont4"
                     className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-4xl font-semibold">
+                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
                       <button
-                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded"
+                        className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(3)}
                       >
                         +
                       </button>
                       <button
-                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(3)}
                       >
                         -
