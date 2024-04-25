@@ -37,7 +37,7 @@ function RepositorioAdmin() {
   };
 
   const partidasFiltradas = partidas.filter((partida) =>
-    (partida.titulo.toLowerCase().includes(filtro.toLowerCase()) || partidas.asignatura.toLowerCase().includes(filtro.toLowerCase()))
+    partida.titulo.toLowerCase().includes(filtro.toLowerCase())
   );
 
   function switchInicio() {

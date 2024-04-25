@@ -372,8 +372,7 @@ export function CatchIt() {
                   <LogoSkip />
                 </button>
               </div>
-              <div className="flex gap-1 justify-between m-2">
-                {/*hay q cambiarlo por un bucle*/}
+              <div className="flex gap-3 m-2">
                 {maxVidas.map((index) =>{
                   if(vidas >= index){
                     return <LogoSiVida />
