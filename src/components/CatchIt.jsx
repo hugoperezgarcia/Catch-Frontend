@@ -1,4 +1,4 @@
-import { useAsyncError, useLocation, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
@@ -16,7 +16,7 @@ export function CatchIt() {
   const [contadorIniciado, setContadorIniciado] = useState(false);
   const [marcadorPuntos, setMarcadorPuntos] = useState(1000);
   const [rondas, setRondas] = useState();
-  const [rondaActual, setRondaActual] = useState(1);
+  const [rondaActual, setRondaActual] = useState(sessionStorage.getItem("ronda"));
   const [vidas, setVidas] = useState();
   const [puntosApostados, setPuntosApostados] = useState([0, 0, 0, 0]);
   const [respuestas, setRespuestas] = useState([]);
@@ -104,9 +104,12 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    if ((numPreguntaActual > 8 && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
+    console.log("preguntactual  "+numPreguntaActual);
+    if ((numPreguntaActual >= ((8*rondaActual) - 1) && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
+        console.log("true");
         navigate("/ranking");
     }else{
+      console.log("false");
       if(marcadorPuntos <= 0){
         sessionStorage.setItem("vidas", (Number(vidas) - 1));
         setVidas(sessionStorage.getItem("vidas"));
@@ -118,6 +121,11 @@ export function CatchIt() {
         setMarcadorPuntos(puntosActuales);
       }
       setColorPreguntaInRonda();
+      if(numPreguntaActual >= (rondaActual*8)){
+        resetearColorPreguntas();
+        sessionStorage.setItem("ronda", Number(rondaActual)+1);
+        setRondaActual(sessionStorage.getItem("ronda"));
+      }
       habilitarBotones();
       setTiempo(preguntas[numPreguntaActual].tiempo);
       setPuntosApostados([0, 0, 0, 0]);
@@ -241,21 +249,16 @@ export function CatchIt() {
   //Manejo del front
   //Manejo de colores del indicador de preguntas
   function setColorPreguntaInRonda() {
-    let numRonda;
-    if (numPreguntaActual > 8) {
-      numRonda = numPreguntaActual - 8;
-      resetearColorPreguntas();
-    } else {
-      numRonda = numPreguntaActual;
-    }
-    for (let i = 0; i < numRonda; i++) {
+    let restaRonda = 8*(rondaActual-1);
+    let numpreg = Number((numPreguntaActual-1) - restaRonda);
+    for (let i = 0; i < numpreg+1; i++) {
       document
-        .getElementById(`numPreg${i}`)
+        .getElementById(`numPreg${numpreg}`)
         .classList.replace("border-red-500", "border-green-300");
       document
-        .getElementById(`numPreg${i}`)
+        .getElementById(`numPreg${numpreg}`)
         .classList.replace("bg-red-200", "bg-green-600");
-      document.getElementById(`numPreg${i}`).classList.add("text-white");
+      document.getElementById(`numPreg${numpreg}`).classList.add("text-white");
     }
   }
 
@@ -372,7 +375,7 @@ export function CatchIt() {
                   <LogoSkip />
                 </button>
               </div>
-              <div className="flex gap-1 justify-between m-2">
+              <div className="flex gap-3 m-2">
                 {/*hay q cambiarlo por un bucle*/}
                 {maxVidas.map((index) =>{
                   if(vidas >= index){
@@ -455,31 +458,31 @@ export function CatchIt() {
               <div className="flex justify-around w-full mb-2 gap-1 m-1">
                 <div
                   id="res1"
-                  className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white "
+                  className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
                 >
                   <div className="font-medium">A</div>
-                  <div>{respuestas[0]}</div>
+                  <div className="m-2">{respuestas[0]}</div>
                 </div>
                 <div
                   id="res2"
                   className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
                 >
                   <div className="font-medium">B</div>
-                  <div>{respuestas[1]}</div>
+                  <div className="m-2">{respuestas[1]}</div>
                 </div>
                 <div
                   id="res3"
                   className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
                 >
                   <div className="font-medium">C</div>
-                  <div>{respuestas[2]}</div>
+                  <div className="m-2">{respuestas[2]}</div>
                 </div>
                 <div
                   id="res4"
                   className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
                 >
                   <div className="font-medium">D</div>
-                  <div>{respuestas[3]}</div>
+                  <div className="m-2">{respuestas[3]}</div>
                 </div>
               </div>
             </div>
