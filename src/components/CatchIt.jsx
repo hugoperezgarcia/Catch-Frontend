@@ -26,7 +26,7 @@ export function CatchIt() {
   const [maxPuntos, setMaxPuntos] = useState();
   const [valoresIniciados, setValoresniciados] = useState(false);
   const[maxVidas, setMaxVidas] = useState([]);
-  const puntosActuales = sessionStorage.getItem("puntosJugador");
+  const [puntosActuales, setPuntosActuales] = useState(sessionStorage.getItem("puntosJugador"));
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
@@ -89,16 +89,14 @@ export function CatchIt() {
       animarTrampillas();
       setTimeout(function () {
         setPuntosGanados();
-        console.log(numPreguntaActual);
-        console.log(preguntas.length - 1);
-        if (numPreguntaActual < (preguntas.length - 1)) {
+        if(Number(numPreguntaActual) + 1 >= preguntas.length){
+          actualizarPuntosJugador();
+        }else{
           sessionStorage.setItem(
             "numPreguntaActual",
             Number(numPreguntaActual) + 1
           );
           setNumPreguntaActual(Number(numPreguntaActual) + 1);
-        } else {
-          actualizarPuntosJugador();
         }
       }, 3000);
     }
@@ -107,39 +105,42 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    if ((numPreguntaActual > ((8*rondaActual) - 1) && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
-        
+    if(marcadorPuntos <= 0){
+      sessionStorage.setItem("vidas", (Number(vidas) - 1));
+      setVidas(sessionStorage.getItem("vidas"));
+      sessionStorage.setItem("puntosJugador", 1000);
+      setMaxPuntos(1000);
+      setMarcadorPuntos(1000);
     }else{
-      if(marcadorPuntos <= 0){
-        sessionStorage.setItem("vidas", (Number(vidas) - 1));
-        setVidas(sessionStorage.getItem("vidas"));
-        sessionStorage.setItem("puntosJugador", 1000);
-        setMaxPuntos(1000);
-        setMarcadorPuntos(1000);
-      }else{
-        setMaxPuntos(puntosActuales);
-        setMarcadorPuntos(puntosActuales);
-      }
-      setColorPreguntaInRonda();
-      if(numPreguntaActual >= (rondaActual*8)){
-        resetearColorPreguntas();
-        sessionStorage.setItem("ronda", Number(rondaActual)+1);
-        setRondaActual(sessionStorage.getItem("ronda"));
-      }
-      habilitarBotones();
-      setTiempo(preguntas[numPreguntaActual].tiempo);
-      setPuntosApostados([0, 0, 0, 0]);
-      randomizarRespuestas();
-      resetearTrampillas();
-      animarPuntos(true);
-      setTimeout(() => {
-        animarPuntos(false);
-      }, 1000);
+      setMaxPuntos(puntosActuales);
+      setMarcadorPuntos(puntosActuales);
     }
+
+    setColorPreguntaInRonda();
+    if(numPreguntaActual >= (rondaActual*8)){
+      resetearColorPreguntas();
+      sessionStorage.setItem("ronda", Number(rondaActual)+1);
+      setRondaActual(sessionStorage.getItem("ronda"));
+    }
+    habilitarBotones();
+    setTiempo(preguntas[numPreguntaActual].tiempo);
+    setPuntosApostados([0, 0, 0, 0]);
+    randomizarRespuestas();
+    resetearTrampillas();
+    animarPuntos(true);
+    setTimeout(() => {
+      animarPuntos(false);
+    }, 1000);
   };
 
   const actualizarPuntosJugador = async () =>{
-    let puntos = puntosActuales * vidas
+    let puntos;
+    const puntosGanados = sessionStorage.getItem("puntosJugador");
+    if (puntosGanados == 0){
+      puntos = (1000 * (Number(vidas) - 1)) + Number(puntosGanados);
+    }else{
+      puntos = (1000 * Number(vidas) + Number(puntosGanados));
+    }
     try {
       const response = await axios.put("https://catchit-back-production.up.railway.app/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
       const idJugador = response.data.data.id;

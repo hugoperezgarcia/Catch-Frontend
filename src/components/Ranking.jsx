@@ -66,23 +66,24 @@ export function Ranking() {
               </div>
             </div>
             <div className="h-2/4 flex flex-col items-center">
-              <ol className="list-decimal flex flex-col items-start text-white">
-                {jugadores.map((jugador) => {
-                    console.log(jugador);
-                  if (jugador.id == id) {
-                    return(<li
-                        className="border-2 border-fuchsia-500 rounded-md p-1 w-11/12 flex justify-center text-white"
-                        key={jugador.id}
-                      >
-                        {jugador.nombre}: {jugador.puntos} <LogoPuntos />
-                      </li>);
-                  } else {
-                    return(<li key={jugador.id}>
-                        {jugador.nombre}: {jugador.puntos} <LogoPuntos />
-                      </li>)
-                  }
+              <ul className="flex flex-col items-start text-white">
+                {jugadores.map((jugador, index) => {
+                    if (jugador.id == id) {
+                        return(<li
+                            className="border-2 border-fuchsia-500 rounded-md p-1 w-11/12 flex justify-center text-white"
+                            key={jugador.id}
+                          >
+                            {(index + 1)}.- {jugador.nombre}: {jugador.puntos} <LogoPuntos />
+                          </li>);
+                    }else{
+                        if(index < 10){
+                            return(<li key={jugador.id}>
+                                {(index + 1)}.- {jugador.nombre}: {jugador.puntos} <LogoPuntos />
+                              </li>)
+                          }
+                    }
                 })}
-              </ol>
+              </ul>
             </div>
           </div>
         </main>
