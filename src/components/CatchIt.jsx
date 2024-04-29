@@ -9,6 +9,7 @@ export function CatchIt() {
   const navigate = useNavigate();
   const location = useLocation();
   const codigoSala = location.state?.codigoSala;
+  const nickname = location.state?.nickname;
   const [loading, setLoading] = useState(true);
 
   //Variables a pintar
@@ -88,14 +89,16 @@ export function CatchIt() {
       animarTrampillas();
       setTimeout(function () {
         setPuntosGanados();
-        if (numPreguntaActual < preguntas.length) {
+        console.log(numPreguntaActual);
+        console.log(preguntas.length - 1);
+        if (numPreguntaActual < (preguntas.length - 1)) {
           sessionStorage.setItem(
             "numPreguntaActual",
             Number(numPreguntaActual) + 1
           );
           setNumPreguntaActual(Number(numPreguntaActual) + 1);
         } else {
-          sessionStorage.setItem("numPreguntaActual", 0);
+          actualizarPuntosJugador();
         }
       }, 3000);
     }
@@ -104,12 +107,9 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    console.log("preguntactual  "+numPreguntaActual);
-    if ((numPreguntaActual >= ((8*rondaActual) - 1) && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
-        console.log("true");
-        navigate("/ranking");
+    if ((numPreguntaActual > ((8*rondaActual) - 1) && (Number(rondaActual) + 1) > rondas) || (marcadorPuntos <= 0 && (Number(vidas) - 1) <= 0)){
+        
     }else{
-      console.log("false");
       if(marcadorPuntos <= 0){
         sessionStorage.setItem("vidas", (Number(vidas) - 1));
         setVidas(sessionStorage.getItem("vidas"));
@@ -137,6 +137,17 @@ export function CatchIt() {
       }, 1000);
     }
   };
+
+  const actualizarPuntosJugador = async () =>{
+    let puntos = puntosActuales * vidas
+    try {
+      const response = await axios.put("https://catchit-back-production.up.railway.app/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
+      const idJugador = response.data.data.id;
+      navigate("/ranking", { state: { codigoSala, idJugador } });
+    } catch (e) {
+      console.log(e.response.data.errorMessage);
+    }
+  }
 
   const randomizarRespuestas = () => {
     const arrayRespuestas = [];
