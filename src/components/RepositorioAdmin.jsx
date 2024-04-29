@@ -32,7 +32,6 @@ function RepositorioAdmin() {
   };
 
   const filtrarPartidas = (event) => {
-    console.log(partidas);
     setFiltro(event.target.value);
   };
 
