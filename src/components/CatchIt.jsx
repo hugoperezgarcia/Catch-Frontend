@@ -26,7 +26,7 @@ export function CatchIt() {
   const [maxPuntos, setMaxPuntos] = useState();
   const [valoresIniciados, setValoresniciados] = useState(false);
   const[maxVidas, setMaxVidas] = useState([]);
-  const [puntosActuales, setPuntosActuales] = useState(sessionStorage.getItem("puntosJugador"));
+  const puntosActuales = sessionStorage.getItem("puntosJugador");
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
@@ -40,6 +40,8 @@ export function CatchIt() {
   useEffect(() => {
     if (!codigoSala) {
       navigate("/");
+    } else if(sessionStorage.getItem("idJugador")){
+      navigate("/ranking");
     }
     peticionBD();
   }, []);
@@ -89,7 +91,7 @@ export function CatchIt() {
       animarTrampillas();
       setTimeout(function () {
         setPuntosGanados();
-        if(Number(numPreguntaActual) + 1 >= preguntas.length){
+        if(Number(numPreguntaActual) + 1 >= preguntas.length ){
           actualizarPuntosJugador();
         }else{
           sessionStorage.setItem(
@@ -105,33 +107,38 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    if(marcadorPuntos <= 0){
-      sessionStorage.setItem("vidas", (Number(vidas) - 1));
-      setVidas(sessionStorage.getItem("vidas"));
-      sessionStorage.setItem("puntosJugador", 1000);
-      setMaxPuntos(1000);
-      setMarcadorPuntos(1000);
+    if(marcadorPuntos == 0 && (Number(vidas) - 1) == 0){
+      actualizarPuntosJugador();
     }else{
-      setMaxPuntos(puntosActuales);
-      setMarcadorPuntos(puntosActuales);
-    }
-
-    setColorPreguntaInRonda();
-    if(numPreguntaActual >= (rondaActual*8)){
-      resetearColorPreguntas();
-      sessionStorage.setItem("ronda", Number(rondaActual)+1);
-      setRondaActual(sessionStorage.getItem("ronda"));
-    }
-    habilitarBotones();
-    setTiempo(preguntas[numPreguntaActual].tiempo);
-    setPuntosApostados([0, 0, 0, 0]);
-    randomizarRespuestas();
-    resetearTrampillas();
-    animarPuntos(true);
-    setTimeout(() => {
-      animarPuntos(false);
-    }, 1000);
-  };
+      if(marcadorPuntos <= 0){
+        sessionStorage.setItem("vidas", (Number(vidas) - 1));
+        setVidas(sessionStorage.getItem("vidas"));
+        sessionStorage.setItem("puntosJugador", 1000);
+        setMaxPuntos(1000);
+        setMarcadorPuntos(1000);
+      }else{
+        setMaxPuntos(puntosActuales);
+        setMarcadorPuntos(puntosActuales);
+      }
+  
+      setColorPreguntaInRonda();
+      if(numPreguntaActual >= (rondaActual*8)){
+        resetearColorPreguntas();
+        sessionStorage.setItem("ronda", Number(rondaActual)+1);
+        setRondaActual(sessionStorage.getItem("ronda"));
+      }
+      habilitarBotones();
+      setTiempo(preguntas[numPreguntaActual].tiempo);
+      setPuntosApostados([0, 0, 0, 0]);
+      randomizarRespuestas();
+      resetearTrampillas();
+      animarPuntos(true);
+      setTimeout(() => {
+        animarPuntos(false);
+      }, 1000);
+    };
+  }
+    
 
   const actualizarPuntosJugador = async () =>{
     let puntos;
@@ -142,11 +149,14 @@ export function CatchIt() {
       puntos = (1000 * Number(vidas) + Number(puntosGanados));
     }
     try {
+      setLoading(true);
       const response = await axios.put("https://catchit-back-production.up.railway.app/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
-      const idJugador = response.data.data.id;
-      navigate("/ranking", { state: { codigoSala, idJugador } });
+      sessionStorage.setItem("idJugador", response.data.data.id);
+      navigate("/ranking", { state: { codigoSala } });
     } catch (e) {
       console.log(e.response.data.errorMessage);
+    }finally{
+      setLoading(false);
     }
   }
 

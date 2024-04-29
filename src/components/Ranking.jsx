@@ -8,7 +8,7 @@ import Loader from "./Loader";
 export function Ranking() {
   const location = useLocation();
   const codigoSala = location.state?.codigoSala;
-  const id = location.state?.idJugador;
+  const id = sessionStorage.getItem("idJugador");
 
   const [jugadores, setJugadores] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -38,6 +38,14 @@ export function Ranking() {
     }
   };
 
+  const volver = () =>{
+    Object.keys(sessionStorage).forEach(key => {
+        if(key != "userId"){
+          sessionStorage.removeItem(key);
+        }
+      });
+    navigate("/")
+  }
   return (
     <>
       {loading ? (
@@ -47,7 +55,7 @@ export function Ranking() {
           <header className="flex justify-center p-10 font-medium text-4xl text-white">
             <h1>RANKING</h1>
           </header>
-          <Link to={"/"}>Volver al inicio</Link>
+          <button onClick={() => volver()}>Volver a inicio</button>
           <div className="h-full">
             <div className="h-2/4 flex justify-center items-center">
               <div className="flex justify-center items-end space-x-0.5">
