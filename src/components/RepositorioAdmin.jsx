@@ -100,6 +100,12 @@ function RepositorioAdmin() {
                 >
                   INTRODUCIR PREGUNTAS
                 </Link>
+                <Link
+                  to="/csv"
+                  className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold"
+                >
+                  INTRODUCIR CSV
+                </Link>
                 {!sessionStorage.getItem("estaInicio") ? (
                   <Link
                     to="/"
