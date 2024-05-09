@@ -23,7 +23,7 @@ function Preguntas() {
                 <button className='w-10' onClick={goBack} >
                     <LogoAtras />
                 </button>
-                    <input className="ms-5 w-3/4 rounded-lg focus:outline-none focus:ring-2 p-4 focus:ring-red-300" type="search" placeholder=" Buscar partida" onChange={filtrarPreguntas} />
+                    <input className="ms-5 w-3/4 rounded-lg focus:outline-none focus:ring-2 p-4 focus:ring-red-300" type="search" placeholder="Buscar preguntas" onChange={filtrarPreguntas} />
                     <div className="flex gap-7 mx-5">
                         <Link to="/createPartida" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold">CREAR PARTIDA</Link>
                         <Link to="/createPregunta" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold">INTRODUCIR PREGUNTAS</Link>

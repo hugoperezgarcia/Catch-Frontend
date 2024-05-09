@@ -29,9 +29,10 @@ export function Sala() {
     }else{
       try {
         setLoading(true);
-        // const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
+        const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
         sessionStorage.setItem("numPreguntaActual", 0);
         sessionStorage.setItem("puntosJugador", 1000);
+        sessionStorage.setItem("ronda", 1);
         sessionStorage.removeItem("vidas");
         navigate("/CatchIt", { state: { nickname, codigoSala } });
       } catch (e) {

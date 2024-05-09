@@ -123,11 +123,11 @@ export function CrearPartida() {
                             </div>
                             <div>
                                 <label className='font-semibold' htmlFor={rondas}>Rondas: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' {...register("numRondas")} type="number" id={rondas} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' {...register("numRondas")} type="number" min={1} id={rondas} required />
                             </div>
                             <div>
                                 <label className='font-semibold' htmlFor={vidas}>Vidas: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" {...register("numVidas")} id={vidas} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" {...register("numVidas")} min={1} id={vidas} required />
                             </div>
                             <div className='flex justify-center'>
                                 <input type="submit" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold" value="CREAR PARTIDA" />

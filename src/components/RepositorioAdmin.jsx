@@ -60,7 +60,7 @@ function RepositorioAdmin() {
               <input
                 className="ms-5 w-3/4 rounded-lg focus:outline-none focus:ring-2 p-4 focus:ring-red-300"
                 type="search"
-                placeholder=" Buscar partida"
+                placeholder="Buscar partida"
                 onChange={filtrarPartidas}
               />
               <div className="flex gap-7 mx-5">
@@ -69,6 +69,12 @@ function RepositorioAdmin() {
                   className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold"
                 >
                   CREAR PARTIDA
+                </Link>
+                <Link
+                  to="/insertarCsv"
+                  className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold"
+                >
+                  INTRODUCIR CSV
                 </Link>
                 <Link
                   to="/createPregunta"

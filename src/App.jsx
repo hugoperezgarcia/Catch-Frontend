@@ -10,6 +10,7 @@ import { CrearPartida } from './components/CrearPartida';
 import { Sala } from  './components/Sala';
 import { CatchIt } from './components/CatchIt';
 import { Ranking } from './components/Ranking';
+import { CsvImport } from './components/CsvImport';
 
 function App() {
   const {user} = UseUser();
@@ -24,6 +25,7 @@ function App() {
         <Route path="/createPregunta" element={user ? <IntroducirPreguntas /> : <Navigate to="/" />} />
         <Route path="/editPregunta/:preguntaId" element={user ? <IntroducirPreguntas /> : <Navigate to="/" />} />
         <Route path="/createPartida" element={user ? <CrearPartida /> : <Navigate to="/" />} />
+        <Route path="/insertarCsv" element={user ? <CsvImport /> : <Navigate to="/" />} />
         <Route path='/sala' element={<Sala/>} />
         <Route path='/CatchIt' element={<CatchIt/>} />
         <Route path='/ranking' element={<Ranking/>} />

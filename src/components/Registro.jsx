@@ -16,7 +16,7 @@ function Registro() {
         if (info.password === info.passwordRepeated) {
             try {
                 setLoading(true);
-                const response = await axios.post("http://localhost:8080/api/signin", null, {
+                const response = await axios.post("http://catchit-back-production.up.railway.app/api/signin", null, {
                     params: {
                         username: info.username,
                         password: info.password,

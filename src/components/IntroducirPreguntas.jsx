@@ -178,7 +178,7 @@ export function IntroducirPreguntas() {
                                 </div>
                                 <div>
                                     <label className='font-semibold' htmlFor={tiempo}>Tiempo: </label><br />
-                                    <input className='h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" id={tiempo} name="tiempo" required
+                                    <input className='h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" id={tiempo} name="tiempo" required min={1}
                                         {...register("tiempo")} placeholder="30 (default)" />
                                 </div>
                             </div>
