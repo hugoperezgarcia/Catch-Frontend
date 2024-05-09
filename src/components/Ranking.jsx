@@ -89,6 +89,15 @@ export function Ranking() {
                           <LogoPuntos />
                         </li>
                       );
+                    }else{
+                      if (index < 10) {
+                        return (
+                          <li key={jugador.id}>
+                            {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
+                            <LogoPuntos />
+                          </li>
+                        );
+                      }
                     }
                   } else {
                     if (index < 10) {
