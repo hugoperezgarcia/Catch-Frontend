@@ -34,6 +34,7 @@ export function Sala() {
         sessionStorage.setItem("puntosJugador", 1000);
         sessionStorage.setItem("ronda", 1);
         sessionStorage.removeItem("vidas");
+        sessionStorage.removeItem("idJugador");
         navigate("/CatchIt", { state: { nickname, codigoSala } });
       } catch (e) {
         setError(e.response.data.errorMessage);
@@ -47,6 +48,10 @@ export function Sala() {
   const handleChange = (event) => {
     setNickname(event.target.value);
   };
+
+  const navigateRanking = () =>{
+    navigate("/ranking", { state: { codigoSala } });
+  }
   
 
   return (
@@ -113,6 +118,7 @@ export function Sala() {
                 id="boton"
                 type="submit"
                 className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-fuchsia-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-white"
+                onClick={() => navigateRanking()}
               >
                 <div>
                   <LogoRanking />

@@ -1,9 +1,9 @@
-import {  useState } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { UseUser } from "../hooks/UseUser";
 import { set } from "react-hook-form";
-import { useNavigate, useParams,Link } from 'react-router-dom';
-import { LogoAtras, LogoHome } from './Icons';
+import { useNavigate, useParams, Link } from "react-router-dom";
+import { LogoAtras, LogoHome } from "./Icons";
 
 export function CsvImport() {
   const [archivo, setArchivo] = useState(null);
@@ -18,7 +18,7 @@ export function CsvImport() {
 
   const goBack = () => {
     navigate(-1);
-};
+  };
 
   const handleCheckbox = () => {
     if (leido) {
@@ -27,6 +27,19 @@ export function CsvImport() {
       setLeido(true);
     }
   };
+
+  const descargarPlantilla = () => {
+    const nombreArchivo = 'plantilla.ods';
+    const ruta = `${process.env.PUBLIC_URL}/${nombreArchivo}`;
+
+    const linkDescarga = document.createElement('a');
+    linkDescarga.href = ruta;
+    linkDescarga.download = nombreArchivo;
+
+    document.body.appendChild(linkDescarga);
+    linkDescarga.click();
+    document.body.removeChild(linkDescarga);
+  }
 
   function handleFileUpload() {
     const formData = new FormData();
@@ -113,7 +126,11 @@ export function CsvImport() {
           <label htmlFor="descarga" className="font-semibold">
             Descargar plantilla para csv
           </label>
-          <button id="descarga" className="bg-red-100 p-2 rounded-xl mt-1">
+          <button
+            id="descarga"
+            className="bg-red-100 p-2 rounded-xl mt-1"
+            onClick={descargarPlantilla}
+          >
             Descargar
           </button>
         </div>

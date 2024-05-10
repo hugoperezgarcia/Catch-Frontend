@@ -15,10 +15,10 @@ export function Ranking() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(codigoSala && id){
-        getRanking();
-    }else{
-        navigate("/");
+    if (codigoSala) {
+      getRanking();
+    } else {
+      navigate("/");
     }
   }, []);
 
@@ -29,7 +29,9 @@ export function Ranking() {
           codigoSala
       );
       console.log(response.data);
-      const arrayJugadores = response.data.jugadores.sort((a, b) => b.puntos - a.puntos);
+      const arrayJugadores = response.data.jugadores.sort(
+        (a, b) => b.puntos - a.puntos
+      );
       setJugadores(arrayJugadores);
     } catch (e) {
       console.log(e);
@@ -38,14 +40,14 @@ export function Ranking() {
     }
   };
 
-  const volver = () =>{
-    Object.keys(sessionStorage).forEach(key => {
-        if(key != "userId"){
-          sessionStorage.removeItem(key);
-        }
-      });
-    navigate("/")
-  }
+  const volver = () => {
+    Object.keys(sessionStorage).forEach((key) => {
+      if (key != "userId") {
+        sessionStorage.removeItem(key);
+      }
+    });
+    navigate("/");
+  };
   return (
     <>
       {loading ? (
@@ -76,20 +78,37 @@ export function Ranking() {
             <div className="h-2/4 flex flex-col items-center">
               <ul className="flex flex-col items-start text-white">
                 {jugadores.map((jugador, index) => {
+                  if (id) {
                     if (jugador.id == id) {
-                        return(<li
-                            className="border-2 border-fuchsia-500 rounded-md p-1 w-11/12 flex justify-center text-white"
-                            key={jugador.id}
-                          >
-                            {(index + 1)}.- {jugador.nombre}: {jugador.puntos} <LogoPuntos />
-                          </li>);
+                      return (
+                        <li
+                          className="border-2 border-fuchsia-500 rounded-md p-1 w-11/12 flex justify-center text-white"
+                          key={jugador.id}
+                        >
+                          {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
+                          <LogoPuntos />
+                        </li>
+                      );
                     }else{
-                        if(index < 10){
-                            return(<li key={jugador.id}>
-                                {(index + 1)}.- {jugador.nombre}: {jugador.puntos} <LogoPuntos />
-                              </li>)
-                          }
+                      if (index < 10) {
+                        return (
+                          <li key={jugador.id}>
+                            {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
+                            <LogoPuntos />
+                          </li>
+                        );
+                      }
                     }
+                  } else {
+                    if (index < 10) {
+                      return (
+                        <li key={jugador.id}>
+                          {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
+                          <LogoPuntos />
+                        </li>
+                      );
+                    }
+                  }
                 })}
               </ul>
             </div>

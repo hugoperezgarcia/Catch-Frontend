@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { React, useState, useEffect } from "react";
-import { LogoHome } from "./Icons";
+import { LogoDelete, LogoHome } from "./Icons";
 import { UseUser } from "../hooks/UseUser";
 import axios from "axios";
 import Loader from "./Loader";
@@ -31,12 +31,28 @@ function RepositorioAdmin() {
     }
   };
 
+  const deletePartida = async (idPartida) => {
+    setLoading(true);
+    try {
+      const response = await axios.delete(
+        "https://catchit-back-production.up.railway.app/api/partida/" + idPartida + "/" + user
+      );
+    } catch (error) {
+      setError(error);
+    }finally{
+      getUser();
+    }
+  }
+
   const filtrarPartidas = (event) => {
+    console.log(partidas);
     setFiltro(event.target.value);
   };
 
-  const partidasFiltradas = partidas.filter((partida) =>
-    partida.titulo.toLowerCase().includes(filtro.toLowerCase())
+  const partidasFiltradas = partidas.filter(
+    (partida) =>
+      partida.titulo.toLowerCase().includes(filtro.toLowerCase()) ||
+      partidas.asignatura.toLowerCase().includes(filtro.toLowerCase())
   );
 
   function switchInicio() {
@@ -110,6 +126,9 @@ function RepositorioAdmin() {
               >
                 <h1>{partida.titulo}</h1>
                 <p>{partida.id}</p>
+                  <div className="w-5" onClick={() => deletePartida(partida.id)}>
+                    <LogoDelete />
+                  </div>
               </div>
             ))}
           </main>

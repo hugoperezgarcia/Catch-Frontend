@@ -24,40 +24,48 @@ export function IntroducirPreguntas() {
     const{user} = UseUser();
     const { preguntaId } = useParams();
     const { pregunta, loadingEdit } = usePregunta(preguntaId);
+    const [error, setError] = useState();
 
     const { register, handleSubmit, setValue } = useForm();
 
     const onSubmit = async (info) => {
-        const infoParams = {
-            pregunta: info.pregunta,
-            respuestaCorrecta: info.respuestaCorrecta,
-            respuesta1: info.respuesta1,
-            respuesta2: info.respuesta2,
-            respuesta3: info.respuesta3,
-            nivel: info.nivel,
-            dificultad: info.dificultad,
-            asignatura: info.asignatura,
-            tiempo: Number(info.tiempo),
-            idAdmin: user
-        }
-        try {
-            if (preguntaId) {
-                setLoading(true);
-                await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + preguntaId, null, {
-                    params: infoParams
-                });
-            } else {
-                setLoading(true);
-                await axios.post("https://catchit-back-production.up.railway.app/api/pregunta", null, {
-                    params: infoParams
-                });
+        let infoParams = {};
+        let completo = true;
+        Object.keys(info).forEach((key) =>{
+            if(info[key] != ""){
+                if(key == "tiempo"){
+                    infoParams[key] = Number(info[key]);
+                }else{
+                    infoParams[key] = info[key];
+                }
+            }else{
+                completo = false;
             }
-            navigate("/preguntas");
-
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
+        });
+        infoParams["idAdmin"] = user;
+        
+        if(completo && info["tiempo"] > 0){
+            try {
+                if (preguntaId) {
+                    setLoading(true);
+                    await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + preguntaId, null, {
+                        params: infoParams
+                    });
+                } else {
+                    setLoading(true);
+                    await axios.post("https://catchit-back-production.up.railway.app/api/pregunta", null, {
+                        params: infoParams
+                    });
+                }
+                navigate("/preguntas");
+    
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        }else{
+            setError("Debes de introducir bien los datos");
         }
     }
 

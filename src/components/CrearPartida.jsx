@@ -19,6 +19,7 @@ export function CrearPartida() {
     const { register, handleSubmit } = useForm();
     const navigate = useNavigate();
     const {user} = UseUser();
+    const [error, setError] = useState();
 
     const goBack = () => {
         navigate(-1);
@@ -26,23 +27,31 @@ export function CrearPartida() {
 
     const onSubmit = async (info) => {
         let infoParams = {};
+        let completo = true;
         for (var param in info) {
             if (info[param] !== "mezcla") {
                 infoParams[param] = info[param];
             }
+            if(info[param] == ""){
+                completo = false;
+            }
             infoParams["idAdmin"] = user;
         }
-        try {
-            setLoading(true);
-            const response = await axios.post("https://catchit-back-production.up.railway.app/api/create", null, {
-                params: infoParams
-            });
-            console.log(response.data);
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
-            navigate("/bienvenida");
+        if(completo && info["numRondas"] > 0 && info["numVidas"] > 0){
+            try {
+                setLoading(true);
+                const response = await axios.post("https://catchit-back-production.up.railway.app/api/create", null, {
+                    params: infoParams
+                });
+                console.log(response.data);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+                navigate("/bienvenida");
+            }
+        }else{
+            setError("Debes de introducir la información correctamente");
         }
     }
     return (
