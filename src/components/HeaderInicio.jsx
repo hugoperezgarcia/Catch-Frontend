@@ -23,32 +23,32 @@ export function HeaderInicio() {
         <>
             <header className="py-5 px-5 flex items-center fixed top-0 w-full justify-between z-30 rounded">
                 <div className="flex flex-grow basis-0 animate-fade-right animate-duration-1000 animate-delay-1000">
-                    <img src="/ipv.jpg" alt="logo IES palomeras" className='w-16' />
+                    <img src="/ipv.png" alt="logo IES palomeras" className='w-16' />
                 </div>
 
                 <div className="flex text-5xl">
-                    <h1 className="font-extrabold animate-flip-down animate-ease-in-out">CATCH IT!</h1>
+                    <h1 className="font-titulo1 animate-flip-down animate-ease-in-out">CATCH IT!</h1>
                 </div>
 
                 <nav className="flex flex-grow justify-end basis-0">
                     <ul className="flex items-center text-center text-sm animate-fade-left animate-delay-1000 animate-duration-1000">
-                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => scrollToSection('toGame')}><LogoUnirse />Unirse</button></li>
+                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125 font-titulo1"><button onClick={() => scrollToSection('toGame')}><LogoUnirse /></button></li>
                         <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125">
 
                         {
                             user ? (
                                 <button onClick={cerrarSesion}>
-                                    <LogoLogOut /> Log out
+                                    <LogoLogOut />
                                 </button>   
                             ) : (
                             <div>
                                 <button onClick={() => scrollToSection('admin')}>
-                                    <LogoLogIn /> Log in
+                                    <LogoLogIn />
                                 </button>
                             </div>
                         )}
                         </li>
-                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => scrollToSection('rules')}><LogoRules />Rules</button></li>
+                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => scrollToSection('rules')}><LogoRules /></button></li>
                     </ul>
                 </nav>
             </header>

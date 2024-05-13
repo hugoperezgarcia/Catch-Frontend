@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+    font-family: "titulo2";
+    src: url('/public/Fonts/D3Biscuitism-ywD2.ttf') format('truetype');
+}
+@font-face {
+    font-family: "titulo1";
+    src: url('/public/Fonts/Buttons-8jXB.ttf') format('truetype');
+}
+@font-face {
+    font-family: "subtitulo";
+    src: url('/public/Fonts/Buttons-8jXB.ttf') format('truetype');
+}

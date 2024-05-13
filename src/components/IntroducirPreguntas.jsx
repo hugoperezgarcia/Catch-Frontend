@@ -24,40 +24,48 @@ export function IntroducirPreguntas() {
     const{user} = UseUser();
     const { preguntaId } = useParams();
     const { pregunta, loadingEdit } = usePregunta(preguntaId);
+    const [error, setError] = useState();
 
     const { register, handleSubmit, setValue } = useForm();
 
     const onSubmit = async (info) => {
-        const infoParams = {
-            pregunta: info.pregunta,
-            respuestaCorrecta: info.respuestaCorrecta,
-            respuesta1: info.respuesta1,
-            respuesta2: info.respuesta2,
-            respuesta3: info.respuesta3,
-            nivel: info.nivel,
-            dificultad: info.dificultad,
-            asignatura: info.asignatura,
-            tiempo: Number(info.tiempo),
-            idAdmin: user
-        }
-        try {
-            if (preguntaId) {
-                setLoading(true);
-                await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + preguntaId, null, {
-                    params: infoParams
-                });
-            } else {
-                setLoading(true);
-                await axios.post("https://catchit-back-production.up.railway.app/api/pregunta", null, {
-                    params: infoParams
-                });
+        let infoParams = {};
+        let completo = true;
+        Object.keys(info).forEach((key) =>{
+            if(info[key] != ""){
+                if(key == "tiempo"){
+                    infoParams[key] = Number(info[key]);
+                }else{
+                    infoParams[key] = info[key];
+                }
+            }else{
+                completo = false;
             }
-            navigate("/preguntas");
-
-        } catch (e) {
-            console.log(e);
-        } finally {
-            setLoading(false);
+        });
+        infoParams["idAdmin"] = user;
+        
+        if(completo && info["tiempo"] > 0){
+            try {
+                if (preguntaId) {
+                    setLoading(true);
+                    await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + preguntaId, null, {
+                        params: infoParams
+                    });
+                } else {
+                    setLoading(true);
+                    await axios.post("https://catchit-back-production.up.railway.app/api/pregunta", null, {
+                        params: infoParams
+                    });
+                }
+                navigate("/preguntas");
+    
+            } catch (e) {
+                console.log(e);
+            } finally {
+                setLoading(false);
+            }
+        }else{
+            setError("Debes de introducir bien los datos");
         }
     }
 
@@ -77,7 +85,7 @@ export function IntroducirPreguntas() {
         <>
             {loading || loadingEdit ? <Loader /> : (
                 <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-screen">
-                    <header className="flex justify-between font-extrabold animate-flip-down animate-ease-in-out text-5xl text-center p-10">
+                    <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10">
                         <button className='w-10' onClick={goBack}>
                             <LogoAtras />
                         </button>
@@ -98,34 +106,34 @@ export function IntroducirPreguntas() {
                         <main className='flex justify-center'>
                             <div className='w-1/2 flex flex-col gap-10'>
                                 <div>
-                                    <label className='font-semibold' htmlFor={enunciado}>Enunciado: </label><br />
+                                    <label className='font-titulo2' htmlFor={enunciado}>Enunciado: </label><br />
                                     <input className='h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-300' name='pregunta' type="text" id={enunciado} required
                                         {...register("pregunta")} />
                                 </div>
                                 <div>
-                                    <label className='font-semibold' htmlFor={resCorrecta}>Respuesta Correcta: </label><br />
+                                    <label className='font-titulo2' htmlFor={resCorrecta}>Respuesta Correcta: </label><br />
                                     <input className='h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-300' name='respuestaCorrecta' type="text" id={resCorrecta} required
                                         {...register("respuestaCorrecta")} />
                                 </div>
                                 <div>
-                                    <label className='font-semibold' htmlFor={res1}>Respuesta 1: </label><br />
+                                    <label className='font-titulo2' htmlFor={res1}>Respuesta 1: </label><br />
                                     <input className='h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-300' name='respuesta1' type="text" id={res1} required
                                         {...register("respuesta1")} />
                                 </div>
                                 <div>
-                                    <label className='font-semibold' htmlFor={res2}>Respuesta 2: </label><br />
+                                    <label className='font-titulo2' htmlFor={res2}>Respuesta 2: </label><br />
                                     <input className='h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' name='respuesta2' type="text" id={res2} required
                                         {...register("respuesta2")} />
                                 </div>
                                 <div>
-                                    <label className='font-semibold' htmlFor={res3}>Respuesta 3: </label><br />
+                                    <label className='font-titulo2' htmlFor={res3}>Respuesta 3: </label><br />
                                     <input className='h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' name='respuesta3' type="text" id={res3} required
                                         {...register("respuesta3")} />
                                 </div>
                             </div>
                             <div className='w-auto flex flex-col gap-10'>
                                 <div>
-                                    <label className='font-semibold' htmlFor={nivel}>Nivel De Pregunta: </label><br />
+                                    <label className='font-titulo2' htmlFor={nivel}>Nivel De Pregunta: </label><br />
                                     <select
                                         className='h-10 w-96 rounded-lg focus:outline-none p-2 focus:ring-2 focus:ring-red-300'
                                         id={dificultad} name="nivel" {...register("nivel")}
@@ -140,7 +148,7 @@ export function IntroducirPreguntas() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className='font-semibold' htmlFor={dificultad}>Dificultad: </label><br />
+                                    <label className='font-titulo2' htmlFor={dificultad}>Dificultad: </label><br />
                                     <select
                                         className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 p-2 focus:ring-red-300'
                                         id={dificultad} name="dificultad" {...register("dificultad")}
@@ -153,7 +161,7 @@ export function IntroducirPreguntas() {
                                 </div>
 
                                 <div>
-                                    <label className='font-semibold' htmlFor={asignatura}>Asignatura: </label><br />
+                                    <label className='font-titulo2' htmlFor={asignatura}>Asignatura: </label><br />
                                     <select
                                         className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 p-2 focus:ring-red-300'
                                         id={dificultad} name="asignatura" {...register("asignatura")}
@@ -177,15 +185,15 @@ export function IntroducirPreguntas() {
                                     </select>
                                 </div>
                                 <div>
-                                    <label className='font-semibold' htmlFor={tiempo}>Tiempo: </label><br />
-                                    <input className='h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" id={tiempo} name="tiempo" required
+                                    <label className='font-titulo2' htmlFor={tiempo}>Tiempo: </label><br />
+                                    <input className='h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" id={tiempo} name="tiempo" required min={1}
                                         {...register("tiempo")} placeholder="30 (default)" />
                                 </div>
                             </div>
 
                         </main>
                         <div className='flex justify-center'>
-                            <button type='submit' className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-semibold">
+                            <button type='submit' className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-titulo2">
                                 {
                                     preguntaId ? (
                                         <section> EDITAR PREGUNTA</section>

@@ -34,6 +34,7 @@ export function Sala() {
         sessionStorage.setItem("puntosJugador", 1000);
         sessionStorage.setItem("ronda", 1);
         sessionStorage.removeItem("vidas");
+        sessionStorage.removeItem("idJugador");
         navigate("/CatchIt", { state: { nickname, codigoSala } });
       } catch (e) {
         setError(e.response.data.errorMessage);
@@ -47,6 +48,10 @@ export function Sala() {
   const handleChange = (event) => {
     setNickname(event.target.value);
   };
+
+  const navigateRanking = () =>{
+    navigate("/ranking", { state: { codigoSala } });
+  }
   
 
   return (
@@ -61,7 +66,7 @@ export function Sala() {
               <LogoAtras />
             </button>
             <div>
-              <h1 className="font-extrabold animate-flip-down animate-ease-in-out text-5xl">
+              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
                 SALA {codigoSala}
                 {/* Ver el titulo o enunciado de la partida que tiene ese id o
               codigo asociado y ponerlo de titulo */}
@@ -73,7 +78,7 @@ export function Sala() {
           </header>
           <main className="flex justify-center mt-32">
             <div className="z-10 bg-slate-100 p-8 rounded-lg shadow-lg w-full max-w-md">
-              <h2 className="text-3xl font-extrabold mb-6 text-center text-black">
+              <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
                 Empezar a Jugar
               </h2>
 
@@ -81,7 +86,7 @@ export function Sala() {
                 <div>
                   <label
                     htmlFor="codigo"
-                    className="block text-sm font-medium text-gray-700"
+                    className="block text-sm font-titulo2 text-gray-700"
                   >
                     Nombre:
                   </label>
@@ -104,7 +109,7 @@ export function Sala() {
                 <button
                   id="boton"
                   type="submit"
-                  className="w-full px-4 py-2 bg-violet-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-white"
+                  className="w-full px-4 py-2 bg-violet-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white"
                 >
                   ¡A Jugar!
                 </button>
@@ -112,7 +117,8 @@ export function Sala() {
               <button
                 id="boton"
                 type="submit"
-                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-fuchsia-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-white"
+                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-fuchsia-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white"
+                onClick={() => navigateRanking()}
               >
                 <div>
                   <LogoRanking />
