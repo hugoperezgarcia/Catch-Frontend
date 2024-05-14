@@ -22,7 +22,7 @@ export function CrearPartida() {
     const [error, setError] = useState();
 
     const goBack = () => {
-        navigate(-1);
+        navigate("/bienvenida");
     }
 
     const onSubmit = async (info) => {
