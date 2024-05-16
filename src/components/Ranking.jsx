@@ -2,7 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LogoPuntos } from "./Icons";
+import { LogoHome, LogoPuntos } from "./Icons";
 import Loader from "./Loader";
 
 export function Ranking() {
@@ -54,22 +54,27 @@ export function Ranking() {
         <Loader />
       ) : (
         <main className="h-screen flex flex-col bg-gradient-to-br from-purple-500 to-violet-600">
-          <header className="flex justify-center p-10 font-medium text-4xl text-white">
+          <header className="flex justify-between p-10 font-medium text-4xl text-white">
+            <div>
+            </div>
             <h1>RANKING</h1>
+            <button className="w-8" onClick={() => volver()}><LogoHome /></button>
           </header>
-          <button onClick={() => volver()}>Volver a inicio</button>
           <div className="h-full">
             <div className="h-2/4 flex justify-center items-center">
               <div className="flex justify-center items-end space-x-0.5">
                 <div className="flex flex-col items-center">
+                  <p className="text-white text-sm animate-bounce">🥈{jugadores.length > 1 ? jugadores[1].nombre : <div/>}</p>
                   <div className="bg-yellow-400 h-40 w-20 shadow-xl rounded-md"></div>
                   <p className="text-center font-bold text-lg text-white">2º</p>
                 </div>
                 <div className="flex flex-col items-center">
+                  <p className="text-white text-sm animate-bounce">🏆{jugadores.length > 0 ? jugadores[0].nombre : <div/>}</p>
                   <div className="bg-yellow-400 h-48 w-20 shadow-xl rounded-md"></div>
                   <p className="text-center font-bold text-lg text-white">1º</p>
                 </div>
                 <div className="flex flex-col items-center">
+                  <p className="text-white text-sm animate-bounce">🥉{jugadores.length > 3 ? jugadores[3].nombre : <div/>}</p>
                   <div className="bg-yellow-400 h-32 w-20 shadow-xl rounded-md"></div>
                   <p className="text-center font-bold text-lg text-white">3º</p>
                 </div>
@@ -82,11 +87,10 @@ export function Ranking() {
                     if (jugador.id == id) {
                       return (
                         <li
-                          className="border-2 border-fuchsia-500 rounded-md p-1 w-11/12 flex justify-center text-white"
+                          className="border-2 border-fuchsia-500 rounded-md p-5 w-11/12 flex justify-center text-white text-pretty"
                           key={jugador.id}
                         >
                           {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
-                          <LogoPuntos />
                         </li>
                       );
                     }else{
@@ -94,7 +98,6 @@ export function Ranking() {
                         return (
                           <li key={jugador.id}>
                             {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
-                            <LogoPuntos />
                           </li>
                         );
                       }
@@ -104,7 +107,6 @@ export function Ranking() {
                       return (
                         <li key={jugador.id}>
                           {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}
-                          <LogoPuntos />
                         </li>
                       );
                     }
