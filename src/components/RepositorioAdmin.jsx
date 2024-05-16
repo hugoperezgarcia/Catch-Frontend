@@ -49,13 +49,12 @@ function RepositorioAdmin() {
 
   const filtrarPartidas = (event) => {
     setFiltro(event.target.value);
+    console.log(partidas)
   };
 
-  const partidasFiltradas = partidas.filter(
-    (partida) =>
-      partida.titulo.toLowerCase().includes(filtro.toLowerCase()) ||
-      partidas.asignatura.toLowerCase().includes(filtro.toLowerCase())
-  );
+  const partidasFiltradas = partidas.filter((partida) => (
+    partida.titulo.toLowerCase().includes(filtro.toLowerCase())
+  ));
 
   function switchInicio() {
     const newValue = !sessionStorage.getItem("estaInicio");

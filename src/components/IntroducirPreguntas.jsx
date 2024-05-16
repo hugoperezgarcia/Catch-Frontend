@@ -33,20 +33,32 @@ export function IntroducirPreguntas() {
   const onSubmit = async (info) => {
     let infoParams = {};
     let completo = true;
+    const formData = new FormData();
     Object.keys(info).forEach((key) => {
       if (info[key] != "") {
         if (key == "tiempo") {
           infoParams[key] = Number(info[key]);
-        } else {
-          infoParams[key] = info[key];
+        }else{
+          if(key == "imagen" && info[key].length > 0){
+            infoParams[key] = info[key][0];
+          }else{
+            infoParams[key] = info[key];
+          }
         }
       } else {
-        completo = false;
+        if(key != "imagen"){
+          completo = false;
+        }
       }
     });
     infoParams["idAdmin"] = user;
 
+    Object.keys(infoParams).forEach(key => {
+      formData.append(key, infoParams[key]);
+    });
+
     if (completo && info["tiempo"] > 0) {
+      console.log(formData)
       try {
         if (preguntaId) {
           setLoading(true);
@@ -62,10 +74,12 @@ export function IntroducirPreguntas() {
           setLoading(true);
           await axios.post(
             "https://catchit-back-production.up.railway.app/api/pregunta",
-            null,
-            {
-              params: infoParams,
-            }
+            formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
           );
         }
         navigate("/preguntas");
