@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { React, useState, useEffect } from "react";
-import { LogoDelete, LogoHome, LogoEditar} from "./Icons";
+import { LogoDelete, LogoHome, LogoEditar } from "./Icons";
 import { UseUser } from "../hooks/UseUser";
 import axios from "axios";
 import Loader from "./Loader";
@@ -36,9 +36,9 @@ function RepositorioAdmin() {
     try {
       const response = await axios.delete(
         "https://catchit-back-production.up.railway.app/api/partida/" +
-          idPartida +
-          "/" +
-          user
+        idPartida +
+        "/" +
+        user
       );
     } catch (error) {
       setError(error);
@@ -48,15 +48,13 @@ function RepositorioAdmin() {
   };
 
   const filtrarPartidas = (event) => {
-    console.log(partidas);
     setFiltro(event.target.value);
+    console.log(partidas)
   };
 
-  const partidasFiltradas = partidas.filter(
-    (partida) =>
-      partida.titulo.toLowerCase().includes(filtro.toLowerCase()) ||
-      partidas.asignatura.toLowerCase().includes(filtro.toLowerCase())
-  );
+  const partidasFiltradas = partidas.filter((partida) => (
+    partida.titulo.toLowerCase().includes(filtro.toLowerCase())
+  ));
 
   function switchInicio() {
     const newValue = !sessionStorage.getItem("estaInicio");
@@ -101,6 +99,7 @@ function RepositorioAdmin() {
                 >
                   INTRODUCIR PREGUNTAS
                 </Link>
+
                 {!sessionStorage.getItem("estaInicio") ? (
                   <Link
                     to="/"
@@ -127,16 +126,20 @@ function RepositorioAdmin() {
                 key={partida.id}
                 className="rounded-lg p-10 bg-red-200 w-80 h-52 text-xl hover:bg-red-300 hover:cursor-pointer font-titulo2"
               >
-                <h1>{partida.titulo}</h1>
-                <p>{partida.id}</p>
-                <div className="w-5" onClick={() => deletePartida(partida.id)}>
-                  <LogoDelete />
-                </div>
-                <Link to={"/editPartida/" + partida.id}>
-                  <div className="w-5">
-                    <LogoEditar />
+                <div className="w-full h-1/2 flex justify-between">
+                  <Link to={"/editPartida/" + partida.id}>
+                    <div className="w-5">
+                      <LogoEditar />
+                    </div>
+                  </Link>
+                  <div className="w-5" onClick={() => deletePartida(partida.id)}>
+                    <LogoDelete />
                   </div>
-                </Link>
+                </div>
+                <div className="h-1/2">
+                  <h1 className="font-semibold text-2xl uppercase flex justify-center items-start">{partida.titulo}</h1>
+                  <p className="flex justify-center items-start">{partida.id}</p>
+                </div>
               </div>
             ))}
           </main>

@@ -31,6 +31,7 @@ function App() {
         <Route path='/sala' element={<Sala/>} />
         <Route path='/CatchIt' element={<CatchIt/>} />
         <Route path='/ranking' element={<Ranking/>} />
+        <Route path='/csv' element={<CsvImport/>} />
       </Routes>
     </div>
   );
