@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { LogoEditar } from './Icons';
 
 function Pregunta(props) {
-    console.log(props);
     const {id, pregunta, respuestaCorrecta, respuesta1, respuesta2, respuesta3, nivel, dificultad, asignatura, tiempo, imagen} = props.pregunta;
     const src = "https://catchit-back-production.up.railway.app/api/pregunta/" + id + "/foto";
     return (

@@ -87,7 +87,7 @@ export function Ranking() {
                     if (jugador.id == id) {
                       return (
                         <li
-                          className="border-2 border-fuchsia-500 rounded-md p-5 w-11/12 flex justify-center text-white text-pretty"
+                          className="border-2 border-fuchsia-500 rounded-md p-2"
                           key={jugador.id}
                         >
                           {index + 1}.- {jugador.nombre}: {jugador.puntos}{" "}

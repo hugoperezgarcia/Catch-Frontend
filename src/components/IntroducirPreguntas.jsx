@@ -58,17 +58,18 @@ export function IntroducirPreguntas() {
     });
 
     if (completo && info["tiempo"] > 0) {
-      console.log(formData)
       try {
         if (preguntaId) {
           setLoading(true);
           await axios.put(
             "https://catchit-back-production.up.railway.app/api/pregunta/" +
               preguntaId,
-            null,
-            {
-              params: infoParams,
-            }
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
           );
         } else {
           setLoading(true);
