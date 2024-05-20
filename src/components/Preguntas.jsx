@@ -33,10 +33,10 @@ function Preguntas() {
             </header>
             <main className="p-10 flex flex-wrap gap-5">
             {loading ? <LoaderIntegrado /> :
-                preguntasFiltradas.map((pregunta) =>{
+                preguntasFiltradas.map((pregunta, index) =>{
                     const esMia = preguntasUser.some(p => p.id === pregunta.id)
                     if(esMia){
-                        return (<Pregunta owner="true" pregunta={pregunta} />)
+                        return (<Pregunta owner="true" pregunta={pregunta} key={index}/>)
                     }else{
                         return (<Pregunta pregunta={pregunta} />)
                     }
