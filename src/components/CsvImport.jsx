@@ -29,7 +29,7 @@ export function CsvImport() {
   };
 
   const descargarPlantilla = () => {
-    const nombreArchivo = 'plantilla.ods';
+    const nombreArchivo = 'plantilla.csv';
     const ruta = `${process.env.PUBLIC_URL}/${nombreArchivo}`;
 
     const linkDescarga = document.createElement('a');
@@ -62,6 +62,7 @@ export function CsvImport() {
       })
       .catch((error) => {
         console.error("Error importando CSV:", error);
+        alert("Ha habido un error importando el archivo, comprueba que este todo bien.")
       });
   }
 

@@ -53,34 +53,34 @@ function Registro() {
                     </header>
                     <main className='flex justify-center'>
                         <div className="bg-white bg-opacity-80 backdrop-blur-lg p-8 rounded-lg shadow-md w-full max-w-md">
-                            <h2 className="text-3xl font-extrabold mb-6 text-center">Regístrate</h2>
+                            <h2 className="text-3xl font-titulo1 mb-6 text-center">Regístrate</h2>
 
                             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                                 <div>
-                                    <label htmlFor={usernameId} className="block text-sm font-medium text-gray-700">Nombre de Usuario:</label>
+                                    <label htmlFor={usernameId} className="block text-sm font-titulo2 text-gray-700">Nombre de Usuario:</label>
                                     <input type="text" id={usernameId} name="username" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("username")} />
                                 </div>
 
                                 <div>
-                                    <label htmlFor={repitePasswordId} className="block text-sm font-medium text-gray-700">Contraseña:</label>
+                                    <label htmlFor={repitePasswordId} className="block text-sm font-titulo2 text-gray-700">Contraseña:</label>
                                     <input type="password" id={repitePasswordId} name="password" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("password")} />
                                 </div>
 
                                 <div>
-                                    <label htmlFor={passwordId} className="block text-sm font-medium text-gray-700">Repite la Contraseña:</label>
+                                    <label htmlFor={passwordId} className="block text-sm font-titulo2 text-gray-700">Repite la Contraseña:</label>
                                     <input type="password" id={passwordId} name="passwordRepeated" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("passwordRepeated")} />
                                 </div>
 
                                 <div>
-                                    <label htmlFor={claveAdminId} className="block text-sm font-medium text-gray-700">Clave de administrador:</label>
+                                    <label htmlFor={claveAdminId} className="block text-sm font-titulo2 text-gray-700">Clave de administrador:</label>
                                     <input type="text" id={claveAdminId} name="key" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("key")} />
                                 </div>
 
-                                <button type="submit" className="w-full px-4 py-2 bg-pink-600 hover:bg-pink-4h00 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-white">Registrar Cuenta</button>
+                                <button type="submit" className="w-full px-4 py-2 bg-pink-600 hover:bg-pink-4h00 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white">Registrar Cuenta</button>
                                 <Link to="/login" className="flex justify-center transition-transform transform hover:scale-110 hover:cursor-pointer">Volver al Inicio de Sesión</Link>
                             </form>
                         </div>

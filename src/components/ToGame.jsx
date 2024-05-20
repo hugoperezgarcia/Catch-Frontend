@@ -29,11 +29,12 @@ export function ToGame() {
     <>
       {loading ? <Loader /> : (
         <section
-          className="bg-gradient-to-br from-amber-300 to-yellow-400 h-screen flex items-center justify-center"
+          className="h-screen flex items-center justify-center"
           id="toGame"
         >
+          <div class="absolute top-0 z-[-2] h-screen w-screen bg-yellow-500 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(255,250,95,1),rgba(255,255,255,0))]"></div>
           <div className="z-10 bg-slate-100 p-8 rounded-lg shadow-lg w-full max-w-md animate-flip-up animate-delay-1000 animate-ease-in-out">
-            <h2 className="text-3xl font-extrabold mb-6 text-center text-black">
+            <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
               Unirse a sala
             </h2>
 
@@ -41,7 +42,7 @@ export function ToGame() {
               <div>
                 <label
                   htmlFor="codigo"
-                  className="block text-sm font-medium text-gray-700"
+                  className="block text-sm font-titulo2 text-gray-700"
                 >
                   Codigo de la sala:
                 </label>
@@ -62,7 +63,7 @@ export function ToGame() {
               <button
                 id="boton"
                 type="submit"
-                className="w-full px-4 py-2 bg-teal-700 hover:bg-emerald-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-white"
+                className="w-full px-4 py-2 bg-teal-700 hover:bg-emerald-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white"
               >
                 ¡A Jugar!
               </button>

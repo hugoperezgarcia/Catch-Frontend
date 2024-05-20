@@ -21,7 +21,6 @@ export default function usePregunta(id){
     useEffect(() => {
         if(id){
             getPregunta(id);
-            console.log(pregunta);
         }
     }, [])
 
