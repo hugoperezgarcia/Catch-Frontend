@@ -6,9 +6,9 @@ function Pregunta(props) {
     const {id, pregunta, respuestaCorrecta, respuesta1, respuesta2, respuesta3, nivel, dificultad, asignatura, tiempo, imagen} = props.pregunta;
     const src = "https://catchit-back-production.up.railway.app/api/pregunta/" + id + "/foto";
     return (
-        <div key={id} className="flex justify-between rounded-lg p-3 bg-red-200 w-full h-auto text-xl hover:bg-red-300 hover:cursor-pointer">
+        <div key={id} className="flex justify-between rounded-lg p-3 bg-violet-200 w-full h-auto text-xl hover:bg-violet-300 shadow-md shadow-violet-900">
                             <div className='font-titulo2'>
-                                <p className="font-titulo1">{pregunta}</p>
+                                <p className="font-titulo1 font-semibold">{pregunta}</p>
                                 <p>Respuesta Correcta: {respuestaCorrecta}</p>
                                 <p>Respuesta 1: {respuesta1}</p>
                                 <p>Respuesta 2: {respuesta2}</p>

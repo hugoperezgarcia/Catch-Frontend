@@ -58,15 +58,15 @@ export function Sala() {
     <>
       {loading ? <Loader /> : (
         <section
-          className="bg-gradient-to-br from-amber-300 to-yellow-400 h-screen"
+          className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen"
           id="toGame"
         >
-          <header className="flex justify-between p-8">
+          <header className="flex justify-between p-8 h-1/5 items-start">
             <button className="w-10" onClick={goBack}>
               <LogoAtras />
             </button>
             <div>
-              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
+              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl border p-3 rounded-full bg-amber-100 shadow-lg shadow-yellow-500">
                 SALA {codigoSala}
                 {/* Ver el titulo o enunciado de la partida que tiene ese id o
               codigo asociado y ponerlo de titulo */}
@@ -77,7 +77,7 @@ export function Sala() {
             </Link>
           </header>
           <main className="flex justify-center mt-32">
-            <div className="z-10 bg-slate-100 p-8 rounded-lg shadow-lg w-full max-w-md">
+            <div className="z-10 bg-slate-100 p-8 rounded-lg shadow-xl w-full max-w-md shadow-yellow-500">
               <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
                 Empezar a Jugar
               </h2>
@@ -86,7 +86,7 @@ export function Sala() {
                 <div>
                   <label
                     htmlFor="codigo"
-                    className="block text-sm font-titulo2 text-gray-700"
+                    className="block text-sm font-titulo2 text-gray-700 font-semibold"
                   >
                     Nombre:
                   </label>
@@ -109,7 +109,7 @@ export function Sala() {
                 <button
                   id="boton"
                   type="submit"
-                  className="w-full px-4 py-2 bg-violet-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white"
+                  className="w-full px-4 py-2 bg-yellow-500 hover:bg-violet-700 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white font-semibold hover:text-lg"
                 >
                   ¡A Jugar!
                 </button>
@@ -117,12 +117,9 @@ export function Sala() {
               <button
                 id="boton"
                 type="submit"
-                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-fuchsia-600 hover:bg-rose-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white"
+                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-yellow-500 hover:bg-violet-700 hover:text-lg focus:ring-4 focus:outline-none font-titulo2 rounded-md font-semibold text-white"
                 onClick={() => navigateRanking()}
               >
-                <div>
-                  <LogoRanking />
-                </div>
                 <div>Ranking</div>
               </button>
             </div>

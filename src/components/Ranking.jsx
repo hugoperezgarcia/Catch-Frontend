@@ -63,7 +63,7 @@ export function Ranking() {
             <div>
               <button className="w-10" onClick={goBack}><LogoAtras /></button>
             </div>
-            <h1 className="bg-violet-400/80 rounded-full py-3 px-5 shadow-md">RANKING</h1>
+            <h1 className="bg-violet-300/80 rounded-full py-3 px-5 shadow-md">RANKING</h1>
             <button className="w-10" onClick={() => volver()}><LogoHome /></button>
           </header>
           <div className="h-full flex">

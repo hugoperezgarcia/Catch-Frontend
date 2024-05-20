@@ -57,8 +57,8 @@ export function CrearPartida() {
     return (
         <>
             {loading ? <Loader /> : (
-                <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-screen">
-                    <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10">
+                <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen">
+                    <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10 h-1/5 items-start">
                         <button className='w-10' onClick={goBack} >
                             <LogoAtras />
                         </button>
@@ -69,16 +69,17 @@ export function CrearPartida() {
                             <Link to="/"><LogoHome /></Link>
                         </div>
                     </header>
+                    <main className='flex justify-center'>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <main className='flex flex-col items-center gap-5'>
                             <div>
                                 <label className='font-titulo2' htmlFor={title}>Título: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="text" {...register("titulo")} id={title} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="text" {...register("titulo")} id={title} required />
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={nivel}>Nivel De Pregunta: </label><br />
                                 <select
-                                    className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300'
+                                    className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white'
                                     id={dificultad} {...register("nivel")}
                                     required
                                 >
@@ -94,7 +95,7 @@ export function CrearPartida() {
                             <div>
                                 <label className='font-titulo2' htmlFor={dificultad}>Dificultad: </label><br />
                                 <select
-                                    className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300'
+                                    className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white'
                                     id={dificultad} {...register("dificultad")}
                                     required
                                 >
@@ -108,7 +109,7 @@ export function CrearPartida() {
                             <div>
                                 <label className='font-titulo2' htmlFor={asignatura}>Asignatura: </label><br />
                                 <select
-                                    className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300'
+                                    className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white'
                                     id={dificultad} {...register("asignatura")}
                                     required
                                 >
@@ -132,18 +133,18 @@ export function CrearPartida() {
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={rondas}>Rondas: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' {...register("numRondas")} type="number" min={1} id={rondas} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' {...register("numRondas")} type="number" min={1} id={rondas} required />
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={vidas}>Vidas: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300' type="number" {...register("numVidas")} min={1} id={vidas} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="number" {...register("numVidas")} min={1} id={vidas} required />
                             </div>
                             <div className='flex justify-center'>
-                                <input type="submit" className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-titulo2" value="CREAR PARTIDA" />
+                                <input type="submit" className="p-3 bg-white hover:animate-jump rounded-lg hover:cursor-pointer focus:ring-white font-titulo2" value="CREAR PARTIDA" />
                             </div>
                         </main>
                     </form>
-
+                    </main>
                 </section>
             )}
         </>

@@ -119,8 +119,8 @@ export function IntroducirPreguntas() {
       {loading || loadingEdit ? (
         <Loader />
       ) : (
-        <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-screen">
-          <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10">
+        <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen">
+          <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10 h-1/5 items-center">
             <button className="w-10" onClick={goBack}>
               <LogoAtras />
             </button>
@@ -137,8 +137,9 @@ export function IntroducirPreguntas() {
               </Link>
             </div>
           </header>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <main className="flex justify-center">
+          <main className="h-4/5 flex items-center justify-center">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
+            <div className="flex justify-center w-full">
               <div className="w-1/3 flex flex-col gap-7">
                 <div>
                   <label className="font-titulo2" htmlFor={enunciado}>
@@ -146,7 +147,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-violet-300"
                     name="pregunta"
                     type="text"
                     id={enunciado}
@@ -160,7 +161,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-violet-300"
                     name="respuestaCorrecta"
                     type="text"
                     id={resCorrecta}
@@ -174,7 +175,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-96 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-violet-300"
                     name="respuesta1"
                     type="text"
                     id={res1}
@@ -188,7 +189,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-300"
                     name="respuesta2"
                     type="text"
                     id={res2}
@@ -202,7 +203,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-96 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-300"
                     name="respuesta3"
                     type="text"
                     id={res3}
@@ -218,7 +219,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <select
-                    className="h-10 w-64 rounded-lg focus:outline-none p-2 focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-64 rounded-lg focus:outline-none p-2 focus:ring-2 focus:ring-violet-300"
                     id={dificultad}
                     name="nivel"
                     {...register("nivel")}
@@ -238,7 +239,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <select
-                    className="h-10 w-64 rounded-lg focus:outline-none focus:ring-2 p-2 focus:ring-red-300"
+                    className="h-10 w-64 rounded-lg focus:outline-none focus:ring-2 p-2 focus:ring-violet-300"
                     id={dificultad}
                     name="dificultad"
                     {...register("dificultad")}
@@ -256,7 +257,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <select
-                    className="h-10 w-64 rounded-lg focus:outline-none focus:ring-2 p-2 focus:ring-red-300"
+                    className="h-10 w-64 rounded-lg focus:outline-none focus:ring-2 p-2 focus:ring-violet-300"
                     id={dificultad}
                     name="asignatura"
                     {...register("asignatura")}
@@ -285,7 +286,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-64 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-64 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-300"
                     type="number"
                     id={tiempo}
                     name="tiempo"
@@ -301,7 +302,7 @@ export function IntroducirPreguntas() {
                   </label>
                   <br />
                   <input
-                    className="h-10 w-64 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-300"
+                    className="h-10 w-64 p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-violet-300"
                     type="file"
                     id={imagen}
                     name="imagen"
@@ -310,11 +311,11 @@ export function IntroducirPreguntas() {
                   <br />
                 </div>
               </div>
-            </main>
+            </div>
             <div className="flex justify-center mt-8">
               <button
                 type="submit"
-                className="p-3 bg-red-200 rounded-lg hover:bg-red-300 font-titulo2 w-64"
+                className="p-3 bg-violet-200 rounded-lg hover:bg-violet-300 font-titulo2 w-64"
               >
                 {preguntaId ? (
                   <section> EDITAR PREGUNTA</section>
@@ -324,6 +325,7 @@ export function IntroducirPreguntas() {
               </button>
             </div>
           </form>
+          </main>
         </section>
       )}
     </>
