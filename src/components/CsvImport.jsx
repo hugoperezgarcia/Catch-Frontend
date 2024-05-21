@@ -48,7 +48,7 @@ export function CsvImport() {
     axios
       .post(
         "https://catchit-back-production.up.railway.app/api/preguntacsv/" +
-          user,
+        user,
         formData,
         {
           headers: {
@@ -67,8 +67,8 @@ export function CsvImport() {
   }
 
   return (
-    <section className="bg-gradient-to-br from-orange-300 to-rose-600 h-screen">
-      <header className="flex justify-between items-start p-10 h-2/5">
+    <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen">
+      <header className="flex justify-between items-start p-10 h-1/5">
         <button className="w-10" onClick={goBack}>
           <LogoAtras />
         </button>
@@ -81,61 +81,63 @@ export function CsvImport() {
           </Link>
         </div>
       </header>
-      <div className="flex flex-col items-center w-full">
-        <div className="border-2 p-10 bg-red-300 rounded-md">
-          <h1 className="text-xl font-semibold text-center mb-3">
-            Intrucciones
-          </h1>
-          <ul>
-            <li>- Decargar plantilla de excel</li>
-            <li>- Introducir todas las preguntas</li>
-            <li>- No eliminar los titulos/enunciados ya puestos</li>
-            <li>- Guardar la plantilla como archivo (.csv)</li>
-            <li>- Dar al boton de instrucciones leidas</li>
-            <li>- Seleccionar tu plantilla ya editada</li>
-            <li>- Importar la plantilla</li>
-          </ul>
-          <div className="flex justify-center items-center mt-4">
-            <input
-              type="checkbox"
-              id="checkbox"
-              className="mr-2 size-4"
-              onClick={handleCheckbox}
-            />
-            <label htmlFor="checkbox">He leido las instrucciones</label>
+      <div className="h-4/5 flex flex-col justify-center">
+        <div className="flex flex-col items-center w-full">
+          <div className="border-2 p-10 bg-violet-300 rounded-md shadow-lg shadow-violet-900">
+            <h1 className="text-3xl font-semibold text-center mb-3">
+              Intrucciones
+            </h1>
+            <ul className="text-lg">
+              <li>- Decargar plantilla de excel</li>
+              <li>- Introducir todas las preguntas</li>
+              <li>- No eliminar los titulos/enunciados ya puestos</li>
+              <li>- Guardar la plantilla como archivo (.csv)</li>
+              <li>- Dar al boton de instrucciones leidas</li>
+              <li>- Seleccionar tu plantilla ya editada</li>
+              <li>- Importar la plantilla</li>
+            </ul>
+            <div className="flex justify-center items-center mt-4">
+              <input
+                type="checkbox"
+                id="checkbox"
+                className="mr-2 size-6"
+                onClick={handleCheckbox}
+              />
+              <label htmlFor="checkbox" className="text-lg">He leido las instrucciones</label>
+            </div>
           </div>
         </div>
+        {leido ? (
+          <div className="flex flex-col justify-start items-center gap-3 h-fit mt-9">
+            <input
+              type="file"
+              name="csv"
+              accept=".csv"
+              className="font-semibold text-lg mb-2"
+              onChange={handleArchivoChange}
+            />
+            <button
+              className="bg-violet-200 p-2 rounded-xl mt-1 hover:bg-violet-300 hover:border-2 hover:border-fuchsia-900 font-semibold"
+              onClick={handleFileUpload}
+            >
+              Importar
+            </button>
+          </div>
+        ) : (
+          <div className="flex flex-col w-full items-center mt-9">
+            <label htmlFor="descarga" className="font-semibold text-xl mb-2">
+              Descargar plantilla para csv
+            </label>
+            <button
+              id="descarga"
+              className="bg-violet-200 p-2 rounded-xl mt-1 hover:bg-violet-300 hover:border-2 hover:border-fuchsia-900 font-semibold"
+              onClick={descargarPlantilla}
+            >
+              Descargar
+            </button>
+          </div>
+        )}
       </div>
-      {leido ? (
-        <div className="flex flex-col justify-start items-center gap-3 h-fit mt-9">
-          <input
-            type="file"
-            name="csv"
-            accept=".csv"
-            className="font-semibold"
-            onChange={handleArchivoChange}
-          />
-          <button
-            className="bg-red-100 rounded-xl p-2 hover:bg-red-300 font-semibold"
-            onClick={handleFileUpload}
-          >
-            Importar
-          </button>
-        </div>
-      ) : (
-        <div className="flex flex-col w-full items-center mt-9">
-          <label htmlFor="descarga" className="font-semibold">
-            Descargar plantilla para csv
-          </label>
-          <button
-            id="descarga"
-            className="bg-red-100 p-2 rounded-xl mt-1"
-            onClick={descargarPlantilla}
-          >
-            Descargar
-          </button>
-        </div>
-      )}
     </section>
   );
 }
