@@ -20,7 +20,7 @@ function RepositorioAdmin() {
   const getUser = async () => {
     try {
       const response = await axios.get(
-        "https://catchit-back-production.up.railway.app/api/admin/" + user
+        "https://proyectaipv.es/catchit/api/admin/" + user
       );
       setUsername(response.data.username);
       setPartidas(response.data.partidas);
@@ -35,7 +35,7 @@ function RepositorioAdmin() {
     setLoading(true);
     try {
       const response = await axios.delete(
-        "https://catchit-back-production.up.railway.app/api/partida/" +
+        "https://proyectaipv.es/catchit/api/partida/" +
         idPartida +
         "/" +
         user

@@ -29,7 +29,7 @@ export function Sala() {
     }else{
       try {
         setLoading(true);
-        const response = await axios.put("https://catchit-back-production.up.railway.app/api/pregunta/" + codigoSala + "/" + nickname);
+        const response = await axios.put("https://proyectaipv.es/catchit/api/pregunta/" + codigoSala + "/" + nickname);
         sessionStorage.setItem("numPreguntaActual", 0);
         sessionStorage.setItem("puntosJugador", 1000);
         sessionStorage.setItem("ronda", 1);
@@ -58,7 +58,7 @@ export function Sala() {
     <>
       {loading ? <Loader /> : (
         <section
-          className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen"
+          className="bg-yellow-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(247,255,0,1),rgba(255,255,255,0))] h-screen"
           id="toGame"
         >
           <header className="flex justify-between p-8 h-1/5 items-start">
@@ -66,7 +66,7 @@ export function Sala() {
               <LogoAtras />
             </button>
             <div>
-              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl border p-3 rounded-full bg-amber-100 shadow-lg shadow-yellow-500">
+              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl border p-6 rounded-full bg-amber-200 shadow-lg shadow-amber-500 font-semibold">
                 SALA {codigoSala}
                 {/* Ver el titulo o enunciado de la partida que tiene ese id o
               codigo asociado y ponerlo de titulo */}
@@ -77,7 +77,7 @@ export function Sala() {
             </Link>
           </header>
           <main className="flex justify-center mt-32">
-            <div className="z-10 bg-slate-100 p-8 rounded-lg shadow-xl w-full max-w-md shadow-yellow-500">
+            <div className="z-10 bg-violet-200 p-8 rounded-lg shadow-md w-full max-w-md shadow-violet-500">
               <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
                 Empezar a Jugar
               </h2>
@@ -109,7 +109,7 @@ export function Sala() {
                 <button
                   id="boton"
                   type="submit"
-                  className="w-full px-4 py-2 bg-yellow-500 hover:bg-violet-700 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white font-semibold hover:text-lg"
+                  className="w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white font-semibold"
                 >
                   ¡A Jugar!
                 </button>
@@ -117,7 +117,7 @@ export function Sala() {
               <button
                 id="boton"
                 type="submit"
-                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-yellow-500 hover:bg-violet-700 hover:text-lg focus:ring-4 focus:outline-none font-titulo2 rounded-md font-semibold text-white"
+                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-titulo2 rounded-md font-semibold text-white"
                 onClick={() => navigateRanking()}
               >
                 <div>Ranking</div>

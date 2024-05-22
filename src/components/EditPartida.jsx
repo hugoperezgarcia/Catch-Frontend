@@ -25,7 +25,7 @@ function EditPartida() {
   const getPartida = async () => {
     try {
       const response = await axios.get(
-        "https://catchit-back-production.up.railway.app/api/partida/" +
+        "https://proyectaipv.es/catchit/api/partida/" +
         idPartida
       );
       setPartida(response.data);

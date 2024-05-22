@@ -9,7 +9,7 @@ export default function usePregunta(id){
     const getPregunta = async (id) =>{
         try{   
             setLoading(true);
-            const response = await axios.get("https://catchit-back-production.up.railway.app/api/pregunta/" + id);
+            const response = await axios.get("https://proyectaipv.es/catchit/api/pregunta/" + id);
             setPregunta(response.data);
         }catch (e){
             console.log(e);

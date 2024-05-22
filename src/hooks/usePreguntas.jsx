@@ -12,7 +12,7 @@ export default function usePreguntas(){
     const getPreguntas = async () =>{
         try{
             setLoading(true);
-            const response = await axios.get("https://catchit-back-production.up.railway.app/api/preguntas");
+            const response = await axios.get("https://proyectaipv.es/catchit/api/preguntas");
             setPreguntas(response.data);
         }catch(e){
             console.log(e);
@@ -23,7 +23,7 @@ export default function usePreguntas(){
 
     const getPreguntasUser = async () =>{
         try{
-            const response = await axios.get("http://catchit-back-production.up.railway.app/api/preguntaAdmin/" + user);
+            const response = await axios.get("http://proyectaipv.es/catchit/api/preguntaAdmin/" + user);
             setPreguntasUser(response.data);
         }catch(e){
             console.log(e);

@@ -47,7 +47,7 @@ export function CsvImport() {
 
     axios
       .post(
-        "https://catchit-back-production.up.railway.app/api/preguntacsv/" +
+        "https://proyectaipv.es/catchit/api/preguntacsv/" +
         user,
         formData,
         {

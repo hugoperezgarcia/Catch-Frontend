@@ -16,7 +16,7 @@ export function ToGame() {
     const codigoSala = data.codigo;
     try {
       setLoading(true);
-      const response = await axios.get("https://catchit-back-production.up.railway.app/api/partida/" + codigoSala);
+      const response = await axios.get("https://proyectaipv.es/catchit/api/partida/" + codigoSala);
       navigate("/sala", { state: { codigoSala } });
     } catch (e) {
       console.log(e);
@@ -32,8 +32,8 @@ export function ToGame() {
           className="h-screen flex items-center justify-center"
           id="toGame"
         >
-          <div class="absolute top-0 z-[-2] h-screen w-screen bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))]"></div>
-          <div className="z-10 bg-violet-100 p-8 rounded-xl shadow-md w-full max-w-md animate-flip-up animate-delay-1000 animate-ease-in-out shadow-yellow-600">
+          <div class="absolute top-0 z-[-2] h-screen w-screen bg-yellow-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(247,255,0,1),rgba(255,255,255,0))]"></div>
+          <div className="z-10 bg-violet-100 p-8 rounded-xl shadow-md w-full max-w-md animate-flip-up animate-delay-1000 animate-ease-in-out shadow-violet-500">
             <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
               Unirse a sala
             </h2>
@@ -63,7 +63,7 @@ export function ToGame() {
               <button
                 id="boton"
                 type="submit"
-                className="w-full px-4 py-2 bg-yellow-500 hover:bg-violet-700 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white"
+                className="w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white"
               >
                 ¡A Jugar!
               </button>

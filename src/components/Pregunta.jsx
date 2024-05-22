@@ -4,7 +4,7 @@ import { LogoEditar } from './Icons';
 
 function Pregunta(props) {
     const {id, pregunta, respuestaCorrecta, respuesta1, respuesta2, respuesta3, nivel, dificultad, asignatura, tiempo, imagen} = props.pregunta;
-    const src = "https://catchit-back-production.up.railway.app/api/pregunta/" + id + "/foto";
+    const src = "https://proyectaipv.es/catchit/api/pregunta/" + id + "/foto";
     return (
         <div key={id} className="flex justify-between rounded-lg p-3 bg-violet-200 w-full h-auto text-xl hover:bg-violet-300 shadow-md shadow-violet-900">
                             <div className='font-titulo2'>

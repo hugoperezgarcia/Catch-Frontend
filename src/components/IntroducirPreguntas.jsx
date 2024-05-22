@@ -62,7 +62,7 @@ export function IntroducirPreguntas() {
         if (preguntaId) {
           setLoading(true);
           await axios.put(
-            "https://catchit-back-production.up.railway.app/api/pregunta/" +
+            "https://proyectaipv.es/catchit/api/pregunta/" +
               preguntaId,
               formData,
               {
@@ -74,7 +74,7 @@ export function IntroducirPreguntas() {
         } else {
           setLoading(true);
           await axios.post(
-            "https://catchit-back-production.up.railway.app/api/pregunta",
+            "https://proyectaipv.es/catchit/api/pregunta",
             formData,
               {
                 headers: {

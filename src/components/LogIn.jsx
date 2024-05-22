@@ -16,7 +16,7 @@ export function LogIn(props) {
     const onSubmit = async (info) => {
         try {
             setLoading(true);
-            const response = await axios.get("https://catchit-back-production.up.railway.app/api/login", {
+            const response = await axios.get("https://proyectaipv.es/catchit/api/login", {
                 params: {
                     username: info.username,
                     password: info.password

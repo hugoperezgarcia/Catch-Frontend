@@ -40,7 +40,7 @@ export function CrearPartida() {
         if(completo && info["numRondas"] > 0 && info["numVidas"] > 0){
             try {
                 setLoading(true);
-                const response = await axios.post("https://catchit-back-production.up.railway.app/api/create", null, {
+                const response = await axios.post("https://proyectaipv.es/catchit/api/create", null, {
                     params: infoParams
                 });
                 console.log(response.data);

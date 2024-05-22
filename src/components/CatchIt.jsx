@@ -50,7 +50,7 @@ export function CatchIt() {
   async function peticionBD() {
     try {
       const respuesta = await axios.get(
-        "https://catchit-back-production.up.railway.app/api/partida/" +
+        "https://proyectaipv.es/catchit/api/partida/" +
           codigoSala
       );
       setRondas(respuesta.data.numRondas);
@@ -79,7 +79,7 @@ export function CatchIt() {
     if (valoresIniciados) {
       cargarNuevaPregunta();
       setTimeout(() => {
-        empezarContador();
+        // empezarContador();
       }, 3000);
     }
   }, [numPreguntaActual, valoresIniciados]);
@@ -150,7 +150,7 @@ export function CatchIt() {
     }
     try {
       setLoading(true);
-      const response = await axios.put("https://catchit-back-production.up.railway.app/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
+      const response = await axios.put("https://proyectaipv.es/catchit/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
       sessionStorage.setItem("idJugador", response.data.data.id);
       navigate("/ranking", { state: { codigoSala } });
     } catch (e) {
@@ -384,7 +384,7 @@ export function CatchIt() {
         <Loader />
       ) : (
         <section className="bg-gradient-to-b from-blue-300 to-zinc-300 max-h-screen h-screen">
-          <header className="flex justify-between h-3/5">
+          <header className="flex justify-between h-[70%]">
             <div className="mx-5">
               <div className="flex items-center">
                 <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
@@ -509,7 +509,7 @@ export function CatchIt() {
               </div>
             </div>
           </header>
-          <main className="flex flex-col justify-center h-2/5">
+          <main className="flex flex-col justify-center h-[30%]">
             <div>
               <div className="flex justify-around font-medium mb-2">
                 <div>A</div>
@@ -518,18 +518,21 @@ export function CatchIt() {
                 <div>D</div>
               </div>
               <div className="flex justify-around flex-grow">
-                <div className="flex justify-around w-full mb-2 gap-1 m-1">
+                <div className="flex justify-around w-full mb-2 gap-1 m-1 items-end">
                   <div
                     id="cont1"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl h-fit"
                         onClick={() => handleIncrement(0)}
                       >
                         +
                       </button>
+                      <div className="flex justify-center">
+                      {puntosApostados[0]}
+                    </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(0)}
@@ -537,21 +540,21 @@ export function CatchIt() {
                         -
                       </button>
                     </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[0]}
-                    </div>
                   </div>
                   <div
                     id="cont2"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(1)}
                       >
                         +
                       </button>
+                      <div className="flex justify-center">
+                      {puntosApostados[1]}
+                    </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(1)}
@@ -559,21 +562,22 @@ export function CatchIt() {
                         -
                       </button>
                     </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[1]}
-                    </div>
+                    
                   </div>
                   <div
                     id="cont3"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(2)}
                       >
                         +
                       </button>
+                      <div className="flex justify-center">
+                      {puntosApostados[2]}
+                    </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(2)}
@@ -581,30 +585,28 @@ export function CatchIt() {
                         -
                       </button>
                     </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[2]}
-                    </div>
+                   
                   </div>
                   <div
                     id="cont4"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro items-center"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(3)}
                       >
                         +
                       </button>
+                      <div >
+                      {puntosApostados[3]}
+                      </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(3)}
                       >
                         -
                       </button>
-                    </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[3]}
                     </div>
                   </div>
                 </div>
