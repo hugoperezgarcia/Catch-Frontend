@@ -94,7 +94,7 @@ export function Ranking() {
                 </div>
                 <div className="flex flex-col items-center">
                   <p className="text-white text-xl animate-bounce">
-                    🥉{jugadores.length > 3 ? jugadores[3].nombre : <div />}
+                    🥉{jugadores.length > 3 ? jugadores[2].nombre : <div />}
                   </p>
                   <div className="bg-yellow-400 h-64 w-48 shadow-md rounded-md shadow-violet-300"></div>
                   <p className="text-center font-bold text-2xl text-white">
