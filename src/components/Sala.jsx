@@ -66,7 +66,7 @@ export function Sala() {
               <LogoAtras />
             </button>
             <div>
-              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl border p-3 rounded-full bg-amber-100 shadow-lg shadow-violet-500">
+              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl border p-6 rounded-full bg-amber-200 shadow-lg shadow-amber-500 font-semibold">
                 SALA {codigoSala}
                 {/* Ver el titulo o enunciado de la partida que tiene ese id o
               codigo asociado y ponerlo de titulo */}
@@ -77,7 +77,7 @@ export function Sala() {
             </Link>
           </header>
           <main className="flex justify-center mt-32">
-            <div className="z-10 bg-slate-100 p-8 rounded-lg shadow-lg w-full max-w-md shadow-violet-400">
+            <div className="z-10 bg-violet-200 p-8 rounded-lg shadow-md w-full max-w-md shadow-violet-500">
               <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
                 Empezar a Jugar
               </h2>

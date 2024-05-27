@@ -23,7 +23,7 @@ export default function usePreguntas(){
 
     const getPreguntasUser = async () =>{
         try{
-            const response = await axios.get("http://catchit-back-production.up.railway.app/api/preguntaAdmin/" + user);
+            const response = await axios.get("https://proyectaipv.es/catchit/api/preguntaAdmin/" + user);
             setPreguntasUser(response.data);
         }catch(e){
             console.log(e);
