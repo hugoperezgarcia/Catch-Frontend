@@ -1,8 +1,8 @@
 import { LogoHome, LogoAtras, LogoRanking } from "./Icons";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
 import Loader from "./Loader";
+import { useAxios } from "../context/axiosContext";
 
 export function Sala() {
   const navigate = useNavigate();
@@ -11,6 +11,7 @@ export function Sala() {
   const [nickname, setNickname] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const axios = useAxios();
 
   useEffect(() => {
     if (!codigoSala) {
@@ -29,7 +30,7 @@ export function Sala() {
     }else{
       try {
         setLoading(true);
-        const response = await axios.put("https://proyectaipv.es/catchit/api/pregunta/" + codigoSala + "/" + nickname);
+        const response = await axios.put("/pregunta/" + codigoSala + "/" + nickname);
         sessionStorage.setItem("numPreguntaActual", 0);
         sessionStorage.setItem("puntosJugador", 1000);
         sessionStorage.setItem("ronda", 1);

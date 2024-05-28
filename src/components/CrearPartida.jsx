@@ -3,9 +3,9 @@ import { useId, useState } from 'react';
 import { LogoHome, LogoAtras } from './Icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import axios from "axios";
 import Loader from './Loader';
 import { UseUser } from '../hooks/UseUser';
+import { useAxios } from '../context/axiosContext';
 
 
 export function CrearPartida() {
@@ -20,6 +20,7 @@ export function CrearPartida() {
     const navigate = useNavigate();
     const {user} = UseUser();
     const [error, setError] = useState();
+    const axios = useAxios();
 
     const goBack = () => {
         navigate("/bienvenida");
@@ -40,7 +41,7 @@ export function CrearPartida() {
         if(completo && info["numRondas"] > 0 && info["numVidas"] > 0){
             try {
                 setLoading(true);
-                const response = await axios.post("https://proyectaipv.es/catchit/api/create", null, {
+                const response = await axios.post("/create", null, {
                     params: infoParams
                 });
                 console.log(response.data);

@@ -2,7 +2,7 @@ import {useLocation, useNavigate } from "react-router-dom";
 import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
-import axios from "axios";
+import { useAxios } from "../context/axiosContext";
 
 export function CatchIt() {
   //Variables iniciales
@@ -11,6 +11,7 @@ export function CatchIt() {
   const codigoSala = location.state?.codigoSala;
   const nickname = location.state?.nickname;
   const [loading, setLoading] = useState(true);
+  const axios = useAxios();
 
   //Variables a pintar
   const [tiempo, setTiempo] = useState();
@@ -30,6 +31,7 @@ export function CatchIt() {
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
+  const [handleDisabled, setDisable] = useState(false);
 
   const botones = document.querySelectorAll("button");
 
@@ -50,7 +52,7 @@ export function CatchIt() {
   async function peticionBD() {
     try {
       const respuesta = await axios.get(
-        "https://proyectaipv.es/catchit/api/partida/" +
+        "/partida/" +
           codigoSala
       );
       setRondas(respuesta.data.numRondas);
@@ -79,7 +81,7 @@ export function CatchIt() {
     if (valoresIniciados) {
       cargarNuevaPregunta();
       setTimeout(() => {
-        // empezarContador();
+        empezarContador();
       }, 3000);
     }
   }, [numPreguntaActual, valoresIniciados]);
@@ -107,6 +109,7 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
+    setDisable(false);
     if(marcadorPuntos == 0 && (Number(vidas) - 1) == 0){
       actualizarPuntosJugador();
     }else{
@@ -150,7 +153,7 @@ export function CatchIt() {
     }
     try {
       setLoading(true);
-      const response = await axios.put("https://proyectaipv.es/catchit/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
+      const response = await axios.put("/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
       sessionStorage.setItem("idJugador", response.data.data.id);
       navigate("/ranking", { state: { codigoSala } });
     } catch (e) {
@@ -201,6 +204,7 @@ export function CatchIt() {
   //Manejo del contador
   function handleSkip() {
     setTiempo(0);
+    setDisable(true);
   }
 
   const empezarContador = () => {
@@ -391,7 +395,7 @@ export function CatchIt() {
                   {tiempo}
                 </div>
                 <button
-                  onClick={() => handleSkip()}
+                  onClick={() => handleSkip()} disabled={handleDisabled}
                   className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center"
                 >
                   <LogoSkip />

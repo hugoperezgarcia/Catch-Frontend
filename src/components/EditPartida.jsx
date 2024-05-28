@@ -1,10 +1,10 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import Loader from "./Loader";
 import { useNavigate, Link } from "react-router-dom";
 import { LogoAtras, LogoHome, LogoEditar } from "./Icons";
+import { useAxios } from "../context/axiosContext";
 
 function EditPartida() {
   const { idPartida } = useParams();
@@ -13,6 +13,7 @@ function EditPartida() {
   const [preguntas, setPreguntas] = useState();
   const[detallePregunta, setDetallePregunta] = useState(); 
   const navigate = useNavigate();
+  const axios = useAxios();
 
   useEffect(() => {
     getPartida();
@@ -25,7 +26,7 @@ function EditPartida() {
   const getPartida = async () => {
     try {
       const response = await axios.get(
-        "https://proyectaipv.es/catchit/api/partida/" +
+        "/partida/" +
         idPartida
       );
       setPartida(response.data);

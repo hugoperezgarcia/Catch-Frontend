@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { useId, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { LogoAtras, LogoHome } from "./Icons";
 import { Link } from "react-router-dom";
 import usePregunta from "../hooks/usePregunta";
 import Loader from "./Loader";
 import { UseUser } from "../hooks/UseUser";
+import { useAxios } from "../context/axiosContext";
 
 export function IntroducirPreguntas() {
   const enunciado = useId();
@@ -27,6 +27,7 @@ export function IntroducirPreguntas() {
   const { preguntaId } = useParams();
   const { pregunta, loadingEdit } = usePregunta(preguntaId);
   const [error, setError] = useState();
+  const axios = useAxios();
 
   const { register, handleSubmit, setValue } = useForm();
 
@@ -39,7 +40,7 @@ export function IntroducirPreguntas() {
         if (key == "tiempo") {
           infoParams[key] = Number(info[key]);
         }else{
-          if(key == "imagen" && info[key].length > 0){
+          if(key == "imagen" && info[key]){
             infoParams[key] = info[key][0];
           }else{
             infoParams[key] = info[key];
@@ -61,8 +62,8 @@ export function IntroducirPreguntas() {
       try {
         if (preguntaId) {
           setLoading(true);
-          await axios.put(
-            "https://proyectaipv.es/catchit/api/pregunta/" +
+          const response = await axios.put(
+            "/pregunta/" +
               preguntaId,
               formData,
               {
@@ -71,10 +72,12 @@ export function IntroducirPreguntas() {
                 },
               }
           );
+          const editedId = response.data.id;
+          navigate("/preguntas", {state: {editedId}});
         } else {
           setLoading(true);
-          await axios.post(
-            "https://proyectaipv.es/catchit/api/pregunta",
+          const response = await axios.post(
+            "/pregunta",
             formData,
               {
                 headers: {
@@ -82,8 +85,9 @@ export function IntroducirPreguntas() {
                 },
               }
           );
+          const insertedId = response.data.id;
+          navigate("/preguntas", {state: {insertedId}});
         }
-        navigate("/preguntas");
       } catch (e) {
         console.log(e);
       } finally {

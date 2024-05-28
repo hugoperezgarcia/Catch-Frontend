@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAxios } from "../context/axiosContext";
 import { LogoAtras, LogoHome, LogoPuntos } from "./Icons";
 import Loader from "./Loader";
 
@@ -13,6 +13,7 @@ export function Ranking() {
   const [jugadores, setJugadores] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const axios = useAxios();
 
   useEffect(() => {
     if (codigoSala) {
@@ -29,7 +30,7 @@ export function Ranking() {
   const getRanking = async () => {
     try {
       const response = await axios.get(
-        "https://proyectaipv.es/catchit/api/partida/" + codigoSala
+        "/partida/" + codigoSala
       );
       console.log(response.data);
       const arrayJugadores = response.data.jugadores.sort(
