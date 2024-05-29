@@ -98,7 +98,7 @@ function Preguntas() {
               const esMia = preguntasUser.some((p) => p.id === pregunta.id);
               if (esMia) {
                 return (
-                  <Pregunta owner="true" pregunta={pregunta} key={index} />
+                  <Pregunta owner="true" pregunta={pregunta} />
                 );
               } else {
                 return <Pregunta pregunta={pregunta} />;

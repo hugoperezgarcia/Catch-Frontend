@@ -32,6 +32,7 @@ export function CatchIt() {
     sessionStorage.getItem("numPreguntaActual")
   );
   const [handleDisabled, setDisable] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
 
   const botones = document.querySelectorAll("button");
 
@@ -123,8 +124,12 @@ export function CatchIt() {
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
-  
       setColorPreguntaInRonda();
+      if(preguntas[numPreguntaActual].imagen){
+        getImagen()
+      }else{
+        setImageUrl();
+      }
       if(numPreguntaActual >= (rondaActual*8)){
         resetearColorPreguntas();
         sessionStorage.setItem("ronda", Number(rondaActual)+1);
@@ -140,6 +145,19 @@ export function CatchIt() {
         animarPuntos(false);
       }, 1000);
     };
+  }
+
+  const getImagen = async () =>{
+    setLoading(true);
+    try{
+      const response = await axios.get("/pregunta/" + preguntas[numPreguntaActual].id + "/foto", {responseType: 'blob',});
+      const imageUrl = URL.createObjectURL(response.data);
+      setImageUrl(imageUrl)
+    }catch (e){
+        console.log(e);
+    }finally{
+        setLoading(false);
+    }
   }
     
 
@@ -477,11 +495,16 @@ export function CatchIt() {
               </div>
               <div
                 id="enunciadoPregunta"
-                className="p-8 font-medium text-4xl w-full text-center"
+                className="p-6 font-medium text-4xl w-full text-center"
               >
                 {preguntas[numPreguntaActual].pregunta}
               </div>
-              <div className="flex justify-around w-full mb-2 gap-1 m-1">
+              {imageUrl && (
+                <div className="mb-2"> 
+                  <img src={imageUrl} alt="imagenPregunta" className="rounded-md"></img>
+                </div>
+              )}
+              <div className="flex justify-around w-full mb-3 gap-1 m-1">
                 <div
                   id="res1"
                   className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
