@@ -322,7 +322,7 @@ export function IntroducirPreguntas() {
                 className="p-3 bg-violet-200 rounded-lg hover:bg-violet-300 font-titulo2 w-64"
               >
                 {preguntaId ? (
-                  <section> EDITAR PREGUNTA</section>
+                  <section> GUARDAR CAMBIOS</section>
                 ) : (
                   <section>INTRODUCIR PREGUNTA</section>
                 )}
