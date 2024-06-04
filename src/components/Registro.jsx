@@ -1,22 +1,23 @@
-import axios from 'axios';
 import { useId } from "react";
 import { useForm } from "react-hook-form";
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { LogoHome } from './Icons';
 import Loader from './Loader';
+import { useAxios } from '../context/axiosContext';
 
 function Registro() {
     const { register, handleSubmit } = useForm();
     const [error, setError] = useState();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const axios = useAxios();
 
     const onSubmit = async (info) => {
         if (info.password === info.passwordRepeated) {
             try {
                 setLoading(true);
-                const response = await axios.post("http://catchit-back-production.up.railway.app/api/signin", null, {
+                const response = await axios.post("/signin", null, {
                     params: {
                         username: info.username,
                         password: info.password,

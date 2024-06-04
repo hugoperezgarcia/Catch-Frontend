@@ -2,7 +2,7 @@ import {useLocation, useNavigate } from "react-router-dom";
 import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
-import axios from "axios";
+import { useAxios } from "../context/axiosContext";
 
 export function CatchIt() {
   //Variables iniciales
@@ -11,6 +11,7 @@ export function CatchIt() {
   const codigoSala = location.state?.codigoSala;
   const nickname = location.state?.nickname;
   const [loading, setLoading] = useState(true);
+  const axios = useAxios();
 
   //Variables a pintar
   const [tiempo, setTiempo] = useState();
@@ -30,6 +31,8 @@ export function CatchIt() {
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
+  const [handleDisabled, setDisable] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
 
   const botones = document.querySelectorAll("button");
 
@@ -50,7 +53,7 @@ export function CatchIt() {
   async function peticionBD() {
     try {
       const respuesta = await axios.get(
-        "https://catchit-back-production.up.railway.app/api/partida/" +
+        "/partida/" +
           codigoSala
       );
       setRondas(respuesta.data.numRondas);
@@ -107,6 +110,7 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
+    setDisable(false);
     if(marcadorPuntos == 0 && (Number(vidas) - 1) == 0){
       actualizarPuntosJugador();
     }else{
@@ -120,8 +124,12 @@ export function CatchIt() {
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
-  
       setColorPreguntaInRonda();
+      if(preguntas[numPreguntaActual].imagen){
+        getImagen()
+      }else{
+        setImageUrl();
+      }
       if(numPreguntaActual >= (rondaActual*8)){
         resetearColorPreguntas();
         sessionStorage.setItem("ronda", Number(rondaActual)+1);
@@ -138,6 +146,19 @@ export function CatchIt() {
       }, 1000);
     };
   }
+
+  const getImagen = async () =>{
+    setLoading(true);
+    try{
+      const response = await axios.get("/pregunta/" + preguntas[numPreguntaActual].id + "/foto", {responseType: 'blob',});
+      const imageUrl = URL.createObjectURL(response.data);
+      setImageUrl(imageUrl)
+    }catch (e){
+        console.log(e);
+    }finally{
+        setLoading(false);
+    }
+  }
     
 
   const actualizarPuntosJugador = async () =>{
@@ -150,7 +171,7 @@ export function CatchIt() {
     }
     try {
       setLoading(true);
-      const response = await axios.put("https://catchit-back-production.up.railway.app/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
+      const response = await axios.put("/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
       sessionStorage.setItem("idJugador", response.data.data.id);
       navigate("/ranking", { state: { codigoSala } });
     } catch (e) {
@@ -201,6 +222,7 @@ export function CatchIt() {
   //Manejo del contador
   function handleSkip() {
     setTiempo(0);
+    setDisable(true);
   }
 
   const empezarContador = () => {
@@ -384,14 +406,14 @@ export function CatchIt() {
         <Loader />
       ) : (
         <section className="bg-gradient-to-b from-blue-300 to-zinc-300 max-h-screen h-screen">
-          <header className="flex justify-between h-3/5">
+          <header className="flex justify-between h-[70%]">
             <div className="mx-5">
               <div className="flex items-center">
                 <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
                   {tiempo}
                 </div>
                 <button
-                  onClick={() => handleSkip()}
+                  onClick={() => handleSkip()} disabled={handleDisabled}
                   className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center"
                 >
                   <LogoSkip />
@@ -473,11 +495,16 @@ export function CatchIt() {
               </div>
               <div
                 id="enunciadoPregunta"
-                className="p-8 font-medium text-4xl w-full text-center"
+                className="p-6 font-medium text-4xl w-full text-center"
               >
                 {preguntas[numPreguntaActual].pregunta}
               </div>
-              <div className="flex justify-around w-full mb-2 gap-1 m-1">
+              {imageUrl && (
+                <div className="mb-2"> 
+                  <img src={imageUrl} alt="imagenPregunta" className="rounded-md"></img>
+                </div>
+              )}
+              <div className="flex justify-around w-full mb-3 gap-1 m-1">
                 <div
                   id="res1"
                   className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
@@ -509,7 +536,7 @@ export function CatchIt() {
               </div>
             </div>
           </header>
-          <main className="flex flex-col justify-center h-2/5">
+          <main className="flex flex-col justify-center h-[30%]">
             <div>
               <div className="flex justify-around font-medium mb-2">
                 <div>A</div>
@@ -518,18 +545,21 @@ export function CatchIt() {
                 <div>D</div>
               </div>
               <div className="flex justify-around flex-grow">
-                <div className="flex justify-around w-full mb-2 gap-1 m-1">
+                <div className="flex justify-around w-full mb-2 gap-1 m-1 items-end">
                   <div
                     id="cont1"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl h-fit"
                         onClick={() => handleIncrement(0)}
                       >
                         +
                       </button>
+                      <div className="flex justify-center">
+                      {puntosApostados[0]}
+                    </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(0)}
@@ -537,21 +567,21 @@ export function CatchIt() {
                         -
                       </button>
                     </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[0]}
-                    </div>
                   </div>
                   <div
                     id="cont2"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(1)}
                       >
                         +
                       </button>
+                      <div className="flex justify-center">
+                      {puntosApostados[1]}
+                    </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(1)}
@@ -559,21 +589,22 @@ export function CatchIt() {
                         -
                       </button>
                     </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[1]}
-                    </div>
+                    
                   </div>
                   <div
                     id="cont3"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(2)}
                       >
                         +
                       </button>
+                      <div className="flex justify-center">
+                      {puntosApostados[2]}
+                    </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(2)}
@@ -581,30 +612,28 @@ export function CatchIt() {
                         -
                       </button>
                     </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[2]}
-                    </div>
+                   
                   </div>
                   <div
                     id="cont4"
-                    className="h-52 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro items-center"
                   >
-                    <div className="flex justify-between items-start w-full text-3xl font-semibold">
+                    <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
                         className="m-1 border-4 border-green-500 px-1 bg-green-300 rounded-xl"
                         onClick={() => handleIncrement(3)}
                       >
                         +
                       </button>
+                      <div >
+                      {puntosApostados[3]}
+                      </div>
                       <button
                         className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(3)}
                       >
                         -
                       </button>
-                    </div>
-                    <div className="flex justify-center">
-                      {puntosApostados[3]}
                     </div>
                   </div>
                 </div>
