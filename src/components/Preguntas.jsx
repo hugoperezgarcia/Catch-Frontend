@@ -15,6 +15,7 @@ function Preguntas() {
     usePreguntas();
 
   const goBack = () => {
+    sessionStorage.removeItem("estaInicio")
     navigate("/bienvenida");
   };
 

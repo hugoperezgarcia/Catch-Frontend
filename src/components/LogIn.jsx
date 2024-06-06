@@ -28,12 +28,7 @@ export function LogIn(props) {
             setUser(response.data.id);
             navigate("/bienvenida");
         } catch (e) {
-            console.log(e);
-            // if (e.response.status && e.response.status === 404) {
-            //     setError("Credenciales incorrectas, vuelve a intentarlo");
-            // } else {
-            //     setError("Error de conexión, compruebe la conexión a internet");
-            // }
+            setError("Credenciales inválidas, vuelve a intentarlo")
         } finally {
             setLoading(false);
         }
