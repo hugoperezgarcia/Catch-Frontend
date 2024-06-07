@@ -4,7 +4,7 @@ import axios from 'axios';
 //http://localhost:8080/api -> local
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:8080/api',
+  baseURL: 'https://proyectaipv.es/back-api-catchit/api',
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' }
 });
