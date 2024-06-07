@@ -1,22 +1,23 @@
-import axios from 'axios';
 import { useId } from "react";
 import { useForm } from "react-hook-form";
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
 import { LogoHome } from './Icons';
 import Loader from './Loader';
+import { useAxios } from '../context/axiosContext';
 
 function Registro() {
     const { register, handleSubmit } = useForm();
     const [error, setError] = useState();
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
+    const axios = useAxios();
 
     const onSubmit = async (info) => {
         if (info.password === info.passwordRepeated) {
             try {
                 setLoading(true);
-                const response = await axios.post("https://proyectaipv.es/catchit/api/signin", null, {
+                const response = await axios.post("/signin", null, {
                     params: {
                         username: info.username,
                         password: info.password,
@@ -45,9 +46,10 @@ function Registro() {
     return (
         <>
             {loading ? <Loader /> : (
-                <section className="bg-gradient-to-br from-fuchsia-600 to-violet-800 h-screen">
-                    <header className='flex justify-end p-3'>
-                        <div className='w-10'>
+                <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen">
+                    <header className='flex justify-end p-3 h-1/5'>
+                        
+                        <div className='w-10 m-5'>
                             <Link to="/"><LogoHome /></Link>
                         </div>
                     </header>

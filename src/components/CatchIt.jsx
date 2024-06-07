@@ -2,7 +2,7 @@ import {useLocation, useNavigate } from "react-router-dom";
 import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
-import axios from "axios";
+import { useAxios } from "../context/axiosContext";
 
 export function CatchIt() {
   //Variables iniciales
@@ -11,6 +11,7 @@ export function CatchIt() {
   const codigoSala = location.state?.codigoSala;
   const nickname = location.state?.nickname;
   const [loading, setLoading] = useState(true);
+  const axios = useAxios();
 
   //Variables a pintar
   const [tiempo, setTiempo] = useState();
@@ -30,6 +31,8 @@ export function CatchIt() {
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
+  const [handleDisabled, setDisable] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
 
   const botones = document.querySelectorAll("button");
 
@@ -50,7 +53,7 @@ export function CatchIt() {
   async function peticionBD() {
     try {
       const respuesta = await axios.get(
-        "https://proyectaipv.es/catchit/api/partida/" +
+        "/partida/" +
           codigoSala
       );
       setRondas(respuesta.data.numRondas);
@@ -107,6 +110,7 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
+    setDisable(false);
     if(marcadorPuntos == 0 && (Number(vidas) - 1) == 0){
       actualizarPuntosJugador();
     }else{
@@ -120,8 +124,12 @@ export function CatchIt() {
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
-  
       setColorPreguntaInRonda();
+      if(preguntas[numPreguntaActual].imagen){
+        getImagen()
+      }else{
+        setImageUrl();
+      }
       if(numPreguntaActual >= (rondaActual*8)){
         resetearColorPreguntas();
         sessionStorage.setItem("ronda", Number(rondaActual)+1);
@@ -138,6 +146,19 @@ export function CatchIt() {
       }, 1000);
     };
   }
+
+  const getImagen = async () =>{
+    setLoading(true);
+    try{
+      const response = await axios.get("/pregunta/" + preguntas[numPreguntaActual].id + "/foto", {responseType: 'blob',});
+      const imageUrl = URL.createObjectURL(response.data);
+      setImageUrl(imageUrl)
+    }catch (e){
+        console.log(e);
+    }finally{
+        setLoading(false);
+    }
+  }
     
 
   const actualizarPuntosJugador = async () =>{
@@ -150,7 +171,7 @@ export function CatchIt() {
     }
     try {
       setLoading(true);
-      const response = await axios.put("https://proyectaipv.es/catchit/api/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
+      const response = await axios.put("/jugador/" + codigoSala + "/" + nickname + "/" + puntos);
       sessionStorage.setItem("idJugador", response.data.data.id);
       navigate("/ranking", { state: { codigoSala } });
     } catch (e) {
@@ -201,6 +222,7 @@ export function CatchIt() {
   //Manejo del contador
   function handleSkip() {
     setTiempo(0);
+    setDisable(true);
   }
 
   const empezarContador = () => {
@@ -391,7 +413,7 @@ export function CatchIt() {
                   {tiempo}
                 </div>
                 <button
-                  onClick={() => handleSkip()}
+                  onClick={() => handleSkip()} disabled={handleDisabled}
                   className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center"
                 >
                   <LogoSkip />
@@ -473,11 +495,16 @@ export function CatchIt() {
               </div>
               <div
                 id="enunciadoPregunta"
-                className="p-8 font-medium text-4xl w-full text-center"
+                className="p-6 font-medium text-4xl w-full text-center"
               >
                 {preguntas[numPreguntaActual].pregunta}
               </div>
-              <div className="flex justify-around w-full mb-2 gap-1 m-1">
+              {imageUrl && (
+                <div className="mb-2"> 
+                  <img src={imageUrl} alt="imagenPregunta" className="rounded-md"></img>
+                </div>
+              )}
+              <div className="flex justify-around w-full mb-3 gap-1 m-1">
                 <div
                   id="res1"
                   className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"

@@ -1,7 +1,7 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import { useAxios } from "../context/axiosContext";
 import Loader from "./Loader";
 
 export function ToGame() {
@@ -9,6 +9,7 @@ export function ToGame() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const axios = useAxios();
 
 
   const onSubmit = async (data) => {
@@ -16,7 +17,7 @@ export function ToGame() {
     const codigoSala = data.codigo;
     try {
       setLoading(true);
-      const response = await axios.get("https://proyectaipv.es/catchit/api/partida/" + codigoSala);
+      const response = await axios.get("/partida/" + codigoSala);
       navigate("/sala", { state: { codigoSala } });
     } catch (e) {
       console.log(e);

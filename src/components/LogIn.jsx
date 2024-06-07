@@ -1,7 +1,7 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
+import { useAxios } from '../context/axiosContext';
 import { UseUser } from '../hooks/UseUser';
 import { LogoHome } from './Icons';
 import Loader from './Loader';
@@ -12,11 +12,12 @@ export function LogIn(props) {
     const { setUser } = UseUser();
     const [error, setError] = useState();
     const navigate = useNavigate();
+    const axios = useAxios();
     
     const onSubmit = async (info) => {
         try {
             setLoading(true);
-            const response = await axios.get("https://proyectaipv.es/catchit/api/login", {
+            const response = await axios.get("/login", {
                 params: {
                     username: info.username,
                     password: info.password
@@ -27,11 +28,7 @@ export function LogIn(props) {
             setUser(response.data.id);
             navigate("/bienvenida");
         } catch (e) {
-            if (e.response.status && e.response.status === 404) {
-                setError("Credenciales incorrectas, vuelve a intentarlo");
-            } else {
-                setError("Error de conexión, compruebe la conexión a internet");
-            }
+            setError("Credenciales inválidas, vuelve a intentarlo")
         } finally {
             setLoading(false);
         }
@@ -41,7 +38,7 @@ export function LogIn(props) {
         <>
             {loading ? <Loader /> : (
                 <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen" id="admin">
-                    <header className='flex justify-end h-40 items-start'>
+                    <header className='flex justify-end h-1/5 items-start'>
                         {
                             props.home && (
 

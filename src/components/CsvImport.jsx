@@ -1,14 +1,15 @@
 import { useState } from "react";
-import axios from "axios";
 import { UseUser } from "../hooks/UseUser";
 import { set } from "react-hook-form";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { LogoAtras, LogoHome } from "./Icons";
+import { useAxios } from "../context/axiosContext";
 
 export function CsvImport() {
   const [archivo, setArchivo] = useState(null);
   const { user } = UseUser();
   const navigate = useNavigate();
+  const axios = useAxios();
 
   const [leido, setLeido] = useState(false);
 
@@ -47,7 +48,7 @@ export function CsvImport() {
 
     axios
       .post(
-        "https://proyectaipv.es/catchit/api/preguntacsv/" +
+        "/preguntacsv/" +
         user,
         formData,
         {
@@ -58,7 +59,9 @@ export function CsvImport() {
       )
       .then((response) => {
         console.log("Importado correctamente");
-        console.log(response.data);
+        console.log(response.data.data.length);
+        const numPreguntas = response.data.data.length;
+        navigate("/preguntas",{ state: {numPreguntas} });
       })
       .catch((error) => {
         console.error("Error importando CSV:", error);
@@ -90,9 +93,9 @@ export function CsvImport() {
             <ul className="text-lg">
               <li>- Decargar plantilla de excel</li>
               <li>- Introducir todas las preguntas</li>
-              <li>- No eliminar los titulos/enunciados ya puestos</li>
+              <li>- No eliminar los títulos/enunciados ya puestos</li>
               <li>- Guardar la plantilla como archivo (.csv)</li>
-              <li>- Dar al boton de instrucciones leidas</li>
+              <li>- Dar al botón de instrucciones leídas</li>
               <li>- Seleccionar tu plantilla ya editada</li>
               <li>- Importar la plantilla</li>
             </ul>
@@ -103,7 +106,7 @@ export function CsvImport() {
                 className="mr-2 size-6"
                 onClick={handleCheckbox}
               />
-              <label htmlFor="checkbox" className="text-lg">He leido las instrucciones</label>
+              <label htmlFor="checkbox" className="text-lg">He leído las instrucciones</label>
             </div>
           </div>
         </div>

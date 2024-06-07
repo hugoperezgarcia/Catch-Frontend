@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { React, useState, useEffect } from "react";
 import { LogoDelete, LogoHome, LogoEditar } from "./Icons";
 import { UseUser } from "../hooks/UseUser";
-import axios from "axios";
 import Loader from "./Loader";
+import { useAxios } from "../context/axiosContext";
 
 function RepositorioAdmin() {
   const { user } = UseUser();
@@ -12,6 +12,7 @@ function RepositorioAdmin() {
   const [filtro, setFiltro] = useState("");
   const [partidas, setPartidas] = useState([]);
   const [error, setError] = useState();
+  const axios = useAxios();
 
   useEffect(() => {
     getUser();
@@ -20,7 +21,7 @@ function RepositorioAdmin() {
   const getUser = async () => {
     try {
       const response = await axios.get(
-        "https://proyectaipv.es/catchit/api/admin/" + user
+        "/admin/" + user
       );
       setUsername(response.data.username);
       setPartidas(response.data.partidas);
@@ -35,7 +36,7 @@ function RepositorioAdmin() {
     setLoading(true);
     try {
       const response = await axios.delete(
-        "https://proyectaipv.es/catchit/api/partida/" +
+        "/partida/" +
         idPartida +
         "/" +
         user

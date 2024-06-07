@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { UseUser } from "./UseUser";
+import { useAxios } from "../context/axiosContext";
 
 export default function usePreguntas(){
     const[preguntas, setPreguntas] = useState([]);
@@ -8,11 +8,12 @@ export default function usePreguntas(){
     const [filtro, setFiltro] = useState("");
     const {user} = UseUser();
     const [loading, setLoading] = useState(false);
+    const axios = useAxios();
 
     const getPreguntas = async () =>{
         try{
             setLoading(true);
-            const response = await axios.get("https://proyectaipv.es/catchit/api/preguntas");
+            const response = await axios.get("/preguntas");
             setPreguntas(response.data);
         }catch(e){
             console.log(e);
@@ -23,7 +24,7 @@ export default function usePreguntas(){
 
     const getPreguntasUser = async () =>{
         try{
-            const response = await axios.get("https://proyectaipv.es/catchit/api/preguntaAdmin/" + user);
+            const response = await axios.get("/preguntaAdmin/" + user);
             setPreguntasUser(response.data);
         }catch(e){
             console.log(e);
