@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { useAxios } from "../context/axiosContext";
 import Loader from "./Loader";
+import Message from "./Message";
 
 export function ToGame() {
   const { register, handleSubmit } = useForm();
@@ -20,6 +21,7 @@ export function ToGame() {
       const response = await axios.get("/partida/" + codigoSala);
       navigate("/sala", { state: { codigoSala } });
     } catch (e) {
+      setError("No existe la sala")
       console.log(e);
     } finally {
       setLoading(false);
@@ -38,8 +40,10 @@ export function ToGame() {
             <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
               Unirse a sala
             </h2>
-
-            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+            {error && (
+                <Message mensaje={error} setMensaje={setError} error={true}/>
+            )}
+            <form className="space-y-4 mt-5" onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <label
                   htmlFor="codigo"
@@ -47,11 +51,6 @@ export function ToGame() {
                 >
                   Codigo de la sala:
                 </label>
-                {error && (
-                  <p className="text-white text-center mt-2 font-semibold bg-red-600 rounded-md w-3/4">
-                    {error}
-                  </p>
-                )}
                 <input
                   type="text"
                   id="codigo"

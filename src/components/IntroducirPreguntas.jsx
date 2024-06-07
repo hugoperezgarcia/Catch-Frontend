@@ -8,6 +8,7 @@ import usePregunta from "../hooks/usePregunta";
 import Loader from "./Loader";
 import { UseUser } from "../hooks/UseUser";
 import { useAxios } from "../context/axiosContext";
+import Message from "./Message";
 
 export function IntroducirPreguntas() {
   const enunciado = useId();
@@ -90,6 +91,7 @@ export function IntroducirPreguntas() {
         }
       } catch (e) {
         console.log(e);
+        setError("Ha ocurrido un error. Vuelve a intentarlo");
       } finally {
         setLoading(false);
       }
@@ -123,7 +125,7 @@ export function IntroducirPreguntas() {
       {loading || loadingEdit ? (
         <Loader />
       ) : (
-        <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen">
+        <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen overflow-auto">
           <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10 h-1/5 items-center">
             <button className="w-10" onClick={goBack}>
               <LogoAtras />
@@ -143,7 +145,10 @@ export function IntroducirPreguntas() {
           </header>
           <main className="h-4/5 flex items-center justify-center">
           <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-            <div className="flex justify-center w-full">
+          {error && (
+              <Message mensaje={error} setMensaje={setError} error={true}/>
+            )}
+            <div className="flex justify-center w-full mt-5">
               <div className="w-1/3 flex flex-col gap-7">
                 <div>
                   <label className="font-titulo2" htmlFor={enunciado}>
@@ -319,7 +324,7 @@ export function IntroducirPreguntas() {
             <div className="flex justify-center mt-8">
               <button
                 type="submit"
-                className="p-3 bg-violet-200 rounded-lg hover:bg-violet-300 font-titulo2 w-64"
+                className="p-3 bg-violet-200 rounded-lg hover:bg-violet-300 font-titulo2 w-64 mb-5"
               >
                 {preguntaId ? (
                   <section> EDITAR PREGUNTA</section>
