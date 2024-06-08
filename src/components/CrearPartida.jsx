@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import Loader from './Loader';
 import { UseUser } from '../hooks/UseUser';
 import { useAxios } from '../context/axiosContext';
+import Message from './Message';
 
 
 export function CrearPartida() {
@@ -44,21 +45,21 @@ export function CrearPartida() {
                 const response = await axios.post("/create", null, {
                     params: infoParams
                 });
-                console.log(response.data);
             } catch (e) {
                 console.log(e);
+                setError("Ha ocurrido un error. Vuelve a intentarlo");
             } finally {
                 setLoading(false);
                 navigate("/bienvenida");
             }
         }else{
-            setError("Debes de introducir la información correctamente");
+            setError("Debes de introducir todos los datos correctamente");
         }
     }
     return (
         <>
             {loading ? <Loader /> : (
-                <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen">
+                <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen overflow-auto">
                     <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10 h-1/5 items-start">
                         <button className='w-10' onClick={goBack} >
                             <LogoAtras />
@@ -73,16 +74,19 @@ export function CrearPartida() {
                     <main className='flex justify-center'>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <main className='flex flex-col items-center gap-5'>
+                            {error && (
+                                <Message mensaje={error} setMensaje={setError} error={true}/>
+                            )}
                             <div>
                                 <label className='font-titulo2' htmlFor={title}>Título: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="text" {...register("titulo")} id={title} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="text" {...register("titulo")} id={title}  />
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={nivel}>Nivel De Pregunta: </label><br />
                                 <select
                                     className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white'
                                     id={dificultad} {...register("nivel")}
-                                    required
+                                    
                                 >
                                     <option value="mezcla">Mezcla</option>
                                     <option value="1ESO">1 ESO</option>
@@ -98,7 +102,7 @@ export function CrearPartida() {
                                 <select
                                     className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white'
                                     id={dificultad} {...register("dificultad")}
-                                    required
+                                    
                                 >
                                     <option value="mezcla">Mezcla</option>
                                     <option value="facil">Fácil</option>
@@ -112,7 +116,7 @@ export function CrearPartida() {
                                 <select
                                     className='h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white'
                                     id={dificultad} {...register("asignatura")}
-                                    required
+                                    
                                 >
                                     <option value="mezcla">Todo</option>
                                     <option value="Matematicas">Matematicas</option>
@@ -134,14 +138,14 @@ export function CrearPartida() {
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={rondas}>Rondas: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' {...register("numRondas")} type="number" min={1} id={rondas} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' {...register("numRondas")} type="number" min={1} id={rondas}  />
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={vidas}>Vidas: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="number" {...register("numVidas")} min={1} id={vidas} required />
+                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="number" {...register("numVidas")} min={1} id={vidas}  />
                             </div>
                             <div className='flex justify-center'>
-                                <input type="submit" className="p-3 bg-white hover:animate-jump rounded-lg hover:cursor-pointer focus:ring-white font-titulo2" value="CREAR PARTIDA" />
+                                <input type="submit" className="p-3 bg-white hover:animate-jump rounded-lg hover:cursor-pointer focus:ring-white font-titulo2 mb-5" value="CREAR PARTIDA" />
                             </div>
                         </main>
                     </form>

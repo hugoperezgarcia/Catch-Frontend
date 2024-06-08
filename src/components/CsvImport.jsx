@@ -4,12 +4,14 @@ import { set } from "react-hook-form";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import { LogoAtras, LogoHome } from "./Icons";
 import { useAxios } from "../context/axiosContext";
+import Message from "./Message";
 
 export function CsvImport() {
   const [archivo, setArchivo] = useState(null);
   const { user } = UseUser();
   const navigate = useNavigate();
   const axios = useAxios();
+  const [error, setError] = useState();
 
   const [leido, setLeido] = useState(false);
 
@@ -65,7 +67,7 @@ export function CsvImport() {
       })
       .catch((error) => {
         console.error("Error importando CSV:", error);
-        alert("Ha habido un error importando el archivo, comprueba que este todo bien.")
+        setError("Ha habido un error importando el archivo, comprueba que este todo bien.")
       });
   }
 
@@ -85,6 +87,9 @@ export function CsvImport() {
         </div>
       </header>
       <div className="h-4/5 flex flex-col justify-center">
+      {error && (
+        <Message mensaje={error} setMensaje={setError} error={true} />
+      )}
         <div className="flex flex-col items-center w-full">
           <div className="border-2 p-10 bg-violet-300 rounded-md shadow-lg shadow-violet-900">
             <h1 className="text-3xl font-semibold text-center mb-3">

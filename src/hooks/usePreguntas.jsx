@@ -37,7 +37,7 @@ export default function usePreguntas(){
     }, []);
 
     const preguntasFiltradas = preguntas.filter(pregunta =>
-        pregunta.pregunta.toLowerCase().includes(filtro.toLowerCase())
+        (pregunta.pregunta.toLowerCase().includes(filtro.toLowerCase()) || pregunta.asignatura.toLowerCase().includes(filtro.toLowerCase()))
     );
 
     const filtrarPreguntas = (event) => {

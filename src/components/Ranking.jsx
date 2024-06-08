@@ -1,18 +1,19 @@
 import { useState } from "react";
 import { useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAxios } from "../context/axiosContext";
 import { LogoAtras, LogoHome, LogoPuntos } from "./Icons";
 import Loader from "./Loader";
-import {useAxios} from "./../context/axiosContext";
 
 export function Ranking() {
   const location = useLocation();
   const codigoSala = location.state?.codigoSala;
   const id = sessionStorage.getItem("idJugador");
-  const axios = useAxios();
+
   const [jugadores, setJugadores] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const axios = useAxios();
 
   useEffect(() => {
     if (codigoSala) {
@@ -56,7 +57,8 @@ export function Ranking() {
       {loading ? (
         <Loader />
       ) : (
-        <main className="h-screen flex flex-col bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))]">
+        <main className="h-screen flex flex-col">
+          <div class="absolute top-0 z-[-2] h-screen w-screen bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))]"></div>
           <header className="flex justify-between p-10 font-medium text-6xl text-white">
             <div>
               <button className="w-10" onClick={goBack}>

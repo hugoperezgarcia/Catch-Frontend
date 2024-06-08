@@ -5,6 +5,7 @@ import { useAxios } from '../context/axiosContext';
 import { UseUser } from '../hooks/UseUser';
 import { LogoHome } from './Icons';
 import Loader from './Loader';
+import Message from './Message';
 
 export function LogIn(props) {
     const [loading, setLoading] = useState(false);
@@ -28,12 +29,7 @@ export function LogIn(props) {
             setUser(response.data.id);
             navigate("/bienvenida");
         } catch (e) {
-            console.log(e);
-            // if (e.response.status && e.response.status === 404) {
-            //     setError("Credenciales incorrectas, vuelve a intentarlo");
-            // } else {
-            //     setError("Error de conexión, compruebe la conexión a internet");
-            // }
+            setError("Credenciales inválidas")
         } finally {
             setLoading(false);
         }
@@ -43,7 +39,7 @@ export function LogIn(props) {
         <>
             {loading ? <Loader /> : (
                 <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen" id="admin">
-                    <header className='flex justify-end h-40 items-start'>
+                    <header className='flex justify-end h-1/5 items-start'>
                         {
                             props.home && (
 
@@ -57,8 +53,10 @@ export function LogIn(props) {
                     <main className='flex justify-center items-center'>
                         <div className="bg-white bg-opacity-80 backdrop-blur-lg p-8 rounded-lg shadow-md w-full max-w-md">
                             <h2 className="text-3xl font-titulo2 mb-6 text-center">Inicia Sesión</h2>
-
-                            <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                            {error && (
+                                <Message mensaje={error} setMensaje={setError} error={true}/>
+                            )}
+                            <form className="space-y-4 mt-5" onSubmit={handleSubmit(onSubmit)}>
                                 <div>
                                     <label htmlFor="username" className="block text-sm font-titulo2 text-gray-700 font-semibold">Usuario:</label>
                                     <input type="text" id="username" name="username" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"

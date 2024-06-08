@@ -4,25 +4,32 @@ import { LogoHome, LogoAtras, LogoClose } from "./Icons";
 import usePreguntas from "../hooks/usePreguntas";
 import LoaderIntegrado from "./LoaderIntegrado";
 import { useState } from "react";
+import { useEffect } from "react";
+import Message from "./Message";
 
 function Preguntas() {
   const navigate = useNavigate();
   const location = useLocation();
-  const [numPreguntas, setNumPreguntas] = useState(location.state?.numPreguntas)
-  const [insertedId, setInsertedId] = useState(location.state?.insertedId)
-  const [editedId, setEditedId] = useState(location.state?.editedId)
-  const { preguntasFiltradas, filtrarPreguntas, preguntasUser, loading } =
-    usePreguntas();
+  const numPreguntas = location.state?.numPreguntas
+  const insertedId = location.state?.insertedId
+  const editedId = location.state?.editedId;
+  const [mensaje, setMensaje] = useState();
+  const { preguntasFiltradas, filtrarPreguntas, preguntasUser, loading } = usePreguntas();
+
+  useEffect(() =>{
+    if(numPreguntas){
+      setMensaje(`Has creado ${numPreguntas} pregunta/s correctamente`)
+    }else if(insertedId){
+      setMensaje(`Has insertado correctamente la pregunta con id: ${insertedId}`)
+    }else if(editedId){
+      setMensaje(`Has editado correctamente la pregunta con id: ${editedId}`)
+    }
+  }, [])
 
   const goBack = () => {
+    sessionStorage.removeItem("estaInicio")
     navigate("/bienvenida");
   };
-
-  const handleMessage = () =>{
-    setNumPreguntas(null);
-    setInsertedId(null);
-    setEditedId(null);
-  }
 
   return (
     <>
@@ -73,23 +80,8 @@ function Preguntas() {
           </div>
         </header>
         <main className="p-10 flex flex-wrap gap-5">
-          {numPreguntas && (
-            <div className="p-3 rounded-lg bg-lime-400 w-full flex flex-row justify-between items-center text-xl">
-              Has creado {numPreguntas} pregunta/s correctamente
-              <button className="cursor-pointer" onClick={() => handleMessage()}><LogoClose></LogoClose></button>
-            </div>
-          )}
-          {editedId && (
-            <div className="p-3 rounded-lg bg-lime-400 w-full flex flex-row justify-between items-center text-xl">
-            Has editado correctamente la pregunta con id: {editedId}
-            <button className="cursor-pointer" onClick={() => handleMessage()}><LogoClose></LogoClose></button>
-          </div>
-          )}
-          {insertedId && (
-            <div className="p-3 rounded-lg bg-lime-400 w-full flex flex-row justify-between items-center text-xl">
-            Has insertado correctamente la pregunta con id: {insertedId}
-            <button className="cursor-pointer" onClick={() => handleMessage()}><LogoClose></LogoClose></button>
-          </div>
+          {mensaje && (
+            <Message mensaje={mensaje} setMensaje={setMensaje} />
           )}
           {loading ? (
             <LoaderIntegrado />
