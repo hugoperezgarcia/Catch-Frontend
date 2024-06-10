@@ -26,7 +26,7 @@ function Message(props) {
                   />
                 </svg>
                 <p>
-                  <span class="font-bold">Error:</span>
+                  <span class="font-bold">Error:  </span>
                   {props.mensaje}
                 </p>
               </div>
@@ -55,7 +55,7 @@ function Message(props) {
                   />
                 </svg>
                 <p>
-                  <span class="font-bold">Info:</span>
+                  <span class="font-bold">Info:  </span>
                   {props.mensaje}
                 </p>
               </div>
