@@ -82,7 +82,7 @@ function Registro() {
                                         {...register("key")} />
                                 </div>
 
-                                <button type="submit" className="w-full px-4 py-2 bg-pink-600 hover:bg-pink-4h00 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white">Registrar Cuenta</button>
+                                <button type="submit" className="w-full px-4 py-2 bg-amber-500/90 hover:bg-amber-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white">Registrar Cuenta</button>
                                 <Link to="/login" className="flex justify-center transition-transform transform hover:scale-110 hover:cursor-pointer">Volver al Inicio de Sesión</Link>
                             </form>
                         </div>

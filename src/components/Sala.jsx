@@ -38,7 +38,7 @@ export function Sala() {
         sessionStorage.removeItem("idJugador");
         navigate("/CatchIt", { state: { nickname, codigoSala } });
       } catch (e) {
-        setError(e.response.data.errorMessage);
+        setError("Este username ya está en esta sala");
       } finally {
         setLoading(false);
       }

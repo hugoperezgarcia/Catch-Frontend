@@ -5,6 +5,9 @@ import {LogIn} from './LogIn.jsx'
 import React from 'react'
 import { UseUser } from '../hooks/UseUser.jsx'
 import RepositorioAdmin from './RepositorioAdmin.jsx'
+import { CatchIt } from "./CatchIt.jsx"
+import Mensaje from './Message.jsx'
+import { Footer } from './Footer.jsx'
 
 function Home() {
     const {user} = UseUser();
@@ -28,6 +31,7 @@ function Home() {
                     }
                     </div>
                 </main>
+            <Footer />
         </div>
     )
 }
