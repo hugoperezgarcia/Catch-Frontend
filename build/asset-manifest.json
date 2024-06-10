@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/static/css/main.38d88c85.css",
+    "main.js": "/static/js/main.44a83e76.js",
+    "static/js/453.d4e59c19.chunk.js": "/static/js/453.d4e59c19.chunk.js",
+    "static/media/WorkSans-Regular.otf": "/static/media/WorkSans-Regular.083c0d298bc74c2973fe.otf",
+    "index.html": "/index.html",
+    "main.38d88c85.css.map": "/static/css/main.38d88c85.css.map",
+    "main.44a83e76.js.map": "/static/js/main.44a83e76.js.map",
+    "453.d4e59c19.chunk.js.map": "/static/js/453.d4e59c19.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.38d88c85.css",
+    "static/js/main.44a83e76.js"
+  ]
+}
