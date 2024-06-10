@@ -45,12 +45,16 @@ export function CrearPartida() {
                 const response = await axios.post("/create", null, {
                     params: infoParams
                 });
+                navigate("/bienvenida");
             } catch (e) {
                 console.log(e);
-                setError("Ha ocurrido un error. Vuelve a intentarlo");
+                if (e.response && e.response.status === 400) {
+                    setError("No hay suficientes preguntas para crear la partida.");
+                } else {
+                    setError("Ha ocurrido un error. Vuelve a intentarlo");
+                }
             } finally {
                 setLoading(false);
-                navigate("/bienvenida");
             }
         }else{
             setError("Debes de introducir todos los datos correctamente");

@@ -124,14 +124,13 @@ export function CatchIt() {
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
-      setColorPreguntaInRonda();
       if (preguntas[numPreguntaActual].imagen) {
-        getImagen()
+        getImagen();
       } else {
         setImageUrl();
+        habilitarBotones();
       }
       if (numPreguntaActual >= (rondaActual * 8)) {
-        resetearColorPreguntas();
         sessionStorage.setItem("ronda", Number(rondaActual) + 1);
         setRondaActual(sessionStorage.getItem("ronda"));
       }
@@ -290,19 +289,6 @@ export function CatchIt() {
     });
   }
 
-  //Manejo del front
-  //Manejo de colores del indicador de preguntas
-  function setColorPreguntaInRonda() {
-    let restaRonda = 8 * (rondaActual - 1);
-    let numpreg = Number((numPreguntaActual - 1) - restaRonda);
-    for (let i = 0; i < numpreg + 1; i++) {
-      document
-        .getElementById(`numPreg${numpreg}`)
-        .classList.replace("bg-white", "bg-green-600");
-      document.getElementById(`numPreg${numpreg}`).classList.add("text-white");
-    }
-  }
-
   function resetearColorPreguntas() {
     for (let i = 0; i < 8; i++) {
       document
@@ -399,7 +385,7 @@ export function CatchIt() {
 
   return (
     <>
-      {loading ? (
+      {loading || !valoresIniciados ? (
         <Loader />
       ) : (
         <section className=" bg-gradient-to-br from-indigo-500 to-purple-500 bg-cover bg-center max-h-screen h-screen text-white">
@@ -440,54 +426,25 @@ export function CatchIt() {
             </div>
             <div className="h-full rounded-lg mt-3 me-5 flex-grow flex flex-col items-center bg-gradient-to-br from-indigo-400 to-purple-400 shadow-lg">
               <div className="flex w-full justify-around mt-2 text-black">
-                <div
-                  id="numPreg0"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  1
-                </div>
-                <div
-                  id="numPreg1"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  2
-                </div>
-                <div
-                  id="numPreg2"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  3
-                </div>
-                <div
-                  id="numPreg3"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  4
-                </div>
-                <div
-                  id="numPreg4"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  5
-                </div>
-                <div
-                  id="numPreg5"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  6
-                </div>
-                <div
-                  id="numPreg6"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  7
-                </div>
-                <div
-                  id="numPreg7"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  8
-                </div>
+                {preguntas.map((pregunta, index) =>{
+                  let restaRonda = 8 * (rondaActual - 1);
+                  let numpreg = index - restaRonda;
+                  let numpregActual = Number((numPreguntaActual) - restaRonda);
+                  let id = "numPreg" + numpreg;
+                  let className = "rounded-full w-10 h-10 flex justify-center items-center font-medium shadow-sm shadow-violet-300 "
+                  if(index < numpregActual){
+                    className += "bg-green-600 text-white"
+                  }else{
+                    className += "bg-white"
+                  }
+                  return(<div
+                    id={id}
+                    className={className}
+                    key={index}
+                  >
+                    {numpreg}
+                  </div>)
+                })}
               </div>
 
               <div
