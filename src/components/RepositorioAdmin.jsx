@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { React, useState, useEffect } from "react";
 import { LogoDelete, LogoHome, LogoEditar } from "./Icons";
 import { UseUser } from "../hooks/UseUser";
@@ -8,14 +8,20 @@ import Message from "./Message";
 
 function RepositorioAdmin() {
   const { user } = UseUser();
+  const location = useLocation();
   const [username, setUsername] = useState();
   const [loading, setLoading] = useState(true);
   const [filtro, setFiltro] = useState("");
   const [partidas, setPartidas] = useState([]);
   const [error, setError] = useState();
+  const [mensaje, setMensaje] = useState();
   const axios = useAxios();
+  const editedId = location.state?.editedId;
 
   useEffect(() => {
+    if (editedId){
+      setMensaje("Partida con id " + editedId + " editada correctamente.")
+    }
     getUser();
   }, []);
 
@@ -27,7 +33,7 @@ function RepositorioAdmin() {
       setUsername(response.data.username);
       setPartidas(response.data.partidas);
     } catch (error) {
-      setError(error);
+      setError("Ha ocurrido un error");
     } finally {
       setLoading(false);
     }
@@ -119,6 +125,12 @@ function RepositorioAdmin() {
             </div>
           </header>
           <main className="flex flex-wrap gap-5 mt-10 ms-10">
+            {error && (
+              <Message mensaje={error} setMensaje={setError} error={true}/>
+            )}
+            {mensaje && (
+              <Message mensaje={mensaje} setMensaje={setMensaje}/>
+            )}
             <Link to="/preguntas">
               <div className="rounded-lg p-10 bg-white shadow-xl shadow-violet-700 w-80 h-52 text-xl hover:animate-jump hover:cursor-pointer font-titulo2 font-semibold">
                 <h1>VER TODAS LAS PREGUNTAS</h1>

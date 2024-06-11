@@ -23,7 +23,6 @@ export function IntroducirPreguntas() {
   const imagen = useId();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [checked, setCheck] = useState(false);
   const { user } = UseUser();
   const { preguntaId } = useParams();
   const { pregunta, loadingEdit } = usePregunta(preguntaId);
@@ -105,14 +104,6 @@ export function IntroducirPreguntas() {
 
   const goBack = () => {
     navigate(-1);
-  };
-
-  const handleCheck = () => {
-    if (checked) {
-      setCheck(false);
-    } else {
-      setCheck(true);
-    }
   };
 
   return (
