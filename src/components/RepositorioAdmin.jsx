@@ -4,6 +4,7 @@ import { LogoDelete, LogoHome, LogoEditar } from "./Icons";
 import { UseUser } from "../hooks/UseUser";
 import Loader from "./Loader";
 import { useAxios } from "../context/axiosContext";
+import Message from "./Message";
 
 function RepositorioAdmin() {
   const { user } = UseUser();

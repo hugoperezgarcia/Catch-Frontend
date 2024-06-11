@@ -32,42 +32,39 @@ export function CsvImport() {
   };
 
   const descargarPlantilla = () => {
-    const nombreArchivo = 'plantilla.csv';
+    const nombreArchivo = "plantilla.csv";
     const ruta = `${process.env.PUBLIC_URL}/${nombreArchivo}`;
 
-    const linkDescarga = document.createElement('a');
+    const linkDescarga = document.createElement("a");
     linkDescarga.href = ruta;
     linkDescarga.download = nombreArchivo;
 
     document.body.appendChild(linkDescarga);
     linkDescarga.click();
     document.body.removeChild(linkDescarga);
-  }
+  };
 
   function handleFileUpload() {
     const formData = new FormData();
     formData.append("archivo", archivo);
 
     axios
-      .post(
-        "/preguntacsv/" +
-        user,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .post("/preguntacsv/" + user, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         console.log("Importado correctamente");
         console.log(response.data.data.length);
         const numPreguntas = response.data.data.length;
-        navigate("/preguntas",{ state: {numPreguntas} });
+        navigate("/preguntas", { state: { numPreguntas } });
       })
       .catch((error) => {
         console.error("Error importando CSV:", error);
-        setError("Ha habido un error importando el archivo, comprueba que este todo bien.")
+        setError(
+          "Ha habido un error importando el archivo, comprueba que este todo bien."
+        );
       });
   }
 
@@ -87,11 +84,11 @@ export function CsvImport() {
         </div>
       </header>
       <div className="h-4/5 flex flex-col justify-center">
-      {error && (
-        <Message mensaje={error} setMensaje={setError} error={true} />
-      )}
         <div className="flex flex-col items-center w-full">
           <div className="border-2 p-10 bg-violet-300 rounded-md shadow-lg shadow-violet-900">
+            {error && (
+              <Message mensaje={error} setMensaje={setError} error={true} />
+            )}
             <h1 className="text-3xl font-semibold text-center mb-3">
               Intrucciones
             </h1>
@@ -111,7 +108,9 @@ export function CsvImport() {
                 className="mr-2 size-6"
                 onClick={handleCheckbox}
               />
-              <label htmlFor="checkbox" className="text-lg">He leído las instrucciones</label>
+              <label htmlFor="checkbox" className="text-lg">
+                He leído las instrucciones
+              </label>
             </div>
           </div>
         </div>
