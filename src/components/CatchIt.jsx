@@ -3,6 +3,7 @@ import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
 import { useAxios } from "../context/axiosContext";
+import { computeHeadingLevel } from "@testing-library/react";
 
 export function CatchIt() {
   //Variables iniciales
@@ -31,7 +32,6 @@ export function CatchIt() {
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
-  const [handleDisabled, setDisable] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
   const botones = document.querySelectorAll("button");
@@ -110,7 +110,6 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    setDisable(false);
     if (marcadorPuntos == 0 && (Number(vidas) - 1) == 0) {
       actualizarPuntosJugador();
     } else {
@@ -124,14 +123,13 @@ export function CatchIt() {
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
-      setColorPreguntaInRonda();
       if (preguntas[numPreguntaActual].imagen) {
-        getImagen()
+        getImagen();
       } else {
         setImageUrl();
+        habilitarBotones();
       }
       if (numPreguntaActual >= (rondaActual * 8)) {
-        resetearColorPreguntas();
         sessionStorage.setItem("ronda", Number(rondaActual) + 1);
         setRondaActual(sessionStorage.getItem("ronda"));
       }
@@ -221,8 +219,8 @@ export function CatchIt() {
 
   //Manejo del contador
   function handleSkip() {
+    console.log("Se presiona skip");
     setTiempo(0);
-    setDisable(true);
   }
 
   const empezarContador = () => {
@@ -285,22 +283,12 @@ export function CatchIt() {
   }
 
   function habilitarBotones() {
-    botones.forEach((boton) => {
-      boton.disabled = false;
-    });
-  }
-
-  //Manejo del front
-  //Manejo de colores del indicador de preguntas
-  function setColorPreguntaInRonda() {
-    let restaRonda = 8 * (rondaActual - 1);
-    let numpreg = Number((numPreguntaActual - 1) - restaRonda);
-    for (let i = 0; i < numpreg + 1; i++) {
-      document
-        .getElementById(`numPreg${numpreg}`)
-        .classList.replace("bg-white", "bg-green-600");
-      document.getElementById(`numPreg${numpreg}`).classList.add("text-white");
-    }
+    console.log("Se habilitan botones");
+    setTimeout(()=>{
+      botones.forEach((boton) => {
+        boton.disabled = false;
+      });
+    },1000);
   }
 
   function resetearColorPreguntas() {
@@ -399,7 +387,7 @@ export function CatchIt() {
 
   return (
     <>
-      {loading ? (
+      {loading || !valoresIniciados ? (
         <Loader />
       ) : (
         <section className=" bg-gradient-to-br from-indigo-500 to-purple-500 bg-cover bg-center max-h-screen h-screen text-white">
@@ -410,7 +398,7 @@ export function CatchIt() {
                   {tiempo}
                 </div>
                 <button
-                  onClick={() => handleSkip()} disabled={handleDisabled}
+                  onClick={() => handleSkip()}
                   className="w-14 shadow-md shadow-violet-300 bg-purple-800/70 flex justify-center rounded-lg font-thin text-white h-9 items-center"
                 >
                   <LogoSkip />
@@ -440,54 +428,25 @@ export function CatchIt() {
             </div>
             <div className="h-full rounded-lg mt-3 me-5 flex-grow flex flex-col items-center bg-gradient-to-br from-indigo-400 to-purple-400 shadow-lg">
               <div className="flex w-full justify-around mt-2 text-black">
-                <div
-                  id="numPreg0"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  1
-                </div>
-                <div
-                  id="numPreg1"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  2
-                </div>
-                <div
-                  id="numPreg2"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  3
-                </div>
-                <div
-                  id="numPreg3"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  4
-                </div>
-                <div
-                  id="numPreg4"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  5
-                </div>
-                <div
-                  id="numPreg5"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  6
-                </div>
-                <div
-                  id="numPreg6"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  7
-                </div>
-                <div
-                  id="numPreg7"
-                  className="rounded-full w-10 h-10 flex justify-center items-center font-medium bg-white shadow-sm shadow-violet-300"
-                >
-                  8
-                </div>
+                {preguntas.map((pregunta, index) =>{
+                  let restaRonda = 8 * (rondaActual - 1);
+                  let numpreg = index - restaRonda;
+                  let numpregActual = Number((numPreguntaActual) - restaRonda);
+                  let id = "numPreg" + numpreg;
+                  let className = "rounded-full w-10 h-10 flex justify-center items-center font-medium shadow-sm shadow-violet-300 "
+                  if(index < numpregActual){
+                    className += "bg-green-600 text-white"
+                  }else{
+                    className += "bg-white"
+                  }
+                  return(<div
+                    id={id}
+                    className={className}
+                    key={index}
+                  >
+                    {numpreg}
+                  </div>)
+                })}
               </div>
 
               <div

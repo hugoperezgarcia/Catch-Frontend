@@ -60,7 +60,7 @@ function Registro() {
                             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                                 <div>
                                     <label htmlFor={usernameId} className="block text-sm font-titulo2 text-gray-700">Nombre de Usuario:</label>
-                                    <input type="text" id={usernameId} name="username" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                                    <input max={15} type="text" id={usernameId} name="username" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("username")} />
                                 </div>
 
