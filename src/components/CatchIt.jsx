@@ -3,6 +3,7 @@ import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
 import { useAxios } from "../context/axiosContext";
+import { computeHeadingLevel } from "@testing-library/react";
 
 export function CatchIt() {
   //Variables iniciales
@@ -31,7 +32,6 @@ export function CatchIt() {
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
-  const [handleDisabled, setDisable] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
 
   const botones = document.querySelectorAll("button");
@@ -110,7 +110,6 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    setDisable(false);
     if (marcadorPuntos == 0 && (Number(vidas) - 1) == 0) {
       actualizarPuntosJugador();
     } else {
@@ -220,8 +219,8 @@ export function CatchIt() {
 
   //Manejo del contador
   function handleSkip() {
+    console.log("Se presiona skip");
     setTiempo(0);
-    setDisable(true);
   }
 
   const empezarContador = () => {
@@ -284,9 +283,12 @@ export function CatchIt() {
   }
 
   function habilitarBotones() {
-    botones.forEach((boton) => {
-      boton.disabled = false;
-    });
+    console.log("Se habilitan botones");
+    setTimeout(()=>{
+      botones.forEach((boton) => {
+        boton.disabled = false;
+      });
+    },1000);
   }
 
   function resetearColorPreguntas() {
@@ -396,7 +398,7 @@ export function CatchIt() {
                   {tiempo}
                 </div>
                 <button
-                  onClick={() => handleSkip()} disabled={handleDisabled}
+                  onClick={() => handleSkip()}
                   className="w-14 shadow-md shadow-violet-300 bg-purple-800/70 flex justify-center rounded-lg font-thin text-white h-9 items-center"
                 >
                   <LogoSkip />
