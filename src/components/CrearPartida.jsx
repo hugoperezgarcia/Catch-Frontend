@@ -83,7 +83,7 @@ export function CrearPartida() {
                             )}
                             <div>
                                 <label className='font-titulo2' htmlFor={title}>Título: </label><br />
-                                <input className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="text" {...register("titulo")} id={title}  />
+                                <input max={20} className='p-3 h-10 w-96 rounded-lg focus:outline-none focus:ring-2 focus:ring-white' type="text" {...register("titulo")} id={title}  />
                             </div>
                             <div>
                                 <label className='font-titulo2' htmlFor={nivel}>Nivel De Pregunta: </label><br />

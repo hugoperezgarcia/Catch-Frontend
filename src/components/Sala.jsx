@@ -97,6 +97,7 @@ export function Sala() {
                     </p>
                   )}
                   <input
+                    max={20}
                     type="text"
                     id="nickname"
                     name="nickname"
