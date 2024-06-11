@@ -11,6 +11,8 @@ function EditPartida() {
   const [loader, setLoader] = useState(true);
   const [partida, setPartida] = useState();
   const [preguntas, setPreguntas] = useState();
+  const [vidas, setNumVidas] = useState();
+  const [guardado, setGuardado] = useState();
   const[detallePregunta, setDetallePregunta] = useState(); 
   const navigate = useNavigate();
   const axios = useAxios();
@@ -20,7 +22,14 @@ function EditPartida() {
   }, []);
 
   const goBack = () => {
-    navigate(-1);
+    if(vidas !== partida.numVidas && !guardado){
+      const userConfirmed = window.confirm('Los cambios no se han guardado. ¿Deseas salir?');
+      if (userConfirmed) {
+        navigate(-1);
+      }
+    }else{
+      navigate(-1);
+    }
   };
 
   const getPartida = async () => {
@@ -31,6 +40,7 @@ function EditPartida() {
       );
       setPartida(response.data);
       setPreguntas(response.data.preguntas);
+      setNumVidas(response.data.numVidas)
     } catch (e) {
       console.log(e);
     } finally {
@@ -44,7 +54,20 @@ function EditPartida() {
         sessionStorage.removeItem(key);
       }
     });
-    navigate("/");
+  };
+
+  const guardarCambios = () =>{
+    setGuardado(true);
+  }
+
+   // Función para incrementar el número de vidas
+   const incrementarVidas = () => {
+    setNumVidas(prevVidas => prevVidas + 1);
+  };
+
+  // Función para decrementar el número de vidas
+  const decrementarVidas = () => {
+    setNumVidas(prevVidas => (prevVidas > 1 ? prevVidas - 1 : 1)); // Evita que el número de vidas sea negativo
   };
 
   const mostrarDetalle = (pregunta) =>{
@@ -77,11 +100,15 @@ function EditPartida() {
             <aside className="w-1/2 h-full">
               <div className="my-3 mx-7 flex flex-col justify-center items-center border-2 rounded-lg bg-violet-200">
                 <h1 className="text-3xl m-3 uppercase font-semibold">{partida.titulo}</h1>
-                <p className="text-xl font-semibold mt-10">Vidas: {partida.numVidas}</p>
-                <p className="text-lg border-t border-black font-semibold">Rondas: {partida.numRondas}</p>
+                <div className="flex justify-around mt-10 border-b border-black p-2 items-center">
+                  <button className="text-xl font-semibold border-2 border-red-400 rounded-lg p-1 w-10" onClick={() => decrementarVidas()}> - </button>
+                  <span className="text-xl font-semibold mx-5">Vidas: {vidas}</span>
+                  <button className="text-xl font-semibold border-2 border-green-400 rounded-lg p-1 w-10" onClick={() => incrementarVidas()}> + </button>
+                </div>
+                <p className="text-lg font-semibold mt-2">Rondas: {partida.numRondas}</p>
                 <div className="my-10 flex flex-col gap-2">
                   <button className="rounded-lg p-1 font-semibold border-2 border-violet-400 bg-violet-300 text-white hover:bg-violet-400 hover:text-white hover:border-2 hover:cursor-progress" onClick={() => navigateRanking()}>Ranking</button>
-                  <button className="rounded-lg p-1 font-semibold border-2 border-violet-400 bg-violet-300 text-white hover:bg-violet-400 hover:text-white hover:border-2 hover:cursor-progress">Guardar Cambios</button>
+                  <button className="rounded-lg p-1 font-semibold border-2 border-violet-400 bg-violet-300 text-white hover:bg-violet-400 hover:text-white hover:border-2 hover:cursor-progress" onClick={() => guardarCambios()}>Guardar Cambios</button>
                 </div>
               </div>
               {detallePregunta && (
