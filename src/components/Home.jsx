@@ -12,7 +12,7 @@ function Home() {
   return (
     <div>
       <RepositorioAdmin />
-      {/* <HeaderInicio />
+      <HeaderInicio />
       <main className="snap-y snap-mandatory relative w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
         <div className="snap-center">
           <ToGame />
@@ -24,7 +24,7 @@ function Home() {
           {user ? <RepositorioAdmin /> : <LogIn />}
         </div>
       </main>
-      <Footer /> */}
+      <Footer />
     </div>
   );
 }

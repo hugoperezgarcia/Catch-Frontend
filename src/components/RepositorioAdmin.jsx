@@ -73,7 +73,7 @@ function RepositorioAdmin() {
           <header className="pt-16">
             <div className="text-center p-3">
               <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
-                {/* ¡¡HOLA {username.toUpperCase()}!!, ESTAS SON TUS PARTIDAS. */}
+                ¡¡HOLA {username.toUpperCase()}!!, ESTAS SON TUS PARTIDAS.
               </h1>
             </div>
           </header>
