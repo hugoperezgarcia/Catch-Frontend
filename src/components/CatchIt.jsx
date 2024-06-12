@@ -405,8 +405,8 @@ export function CatchIt() {
       {loading ? (
         <Loader />
       ) : (
-        <section className="bg-gradient-to-b from-blue-300 to-zinc-300 max-h-screen h-screen">
-          <header className="flex justify-between h-[70%]">
+        <section className=" bg-gradient-to-br from-indigo-500 to-purple-500 bg-cover bg-center max-h-screen h-screen text-white">
+          <header className="flex justify-between h-[80%]">
             <div className="mx-5">
               <div className="flex items-center">
                 <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
@@ -442,62 +442,39 @@ export function CatchIt() {
                 Ronda: {rondaActual}/{rondas}
               </div>
             </div>
-            <div className="h-full border-black border-2 rounded-lg mt-3 me-5 flex-grow flex flex-col items-center justify-around bg-gradient-to-b from-blue-600 to-blue-300">
-              <div className="flex mt-3 w-full justify-around">
-                <div
-                  id="numPreg0"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  1
-                </div>
-                <div
-                  id="numPreg1"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  2
-                </div>
-                <div
-                  id="numPreg2"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  3
-                </div>
-                <div
-                  id="numPreg3"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  4
-                </div>
-                <div
-                  id="numPreg4"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  5
-                </div>
-                <div
-                  id="numPreg5"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  6
-                </div>
-                <div
-                  id="numPreg6"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  7
-                </div>
-                <div
-                  id="numPreg7"
-                  className="rounded-full border-2 border-red-500 w-10 h-10 flex justify-center items-center font-medium bg-red-200"
-                >
-                  8
-                </div>
+            <div className="h-full rounded-lg mt-3 me-5 flex-grow flex flex-col items-center bg-gradient-to-br from-indigo-400 to-purple-400 shadow-lg">
+              <div className="flex w-full justify-around mt-2 text-black">
+                {preguntas.map((pregunta, index) =>{
+                  let restaRonda = 8 * (rondaActual - 1);
+                  let numpreg = index - restaRonda;
+                  let numpregActual = Number((numPreguntaActual) - restaRonda);
+                  let id = "numPreg" + numpreg;
+                  let className = "rounded-full w-10 h-10 flex justify-center items-center font-medium shadow-sm shadow-violet-300 "
+                  if(index < numpregActual){
+                    className += "bg-green-600 text-white"
+                  }else{
+                    className += "bg-white"
+                  }
+                  return(<div
+                    id={id}
+                    className={className}
+                    key={index}
+                  >
+                    {numpreg + 1}
+                  </div>)
+                })}
               </div>
               <div
                 id="enunciadoPregunta"
                 className="p-6 font-medium text-4xl w-full text-center"
               >
-                {preguntas[numPreguntaActual].pregunta}
+                <h1 className="text-pretty">{preguntas[numPreguntaActual].pregunta}</h1>
+
+                {imageUrl && (
+                  <div className="mb-2">
+                    <img src={imageUrl} alt="Imagen del enunciado" className="rounded-md w-auto max-w-96 max-h-48 my-2"></img>
+                  </div>
+                )}
               </div>
               {imageUrl && (
                 <div className="mb-2"> 
@@ -536,7 +513,7 @@ export function CatchIt() {
               </div>
             </div>
           </header>
-          <main className="flex flex-col justify-center h-[30%]">
+          <main className="flex flex-col justify-center h-[20%]">
             <div>
               <div className="flex justify-around font-medium mb-2">
                 <div>A</div>

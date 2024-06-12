@@ -12,6 +12,8 @@ function RepositorioAdmin() {
   const [filtro, setFiltro] = useState("");
   const [partidas, setPartidas] = useState([]);
   const [error, setError] = useState();
+  const [caracteristica, setCaracteristica] = useState("all");
+  const [mensaje, setMensaje] = useState();
   const axios = useAxios();
 
   useEffect(() => {
@@ -53,14 +55,23 @@ function RepositorioAdmin() {
     console.log(partidas)
   };
 
-  const partidasFiltradas = partidas.filter((partida) => (
-    partida.titulo.toLowerCase().includes(filtro.toLowerCase())
-  ));
+  const partidasFiltradas = partidas.filter((partida) =>{
+    if(caracteristica.includes("all") || !caracteristica){
+      return(partida.titulo.toLowerCase().includes(filtro.toLowerCase()))
+    }else{
+      return(partida.preguntas[0][caracteristica].toLowerCase().includes(filtro.toLowerCase()))
+    }
+  } 
+  );
 
   function switchInicio() {
     const newValue = !sessionStorage.getItem("estaInicio");
     sessionStorage.setItem("estaInicio", newValue);
   }
+
+  const handleSelectChange = (event) => {
+    setCaracteristica(event.target.value);
+};
 
   return (
     <>
@@ -72,7 +83,7 @@ function RepositorioAdmin() {
           <header className="pt-16">
             <div className="text-center p-8">
               <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
-                HOLA {username.toUpperCase()}!!
+                ¡¡HOLA {username.toUpperCase()}!! ESTAS SON TUS PARTIDAS.
               </h1>
             </div>
             <div className="flex justify-between mx-5">
@@ -83,34 +94,40 @@ function RepositorioAdmin() {
                 onChange={filtrarPartidas}
               />
               <div className="flex gap-7 mx-5">
-                <Link
-                  to="/createPartida"
-                  className="p-3 bg-white shadow-md shadow-violet-700 rounded-lg hover:animate-jump font-titulo2 font-semibold"
-                >
-                  CREAR PARTIDA
-                </Link>
-                <Link
-                  to="/insertarCsv"
-                  className="p-3 bg-white shadow-md shadow-violet-700 rounded-lg hover:animate-jump font-titulo2 font-semibold"
-                >
-                  INTRODUCIR CSV
-                </Link>
-                <Link
-                  to="/createPregunta"
-                  className="p-3 bg-white shadow-md shadow-violet-700 rounded-lg hover:animate-jump font-titulo2 font-semibold"
-                >
-                  INTRODUCIR PREGUNTAS
-                </Link>
-
-                {!sessionStorage.getItem("estaInicio") ? (
-                  <Link
-                    to="/"
-                    onClick={switchInicio}
-                    className="p-3 bg-white shadow-md shadow-violet-700 rounded-lg hover:animate-jump font-titulo2"
+                <svg>
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                  />
+                </svg>
+                <input
+                  className="bg-gray-100 outline-none w-full" 
+                  type="text"
+                  placeholder="Buscar partidas"
+                  onChange={filtrarPartidas}
+                />
+              </div>
+              <select className="flex py-3 px-3 text-gray-500 font-semibold cursor-pointer items-center justify-center w-fit rounded" name="filtros"
+              onChange={handleSelectChange}>
+                <option defaultValue="all" value="all">Todas las partidas</option>
+                <option value="asignatura">Asignatura</option>
+                <option value="nivel">Nivel</option>
+                <option value="dificultad">Dificultad</option>
+              </select>
+              <div className="bg-purple-600 py-3 px-5 text-white font-semibold rounded-lg hover:shadow-lg transition duration-3000 cursor-pointer">
+                <span>Buscar</span>
+              </div>
+              <div>
+                {sessionStorage.getItem("estaInicio") ? (
+                  <button
+                    className="p-3 bg-amber-500	rounded-lg text-white font-semibold"
+                    onClick={irRepo}
                   >
                     <LogoHome />
                     Inicio
-                  </Link>
+                  </button>
                 ) : (
                   <div></div>
                 )}

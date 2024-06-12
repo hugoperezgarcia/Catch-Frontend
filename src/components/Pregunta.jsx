@@ -40,7 +40,7 @@ function Pregunta(props) {
                                 <p>Dificultad: {dificultad}</p>
                                 <p>Asignatura: {asignatura}</p>
                                 <p>Tiempo: {tiempo}s</p>
-                                {imagen && (<img src={src} alt="Imagen en Base64"></img>)}
+                                {imagen && (<img src={src} className="max-h-64 max-w-96 mt-2" alt="Imagen en Base64"></img>)}
                             </div>
                             {
                                 props.owner &&(
