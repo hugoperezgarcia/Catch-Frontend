@@ -56,8 +56,20 @@ function EditPartida() {
     });
   };
 
-  const guardarCambios = () =>{
-    setGuardado(true);
+  const guardarCambios = async () =>{
+    if(vidas != partida.numVidas){
+      try{
+        setLoader(true);
+        const response = await axios.put("/setVidas/" + idPartida, null, {params: {numVidas: vidas}});
+        const editedId = response.data.data.id;
+        navigate("/bienvenida", { state: { editedId: editedId } });
+        setGuardado(true);
+      }catch(e){
+        console.log(e);
+      }finally{
+        setLoader(true);
+      }
+    }
   }
 
    // Función para incrementar el número de vidas
