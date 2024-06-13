@@ -112,7 +112,7 @@ export function IntroducirPreguntas() {
         <Loader />
       ) : (
         <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen overflow-auto">
-          <header className="flex justify-between font-titulo1 animate-flip-down animate-ease-in-out text-5xl text-center p-10 h-1/5 items-center">
+          <header className="flex justify-between font-titulo animate-flip-down animate-ease-in-out text-5xl text-center p-10 h-1/5 items-center">
             <button className="w-10" onClick={goBack}>
               <LogoAtras />
             </button>
@@ -137,7 +137,7 @@ export function IntroducirPreguntas() {
               <div className="flex justify-center w-full mt-5">
                 <div className="w-1/3 flex flex-col gap-7">
                   <div>
-                    <label className="font-titulo2" htmlFor={enunciado}>
+                    <label className="font-normal" htmlFor={enunciado}>
                       Enunciado:{" "}
                     </label>
                     <br />
@@ -152,7 +152,7 @@ export function IntroducirPreguntas() {
                     />
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={resCorrecta}>
+                    <label className="font-normal" htmlFor={resCorrecta}>
                       Respuesta Correcta:{" "}
                     </label>
                     <br />
@@ -167,7 +167,7 @@ export function IntroducirPreguntas() {
                     />
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={res1}>
+                    <label className="font-normal" htmlFor={res1}>
                       Respuesta 1:{" "}
                     </label>
                     <br />
@@ -182,7 +182,7 @@ export function IntroducirPreguntas() {
                     />
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={res2}>
+                    <label className="font-normal" htmlFor={res2}>
                       Respuesta 2:{" "}
                     </label>
                     <br />
@@ -197,7 +197,7 @@ export function IntroducirPreguntas() {
                     />
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={res3}>
+                    <label className="font-normal" htmlFor={res3}>
                       Respuesta 3:{" "}
                     </label>
                     <br />
@@ -214,7 +214,7 @@ export function IntroducirPreguntas() {
                 </div>
                 <div className="w-auto flex flex-col gap-7">
                   <div>
-                    <label className="font-titulo2" htmlFor={nivel}>
+                    <label className="font-normal" htmlFor={nivel}>
                       Nivel De Pregunta:{" "}
                     </label>
                     <br />
@@ -234,7 +234,7 @@ export function IntroducirPreguntas() {
                     </select>
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={dificultad}>
+                    <label className="font-normal" htmlFor={dificultad}>
                       Dificultad:{" "}
                     </label>
                     <br />
@@ -252,7 +252,7 @@ export function IntroducirPreguntas() {
                   </div>
 
                   <div>
-                    <label className="font-titulo2" htmlFor={asignatura}>
+                    <label className="font-normal" htmlFor={asignatura}>
                       Asignatura:{" "}
                     </label>
                     <br />
@@ -281,7 +281,7 @@ export function IntroducirPreguntas() {
                     </select>
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={tiempo}>
+                    <label className="font-normal" htmlFor={tiempo}>
                       Tiempo:{" "}
                     </label>
                     <br />
@@ -297,7 +297,7 @@ export function IntroducirPreguntas() {
                     />
                   </div>
                   <div>
-                    <label className="font-titulo2" htmlFor={imagen}>
+                    <label className="font-normal" htmlFor={imagen}>
                       Añadir una imagen:{" "}
                     </label>
                     <br />
@@ -315,7 +315,7 @@ export function IntroducirPreguntas() {
               <div className="flex justify-center mt-8">
                 <button
                   type="submit"
-                  className="p-3 bg-violet-200 rounded-lg hover:bg-violet-300 font-titulo2 w-64 mb-5"
+                  className="p-3 bg-violet-200 rounded-lg hover:bg-violet-300 font-normal w-64 mb-5"
                 >
                   {preguntaId ? (
                     <section> EDITAR PREGUNTA</section>

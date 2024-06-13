@@ -79,7 +79,7 @@ export function AsideRepo() {
           </div>
           <nav className="flex flex-col flex-1 w-64 p-4 mt-4">
               <Link to="/" onClick={switchInicio}>
-                <a href="#" className="flex items-center space-x-2 hover:text-white px-2 py-5 font-titulo2 font-semibold">
+                <a href="#" className="flex items-center space-x-2 hover:text-white px-2 py-5 font-normal font-semibold">
                   <svg
                     className="w-6 h-6"
                     aria-hidden="true"
@@ -100,24 +100,24 @@ export function AsideRepo() {
             <div className="flex flex-col gap-10">
               <Link
                 to="/createPartida"
-                className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-titulo2 font-semibold"
+                className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-normal font-semibold"
               >
                 CREAR PARTIDA
               </Link>
               <Link
                 to="/insertarCsv"
-                className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-titulo2 font-semibold"
+                className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-normal font-semibold"
               >
                 INTRODUCIR CSV
               </Link>
               <Link
                 to="/createPregunta"
-                className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-titulo2 font-semibold"
+                className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-normal font-semibold"
               >
                 INTRODUCIR PREGUNTAS
               </Link>
               <Link to="/preguntas">
-              <div className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-titulo2 font-semibold">
+              <div className="shadow-violet-700 p-2 hover:translate-x-5 hover:text-white font-normal font-semibold">
                 <h1>VER TODAS LAS PREGUNTAS</h1>
               </div>
             </Link>

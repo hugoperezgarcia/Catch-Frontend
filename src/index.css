@@ -4,8 +4,12 @@
 
 
 @font-face {
-    font-family: "titulo1";
-    src: url('/public/Fonts/WorkSans-Regular.otf') format('truetype');
-    
+    font-family: "titulo";
+    src: url('/public/Fonts/titulo.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: "normal";
+    src: url('/public/Fonts/normal.ttf') format('truetype');
 }
 

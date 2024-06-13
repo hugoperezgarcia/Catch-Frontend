@@ -84,7 +84,7 @@ function RepositorioAdmin() {
           {!sessionStorage.getItem("estaInicio") ? <AsideRepo /> : <div></div>}
           <header className="pt-16">
             <div className="text-center p-3">
-              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
+              <h1 className="font-titulo animate-flip-down animate-ease-in-out text-5xl">
                 ¡¡HOLA {username.toUpperCase()}!! ESTAS SON TUS PARTIDAS.
               </h1>
             </div>
@@ -149,7 +149,7 @@ function RepositorioAdmin() {
             {partidasFiltradas.map((partida) => (
               <div
                 key={partida.id}
-                className="rounded-lg p-10 bg-white shadow-xl shadow-violet-900 w-80 h-52 text-xl hover:animate-jump hover:cursor-pointer font-titulo2"
+                className="rounded-lg p-10 bg-white shadow-xl shadow-violet-900 w-80 h-52 text-xl hover:animate-jump hover:cursor-pointer font-normal"
               >
                 <div className="w-full h-1/2 flex justify-between">
                   <Link to={"/editPartida/" + partida.id}>

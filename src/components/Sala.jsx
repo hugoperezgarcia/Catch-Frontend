@@ -67,7 +67,7 @@ export function Sala() {
               <LogoAtras />
             </button>
             <div>
-              <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl border p-6 rounded-full bg-amber-200 shadow-lg shadow-amber-500 font-semibold">
+              <h1 className="font-titulo animate-flip-down animate-ease-in-out text-5xl border p-6 rounded-full bg-amber-200 shadow-lg shadow-amber-500 font-semibold">
                 SALA {codigoSala}
                 {/* Ver el titulo o enunciado de la partida que tiene ese id o
               codigo asociado y ponerlo de titulo */}
@@ -79,7 +79,7 @@ export function Sala() {
           </header>
           <main className="flex justify-center mt-32">
             <div className="z-10 bg-violet-200 p-8 rounded-lg shadow-md w-full max-w-md shadow-violet-500">
-              <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
+              <h2 className="text-3xl font-normal mb-6 text-center text-black">
                 Empezar a Jugar
               </h2>
 
@@ -87,7 +87,7 @@ export function Sala() {
                 <div>
                   <label
                     htmlFor="codigo"
-                    className="block text-sm font-titulo2 text-gray-700 font-semibold"
+                    className="block text-sm font-normal text-gray-700 font-semibold"
                   >
                     Nombre:
                   </label>
@@ -111,7 +111,7 @@ export function Sala() {
                 <button
                   id="boton"
                   type="submit"
-                  className="w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white font-semibold"
+                  className="w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-normal rounded-md text-white font-semibold"
                 >
                   ¡A Jugar!
                 </button>
@@ -119,7 +119,7 @@ export function Sala() {
               <button
                 id="boton"
                 type="submit"
-                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-titulo2 rounded-md font-semibold text-white"
+                className="flex justify-center gap-2 mt-5 w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-normal rounded-md font-semibold text-white"
                 onClick={() => navigateRanking()}
               >
                 <div>Ranking</div>

@@ -6,7 +6,7 @@ export function Rules() {
         id="rules"
       >
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-titulo2 mb-8 mt-16">
+          <h2 className="text-4xl font-normal mb-8 mt-16">
             ¿Cómo se juega?
           </h2>
           <p className="text-lg mb-8 p-10 rounded border-2">

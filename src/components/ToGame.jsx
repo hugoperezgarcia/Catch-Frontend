@@ -37,7 +37,7 @@ export function ToGame() {
         >
           <div class="absolute top-0 z-[-2] h-screen w-screen bg-yellow-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(247,255,0,1),rgba(255,255,255,0))]"></div>
           <div className="z-10 bg-violet-100 p-8 rounded-xl shadow-md w-full max-w-md animate-flip-up animate-delay-1000 animate-ease-in-out shadow-violet-500">
-            <h2 className="text-3xl font-titulo2 mb-6 text-center text-black">
+            <h2 className="text-3xl font-normal mb-6 text-center text-black">
               Unirse a sala
             </h2>
             {error && (
@@ -47,7 +47,7 @@ export function ToGame() {
               <div>
                 <label
                   htmlFor="codigo"
-                  className="block text-sm font-titulo2 text-gray-700 font-semibold"
+                  className="block text-sm font-normal text-gray-700 font-semibold"
                 >
                   Codigo de la sala:
                 </label>
@@ -63,7 +63,7 @@ export function ToGame() {
               <button
                 id="boton"
                 type="submit"
-                className="w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-titulo2 rounded-md text-white"
+                className="w-full px-4 py-2 bg-purple-600 hover:bg-violet-800 focus:ring-4 focus:outline-none font-normal rounded-md text-white"
               >
                 ¡A Jugar!
               </button>

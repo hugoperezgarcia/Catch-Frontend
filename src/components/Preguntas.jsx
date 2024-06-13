@@ -37,7 +37,7 @@ function Preguntas() {
       <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] min-h-screen">
         <header>
           <div className="text-center p-8">
-            <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
+            <h1 className="font-titulo animate-flip-down animate-ease-in-out text-5xl">
               TODAS LAS PREGUNTAS
             </h1>
           </div>

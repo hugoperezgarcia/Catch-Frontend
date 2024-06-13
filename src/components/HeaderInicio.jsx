@@ -27,7 +27,7 @@ export function HeaderInicio(props) {
                 </div>
 
                 <div className="flex text-5xl">
-                    <h1 className="font-titulo1 animate-flip-down animate-ease-in-out">CATCH IT!</h1>
+                    <h1 className="font-titulo animate-flip-down animate-ease-in-out">CATCH IT!</h1>
                 </div>
 
                 <nav className="flex flex-grow justify-end basis-0">
@@ -37,7 +37,7 @@ export function HeaderInicio(props) {
                             <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => {navigate("/")}} className='w-10 h-10'><LogoHome /></button></li>
                         </>): (
                         <>
-                            <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125 font-titulo1"><button onClick={() => scrollToSection('toGame')}><LogoUnirse /></button></li>
+                            <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125 font-titulo"><button onClick={() => scrollToSection('toGame')}><LogoUnirse /></button></li>
                             <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125">
 
                             {
