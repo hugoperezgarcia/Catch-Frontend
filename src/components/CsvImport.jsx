@@ -111,8 +111,8 @@ export function CsvImport() {
               <div className="flex gap-3 items-center mt-5">
                 <label htmlFor="checkbox" className="inline-flex items-center p-1 cursor-pointer bg-violet-700 text-violet-100">
                   <input id="checkbox" type="checkbox" className="hidden peer" onClick={() => scrollToSection('ver')} />
-                  <span className="px-4 py-2 dark:bg-violet-400 peer-checked:dark:bg-violet-700">OFF</span>
-                  <span className="px-4 py-2 dark:bg-violet-700 peer-checked:dark:bg-violet-600">ON</span>
+                  <span className="px-4 py-2 dark:bg-violet-400 peer-checked:dark:bg-violet-700">NO</span>
+                  <span className="px-4 py-2 dark:bg-violet-700 peer-checked:dark:bg-violet-600">SI</span>
                 </label>
                 <label htmlFor="checkbox" className="text-lg font-semibold">
                   He leído las instrucciones
