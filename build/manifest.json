@@ -1,0 +1,10 @@
+{
+  "short_name": "Catch It!",
+  "name": "Catch It!, Juego Educativo",
+  "icons": [
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
