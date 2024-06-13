@@ -283,7 +283,6 @@ export function CatchIt() {
   }
 
   function habilitarBotones() {
-    console.log("Se habilitan botones");
     setTimeout(()=>{
       botones.forEach((boton) => {
         boton.disabled = false;
@@ -316,6 +315,10 @@ export function CatchIt() {
           .classList.add("animate-ease-in-out");
         document.getElementById(`cont${i}`).classList.add("animate-reverse");
       }
+
+      if( document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)){
+        document.getElementById(`res${i}`).classList.replace("bg-purple-800/70", "bg-green-600");
+      }
     }
   }
 
@@ -330,6 +333,10 @@ export function CatchIt() {
           .getElementById(`cont${i}`)
           .classList.remove("animate-ease-in-out");
         document.getElementById(`cont${i}`).classList.remove("animate-reverse");
+      }
+
+      if( document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)){
+        document.getElementById(`res${i}`).classList.replace("bg-green-600", "bg-purple-800/70");
       }
     }
   }
@@ -391,7 +398,7 @@ export function CatchIt() {
         <Loader />
       ) : (
         <section className=" bg-gradient-to-br from-indigo-500 to-purple-500 bg-cover bg-center max-h-screen h-screen text-white">
-          <header className="flex justify-between h-[75%]">
+          <header className="flex justify-between h-[80%]">
             <div className="mx-5">
               <div className="flex items-center">
                 <div className="shadow-md shadow-violet-300 rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-purple-800/70 text-5xl animate-pulse animate-infinite animate-ease-in">
@@ -444,7 +451,7 @@ export function CatchIt() {
                     className={className}
                     key={index}
                   >
-                    {numpreg}
+                    {numpreg + 1}
                   </div>)
                 })}
               </div>
@@ -456,8 +463,8 @@ export function CatchIt() {
                 <h1 className="text-pretty">{preguntas[numPreguntaActual].pregunta}</h1>
 
                 {imageUrl && (
-                  <div className="mb-2">
-                    <img src={imageUrl} alt="Imagen del enunciado" className="rounded-md w-auto max-w-96"></img>
+                  <div className="my-2">
+                    <img src={imageUrl} alt="Imagen del enunciado" className="rounded-md w-auto max-w-96 max-h-64 "></img>
                   </div>
                 )}
               </div>
@@ -498,7 +505,7 @@ export function CatchIt() {
               </div>
             </div>
           </header>
-          <main className="flex flex-col justify-center h-[25%]">
+          <main className="flex flex-col justify-center h-[20%]">
             <div>
               <div className="flex justify-around font-bold mb-2">
                 <div>A</div>

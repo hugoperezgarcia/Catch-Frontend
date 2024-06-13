@@ -14,7 +14,8 @@ function Preguntas() {
   const insertedId = location.state?.insertedId
   const editedId = location.state?.editedId;
   const [mensaje, setMensaje] = useState();
-  const { preguntasFiltradas, filtrarPreguntas, preguntasUser, loading } = usePreguntas();
+  const { preguntasFiltradas, filtrarPreguntas, preguntasUser, loading, handleSelectChange} = usePreguntas();
+
 
   useEffect(() =>{
     if(numPreguntas){
@@ -40,43 +41,44 @@ function Preguntas() {
               TODAS LAS PREGUNTAS
             </h1>
           </div>
-          <div className="flex justify-between mx-5">
-            <button className="w-10" onClick={goBack}>
+          <div className="flex items-center p-3 mx-10 space-x-6 rounded-lg bg-white justify-between">
+            <button className="w-8 h-8" onClick={goBack}>
               <LogoAtras />
             </button>
-            <input
-              className="ms-5 w-3/4 rounded-lg focus:outline-none focus:ring-2 p-4 focus:ring-violet-100"
-              type="search"
-              placeholder="Buscar preguntas"
-              onChange={filtrarPreguntas}
-            />
-            <div className="flex gap-7 mx-5">
-              <Link
-                to="/createPartida"
-                className="p-3 bg-violet-100 shadow-md shadow-violet-900  hover:animate-jump rounded-lg hover:bg-violet-100  font-titulo1"
-              >
-                CREAR PARTIDA
-              </Link>
-              <Link
-                to="/insertarCsv"
-                className="p-3 bg-white shadow-md shadow-violet-700 rounded-lg hover:animate-jump font-titulo2 font-titulo1"
-              >
-                INTRODUCIR CSV
-              </Link>
-              <Link
-                to="/createPregunta"
-                className="p-3 bg-violet-100 shadow-md shadow-violet-900  hover:animate-jump rounded-lg hover:bg-violet-100  font-titulo1"
-              >
-                INTRODUCIR PREGUNTAS
-              </Link>
-              <Link
-                to="/"
-                className="p-3 bg-violet-100  hover:animate-jump shadow-md shadow-violet-900 rounded-lg hover:bg-violet-100  font-titulo1"
-              >
-                <LogoHome />
-                Inicio
-              </Link>
-            </div>
+              <div className="flex w-[90%]">
+                <div className="flex bg-gray-100 p-3 w-[90%] space-x-4 rounded-lg">
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 opacity-30"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
+                    </svg>
+                  <input
+                    className="bg-gray-100 outline-none w-full"
+                    type="search"
+                    placeholder="Buscar preguntas"
+                    onChange={filtrarPreguntas}
+                  />
+                </div>
+                <select className="flex py-3 px-3 mx-2 text-gray-500 font-semibold cursor-pointer items-center justify-center w-fit rounded" name="filtros"
+                  onChange={handleSelectChange}>
+                  <option defaultValue="pregunta" value="pregunta">Todas las preguntas</option>
+                  <option value="asignatura">Asignatura</option>
+                  <option value="nivel">Nivel</option>
+                  <option value="dificultad">Dificultad</option>
+                </select>
+              </div>
+              <button className="w-8 h-8" onClick={goBack}>
+              <LogoHome />
+            </button>
           </div>
         </header>
         <main className="p-10 flex flex-wrap gap-5">

@@ -6,12 +6,17 @@ import React from "react";
 import { UseUser } from "../hooks/UseUser.jsx";
 import RepositorioAdmin from "./RepositorioAdmin.jsx";
 import { Footer } from "./Footer.jsx";
+import { useEffect } from "react";
 
 function Home() {
   const { user } = UseUser();
+
+  useEffect(() =>{
+    sessionStorage.setItem("estaInicio", true);
+  },[])
+
   return (
     <div>
-      <RepositorioAdmin />
       <HeaderInicio />
       <main className="snap-y snap-mandatory relative w-full h-screen overflow-y-auto overflow-x-hidden scroll-smooth">
         <div className="snap-center">
@@ -21,7 +26,7 @@ function Home() {
           <Rules />
         </div>
         <div className="snap-center">
-          {user ? <RepositorioAdmin /> : <LogIn />}
+          {user != undefined ? <RepositorioAdmin /> : <LogIn />}
         </div>
       </main>
       <Footer />

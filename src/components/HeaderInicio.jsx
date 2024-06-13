@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import { UseUser } from '../hooks/UseUser.jsx';
-import { LogoUnirse, LogoRules, LogoLogIn, LogoLogOut } from './Icons.jsx';
+import { LogoUnirse, LogoRules, LogoLogIn, LogoLogOut, LogoHome } from './Icons.jsx';
 
-export function HeaderInicio() {
+export function HeaderInicio(props) {
     const scrollToSection = (sectionId) => {
         const section = document.getElementById(sectionId);
         if (section) {
@@ -32,23 +32,29 @@ export function HeaderInicio() {
 
                 <nav className="flex flex-grow justify-end basis-0">
                     <ul className="flex items-center text-center text-sm animate-fade-left animate-delay-1000 animate-duration-1000">
-                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125 font-titulo1"><button onClick={() => scrollToSection('toGame')}><LogoUnirse /></button></li>
-                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125">
+                        {props.registro ? (
+                        <>
+                            <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => {navigate("/")}} className='w-10 h-10'><LogoHome /></button></li>
+                        </>): (
+                        <>
+                            <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125 font-titulo1"><button onClick={() => scrollToSection('toGame')}><LogoUnirse /></button></li>
+                            <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125">
 
-                        {
-                            user ? (
-                                <button onClick={cerrarSesion}>
-                                    <LogoLogOut />
-                                </button>   
-                            ) : (
-                            <div>
-                                <button onClick={() => scrollToSection('admin')}>
-                                    <LogoLogIn />
-                                </button>
-                            </div>
-                        )}
-                        </li>
-                        <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => scrollToSection('rules')}><LogoRules /></button></li>
+                            {
+                                user ? (
+                                    <button onClick={cerrarSesion}>
+                                        <LogoLogOut />
+                                    </button>   
+                                ) : (
+                                <div>
+                                    <button onClick={() => scrollToSection('admin')}>
+                                        <LogoLogIn />
+                                    </button>
+                                </div>
+                            )}
+                            </li>
+                            <li className="px-5 hover:bg-opacity-60 rounded-full transition-transform transform hover:scale-125"><button onClick={() => scrollToSection('rules')}><LogoRules /></button></li>
+                        </>)}
                     </ul>
                 </nav>
             </header>

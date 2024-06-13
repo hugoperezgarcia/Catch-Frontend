@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { UseUser } from '../hooks/UseUser.jsx';
 
 export function AsideRepo() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const loadingRef = useRef(null);
   const{user, setUser} = UseUser();
   const navigate = useNavigate();
@@ -12,6 +12,9 @@ export function AsideRepo() {
     if (loadingRef.current) {
       loadingRef.current.classList.add("hidden");
     }
+    setTimeout(() =>{
+      setIsSidebarOpen(true);
+    }, [200])
   }, []);
 
   function switchInicio() {
@@ -145,7 +148,7 @@ export function AsideRepo() {
       <main className="flex flex-col items-center justify-center flex-1">
         <button
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed p-2 text-white bg-black rounded-lg top-5 left-5"
+          className="fixed p-2 text-purple-900 shadow-lg bg-purple-400 rounded-lg top-5 left-5"
         >
           <svg
             className="w-6 h-6"

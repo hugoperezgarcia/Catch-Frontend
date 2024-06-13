@@ -57,7 +57,7 @@ export function Ranking() {
       {loading ? (
         <Loader />
       ) : (
-        <main className="h-screen flex flex-col">
+        <main className="h-screen flex flex-col overflow-auto">
           <div class="absolute top-0 z-[-2] h-screen w-screen bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))]"></div>
           <header className="flex justify-between p-10 font-medium text-6xl text-white">
             <div>
@@ -105,7 +105,7 @@ export function Ranking() {
               </div>
             </div>
             <div className="h-full flex flex-col items-center w-1/2 justify-center">
-              <div className="border p-16 text-2xl rounded-xl bg-violet-400/80 shadow-md shadow-yellow-200">
+              <div className="border p-10 text-2xl rounded-xl bg-violet-400/80 shadow-md shadow-yellow-200">
                 <ul className="flex flex-col items-start text-white gap-2">
                   {jugadores.map((jugador, index) => {
                     if (id) {

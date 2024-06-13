@@ -19,6 +19,8 @@ function RepositorioAdmin() {
   const axios = useAxios();
   const editedId = location.state?.editedId;
   const navigate = useNavigate();
+  const [caracteristica, setCaracteristica] = useState("all");
+
 
   useEffect(() => {
     if (editedId) {
@@ -55,13 +57,23 @@ function RepositorioAdmin() {
     console.log(partidas);
   };
 
-  const partidasFiltradas = partidas.filter((partida) =>
-    partida.titulo.toLowerCase().includes(filtro.toLowerCase())
+  const partidasFiltradas = partidas.filter((partida) =>{
+    if(caracteristica == "all"){
+      return(partida.titulo.toLowerCase().includes(filtro.toLowerCase()))
+    }else{
+      return(partida.preguntas[0][caracteristica].toLowerCase().includes(filtro.toLowerCase()))
+    }
+  }
   );
 
   const irRepo = () => {
     navigate("/bienvenida");
+    sessionStorage.removeItem("estaInicio")
   };
+
+  const handleSelectChange = (event) => {
+    setCaracteristica(event.target.value);
+};
 
   return (
     <>
@@ -73,7 +85,7 @@ function RepositorioAdmin() {
           <header className="pt-16">
             <div className="text-center p-3">
               <h1 className="font-titulo1 animate-flip-down animate-ease-in-out text-5xl">
-                ¡¡HOLA {username.toUpperCase()}!!, ESTAS SON TUS PARTIDAS.
+                ¡¡HOLA {username.toUpperCase()}!! ESTAS SON TUS PARTIDAS.
               </h1>
             </div>
           </header>
@@ -95,14 +107,15 @@ function RepositorioAdmin() {
                   />
                 </svg>
                 <input
-                  className="bg-gray-100 outline-none"
+                  className="bg-gray-100 outline-none w-full"
                   type="text"
                   placeholder="Buscar partidas"
                   onChange={filtrarPartidas}
                 />
               </div>
-              <select className="flex py-3 px-3 text-gray-500 font-semibold cursor-pointer items-center justify-center w-fit rounded" name="filtros">
-                <option value="all" selected>Todas las partidas</option>
+              <select className="flex py-3 px-3 text-gray-500 font-semibold cursor-pointer items-center justify-center w-fit rounded" name="filtros"
+              onChange={handleSelectChange}>
+                <option value="all" defaultValue="all">Todas las partidas</option>
                 <option value="asignatura">Asignatura</option>
                 <option value="nivel">Nivel</option>
                 <option value="dificultad">Dificultad</option>
@@ -113,7 +126,7 @@ function RepositorioAdmin() {
               <div>
                 {sessionStorage.getItem("estaInicio") ? (
                   <button
-                    className="p-3 bg-purple-600 rounded-lg text-white font-semibold"
+                    className="p-3 bg-amber-400 rounded-lg text-white font-semibold"
                     onClick={irRepo}
                   >
                     Repositorio

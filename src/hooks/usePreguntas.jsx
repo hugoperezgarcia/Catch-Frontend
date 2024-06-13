@@ -6,6 +6,7 @@ export default function usePreguntas(){
     const[preguntas, setPreguntas] = useState([]);
     const[preguntasUser, setPreguntasUser] = useState([]);
     const [filtro, setFiltro] = useState("");
+    const [caracteristica, setCaracteristica] = useState("pregunta");
     const {user} = UseUser();
     const [loading, setLoading] = useState(false);
     const axios = useAxios();
@@ -36,13 +37,18 @@ export default function usePreguntas(){
         getPreguntasUser();
     }, []);
 
-    const preguntasFiltradas = preguntas.filter(pregunta =>
-        (pregunta.pregunta.toLowerCase().includes(filtro.toLowerCase()) || pregunta.asignatura.toLowerCase().includes(filtro.toLowerCase()))
+    const preguntasFiltradas = preguntas.filter(pregunta =>{
+        return((pregunta[caracteristica].toLowerCase().includes(filtro.toLowerCase())))
+    }
     );
 
     const filtrarPreguntas = (event) => {
         setFiltro(event.target.value)
     }
 
-    return {preguntasFiltradas, filtrarPreguntas, preguntasUser, loading}
+    const handleSelectChange = (event) => {
+        setCaracteristica(event.target.value);
+    };
+
+    return {preguntasFiltradas, filtrarPreguntas, preguntasUser, loading, handleSelectChange}
 }

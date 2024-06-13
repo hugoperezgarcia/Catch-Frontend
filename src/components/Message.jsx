@@ -39,7 +39,7 @@ function Message(props) {
           </div>
         </>
       ) : (
-        <div class="bg-green-50 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between w-full">
+        <div class="bg-green-200 border-b border-green-400 text-green-800 text-sm p-4 flex justify-between w-full">
             <div>
               <div class="flex items-center">
                 <svg

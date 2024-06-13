@@ -54,6 +54,7 @@ function EditPartida() {
         sessionStorage.removeItem(key);
       }
     });
+    navigate("/");
   };
 
   const guardarCambios = async () =>{
