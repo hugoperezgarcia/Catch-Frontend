@@ -7,14 +7,13 @@ import { UseUser } from "../hooks/UseUser.jsx";
 import RepositorioAdmin from "./RepositorioAdmin.jsx";
 import { Footer } from "./Footer.jsx";
 import { useEffect } from "react";
-import EditPartida from "./EditPartida.jsx";
 
 function Home() {
   const { user } = UseUser();
 
-  useEffect(() => {
+  useEffect(() =>{
     sessionStorage.setItem("estaInicio", true);
-  }, []);
+  },[])
 
   return (
     <div>

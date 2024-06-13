@@ -119,7 +119,7 @@ function EditPartida() {
                   {partida.titulo}
                 </h1>
                 <div className="flex justify-around w-[90%] gap-5">
-                  <div className="w-1/2">
+                  <div className="w-1/2 flex flex-col">
                     <div className="flex justify-around mt-10 border-b border-black p-2 items-center ">
                       <button
                         className="text-xl font-semibold border-2 border-red-400 rounded-lg p-1 w-10"
@@ -139,26 +139,28 @@ function EditPartida() {
                         +{" "}
                       </button>
                     </div>
-                    <p className="text-lg font-semibold mt-2">
+                    <p className="text-lg font-semibold mt-2 self-center">
                       Rondas: {partida.numRondas}
                     </p>
                     <div className="my-10 flex flex-col gap-2">
                       <button
-                        className="rounded-lg p-1 font-semibold border-2 border-violet-400 bg-violet-300 text-white hover:bg-violet-400 hover:text-white hover:border-2 hover:cursor-progress"
+                        className="rounded-lg p-1 font-semibold border-2 border-violet-500 bg-violet-400 text-white hover:bg-violet-500 hover:text-white hover:border-2 hover:cursor-progress"
                         onClick={() => navigateRanking()}
                       >
                         Ranking
                       </button>
                       <button
-                        className="rounded-lg p-1 font-semibold border-2 border-violet-400 bg-violet-300 text-white hover:bg-violet-400 hover:text-white hover:border-2 hover:cursor-progress"
+                        className="rounded-lg p-1 font-semibold border-2 border-violet-500 bg-violet-400 text-white hover:bg-violet-500 hover:text-white hover:border-2 hover:cursor-progress"
                         onClick={() => guardarCambios()}
                       >
                         Guardar Cambios
                       </button>
                     </div>
                   </div>
-                  <div className="w-1/2">
-                    Aqui la dificultad y la asignatura
+                  <div className="w-1/2 flex flex-col justify-center gap-5 p-3 border-l border-black my-2">
+                    <div className="capitalize"><strong>ASIGNATURA:</strong> {partida.preguntas[0].asignatura}</div>
+                    <div><strong>DIFICULTAD:</strong> <span className="capitalize">{partida.preguntas[0].dificultad}</span></div>
+                    <div><strong>NIVEL:</strong>  {partida.preguntas[0].nivel}</div>
                   </div>
                 </div>
               </div>
@@ -188,9 +190,6 @@ function EditPartida() {
                   </div>
                 </div>
               )}
-              {
-                <div className="m-3 flex flex-col justify-center items-center border-2 rounded bg-violet-200"></div>
-              }
             </aside>
             <div className="w-1/2 h-full flex items-center flex-col m-3">
               <h1 className="text-3xl m-5">Preguntas</h1>
