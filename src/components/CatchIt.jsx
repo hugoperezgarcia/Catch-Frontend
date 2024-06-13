@@ -1,9 +1,8 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import {useLocation, useNavigate } from "react-router-dom";
 import { LogoPuntos, LogoSkip, LogoSiVida, LogoNoVida } from "./Icons";
 import { useState, useEffect, useRef } from "react";
 import Loader from "./Loader";
 import { useAxios } from "../context/axiosContext";
-import { computeHeadingLevel } from "@testing-library/react";
 
 export function CatchIt() {
   //Variables iniciales
@@ -27,12 +26,13 @@ export function CatchIt() {
   const [numTrampillaCorrecta, setNumTrampillaCorrecta] = useState();
   const [maxPuntos, setMaxPuntos] = useState();
   const [valoresIniciados, setValoresniciados] = useState(false);
-  const [maxVidas, setMaxVidas] = useState([]);
+  const[maxVidas, setMaxVidas] = useState([]);
   const puntosActuales = sessionStorage.getItem("puntosJugador");
   const [numPreguntaActual, setNumPreguntaActual] = useState(
     sessionStorage.getItem("numPreguntaActual")
   );
-  const [imageUrl, setImageUrl] = useState("");
+  const [handleDisabled, setDisable] = useState(false);
+  const [imageUrl, setImageUrl] = useState();
 
   const botones = document.querySelectorAll("button");
 
@@ -43,7 +43,7 @@ export function CatchIt() {
   useEffect(() => {
     if (!codigoSala) {
       navigate("/");
-    } else if (sessionStorage.getItem("idJugador")) {
+    } else if(sessionStorage.getItem("idJugador")){
       navigate("/ranking");
     }
     peticionBD();
@@ -54,17 +54,17 @@ export function CatchIt() {
     try {
       const respuesta = await axios.get(
         "/partida/" +
-        codigoSala
+          codigoSala
       );
       setRondas(respuesta.data.numRondas);
-      if (sessionStorage.getItem("vidas")) {
+      if(sessionStorage.getItem("vidas")){
         setVidas(sessionStorage.getItem("vidas"))
-      } else {
+      }else{
         setVidas(respuesta.data.numVidas);
       }
       setPreguntas(respuesta.data.preguntas);
       let arrayVidas = [];
-      for (let i = 1; i <= respuesta.data.numVidas; i++) {
+      for(let i = 1; i <= respuesta.data.numVidas; i++){
         arrayVidas.push(i);
       }
       setMaxVidas(arrayVidas);
@@ -94,9 +94,9 @@ export function CatchIt() {
       animarTrampillas();
       setTimeout(function () {
         setPuntosGanados();
-        if (Number(numPreguntaActual) + 1 >= preguntas.length) {
+        if(Number(numPreguntaActual) + 1 >= preguntas.length ){
           actualizarPuntosJugador();
-        } else {
+        }else{
           sessionStorage.setItem(
             "numPreguntaActual",
             Number(numPreguntaActual) + 1
@@ -110,27 +110,29 @@ export function CatchIt() {
 
   //Manejo de preguntas y respuestas
   const cargarNuevaPregunta = () => {
-    if (marcadorPuntos == 0 && (Number(vidas) - 1) == 0) {
+    setDisable(false);
+    if(marcadorPuntos == 0 && (Number(vidas) - 1) == 0){
       actualizarPuntosJugador();
-    } else {
-      if (marcadorPuntos <= 0) {
+    }else{
+      if(marcadorPuntos <= 0){
         sessionStorage.setItem("vidas", (Number(vidas) - 1));
         setVidas(sessionStorage.getItem("vidas"));
         sessionStorage.setItem("puntosJugador", 1000);
         setMaxPuntos(1000);
         setMarcadorPuntos(1000);
-      } else {
+      }else{
         setMaxPuntos(puntosActuales);
         setMarcadorPuntos(puntosActuales);
       }
-      if (preguntas[numPreguntaActual].imagen) {
-        getImagen();
-      } else {
+      setColorPreguntaInRonda();
+      if(preguntas[numPreguntaActual].imagen){
+        getImagen()
+      }else{
         setImageUrl();
-        habilitarBotones();
       }
-      if (numPreguntaActual >= (rondaActual * 8)) {
-        sessionStorage.setItem("ronda", Number(rondaActual) + 1);
+      if(numPreguntaActual >= (rondaActual*8)){
+        resetearColorPreguntas();
+        sessionStorage.setItem("ronda", Number(rondaActual)+1);
         setRondaActual(sessionStorage.getItem("ronda"));
       }
       habilitarBotones();
@@ -145,26 +147,26 @@ export function CatchIt() {
     };
   }
 
-  const getImagen = async () => {
+  const getImagen = async () =>{
     setLoading(true);
-    try {
-      const response = await axios.get("/pregunta/" + preguntas[numPreguntaActual].id + "/foto", { responseType: 'blob', });
+    try{
+      const response = await axios.get("/pregunta/" + preguntas[numPreguntaActual].id + "/foto", {responseType: 'blob',});
       const imageUrl = URL.createObjectURL(response.data);
       setImageUrl(imageUrl)
-    } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
+    }catch (e){
+        console.log(e);
+    }finally{
+        setLoading(false);
     }
   }
+    
 
-
-  const actualizarPuntosJugador = async () => {
+  const actualizarPuntosJugador = async () =>{
     let puntos;
     const puntosGanados = sessionStorage.getItem("puntosJugador");
-    if (puntosGanados == 0) {
+    if (puntosGanados == 0){
       puntos = (1000 * (Number(vidas) - 1)) + Number(puntosGanados);
-    } else {
+    }else{
       puntos = (1000 * Number(vidas) + Number(puntosGanados));
     }
     try {
@@ -174,7 +176,7 @@ export function CatchIt() {
       navigate("/ranking", { state: { codigoSala } });
     } catch (e) {
       console.log(e.response.data.errorMessage);
-    } finally {
+    }finally{
       setLoading(false);
     }
   }
@@ -219,8 +221,8 @@ export function CatchIt() {
 
   //Manejo del contador
   function handleSkip() {
-    console.log("Se presiona skip");
     setTiempo(0);
+    setDisable(true);
   }
 
   const empezarContador = () => {
@@ -283,21 +285,35 @@ export function CatchIt() {
   }
 
   function habilitarBotones() {
-    setTimeout(()=>{
-      botones.forEach((boton) => {
-        boton.disabled = false;
-      });
-    },1000);
+    botones.forEach((boton) => {
+      boton.disabled = false;
+    });
+  }
+
+  //Manejo del front
+  //Manejo de colores del indicador de preguntas
+  function setColorPreguntaInRonda() {
+    let restaRonda = 8*(rondaActual-1);
+    let numpreg = Number((numPreguntaActual-1) - restaRonda);
+    for (let i = 0; i < numpreg+1; i++) {
+      document
+        .getElementById(`numPreg${numpreg}`)
+        .classList.replace("border-red-500", "border-green-300");
+      document
+        .getElementById(`numPreg${numpreg}`)
+        .classList.replace("bg-red-200", "bg-green-600");
+      document.getElementById(`numPreg${numpreg}`).classList.add("text-white");
+    }
   }
 
   function resetearColorPreguntas() {
     for (let i = 0; i < 8; i++) {
       document
         .getElementById(`numPreg${i}`)
-        .classList.replace("border-gre");
+        .classList.replace("border-green-300", "border-red-500");
       document
         .getElementById(`numPreg${i}`)
-        .classList.replace("bg-green-600", "bg-white");
+        .classList.replace("bg-green-600", "bg-red-200");
       document.getElementById(`numPreg${i}`).classList.remove("text-white");
     }
   }
@@ -315,10 +331,6 @@ export function CatchIt() {
           .classList.add("animate-ease-in-out");
         document.getElementById(`cont${i}`).classList.add("animate-reverse");
       }
-
-      if( document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)){
-        document.getElementById(`res${i}`).classList.replace("bg-purple-800/70", "bg-green-600");
-      }
     }
   }
 
@@ -333,10 +345,6 @@ export function CatchIt() {
           .getElementById(`cont${i}`)
           .classList.remove("animate-ease-in-out");
         document.getElementById(`cont${i}`).classList.remove("animate-reverse");
-      }
-
-      if( document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)){
-        document.getElementById(`res${i}`).classList.replace("bg-green-600", "bg-purple-800/70");
       }
     }
   }
@@ -394,28 +402,29 @@ export function CatchIt() {
 
   return (
     <>
-      {loading || !valoresIniciados ? (
+      {loading ? (
         <Loader />
       ) : (
         <section className=" bg-gradient-to-br from-indigo-500 to-purple-500 bg-cover bg-center max-h-screen h-screen text-white">
           <header className="flex justify-between h-[80%]">
             <div className="mx-5">
               <div className="flex items-center">
-                <div className="shadow-md shadow-violet-300 rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-purple-800/70 text-5xl animate-pulse animate-infinite animate-ease-in">
+                <div className="ring-white ring-2 shadow-md shadow-azul-oscuro rounded-full m-5 flex flex-col justify-center items-center min-w-24 h-24 font-medium text-white bg-azul-oscuro text-5xl animate-pulse animate-infinite animate-ease-in">
                   {tiempo}
                 </div>
                 <button
-                  onClick={() => handleSkip()}
-                  className="w-14 shadow-md shadow-violet-300 bg-purple-800/70 flex justify-center rounded-lg font-thin text-white h-9 items-center"
+                  onClick={() => handleSkip()} disabled={handleDisabled}
+                  className="w-14 ring-white ring-2 shadow-md shadow-azul-oscuro bg-azul-oscuro flex justify-center rounded-lg font-thin text-white h-9 items-center"
                 >
                   <LogoSkip />
                 </button>
               </div>
               <div className="flex gap-3 m-2">
-                {maxVidas.map((index) => {
-                  if (vidas >= index) {
+                {/*hay q cambiarlo por un bucle*/}
+                {maxVidas.map((index) =>{
+                  if(vidas >= index){
                     return <LogoSiVida />
-                  } else {
+                  }else{
                     return <LogoNoVida />
                   }
                 })}
@@ -427,9 +436,9 @@ export function CatchIt() {
                 >
                   <LogoPuntos />
                 </div>
-                <p className="text-black">{marcadorPuntos}</p>
+                {marcadorPuntos}
               </div>
-              <div className="flex gap-3 justify-start ms-4 m-3 text-4xl font-medium text-black">
+              <div className="flex gap-3 justify-start ms-4 m-3 text-4xl font-medium">
                 Ronda: {rondaActual}/{rondas}
               </div>
             </div>
@@ -455,59 +464,58 @@ export function CatchIt() {
                   </div>)
                 })}
               </div>
-
               <div
                 id="enunciadoPregunta"
-                className="p-6 font-medium text-4xl w-full max-w-full h-3/6 flex flex-col justify-between items-center"
+                className="p-6 font-medium text-4xl w-full text-center"
               >
                 <h1 className="text-pretty">{preguntas[numPreguntaActual].pregunta}</h1>
 
                 {imageUrl && (
-                  <div className="my-2">
-                    <img src={imageUrl} alt="Imagen del enunciado" className="rounded-md w-auto max-w-96 max-h-64 "></img>
+                  <div className="mb-2">
+                    <img src={imageUrl} alt="Imagen del enunciado" className="rounded-md w-auto max-w-96 max-h-48 my-2"></img>
                   </div>
                 )}
               </div>
-              <div className="h-3/6 w-full max-w-full flex m-2">
-
-                <div className="w-1/2 flex flex-col justify-between items-center">
-                  <div
-                    id="res1"
-                    className="w-[98%] rounded-md h-[48%] min-h-28 flex flex-col items-center justify-around bg-purple-800/70 text-white"
-                  >
-                    <div className="font-medium">A</div>
-                    <div className="m-2">{respuestas[0]}</div>
-                  </div>
-                  <div
-                    id="res2"
-                    className="rounded-md w-[98%] h-[48%] min-h-28 flex flex-col items-center justify-around bg-purple-800/70 text-white"
-                  >
-                    <div className="font-medium">B</div>
-                    <div className="m-2">{respuestas[1]}</div>
-                  </div>
+              {imageUrl && (
+                <div className="mb-2"> 
+                  <img src={imageUrl} alt="imagenPregunta" className="rounded-md"></img>
                 </div>
-                <div className="w-1/2 flex flex-col justify-between items-center">
-                  <div
-                    id="res3"
-                    className="w-[98%] rounded-md h-[48%] min-h-28 flex flex-col items-center justify-around bg-purple-800/70 text-white"
-                  >
-                    <div className="font-medium">C</div>
-                    <div className="m-2">{respuestas[2]}</div>
-                  </div>
-                  <div
-                    id="res4"
-                    className="rounded-md w-[98%] h-[48%] min-h-28 flex flex-col items-center justify-around bg-purple-800/70 text-white"
-                  >
-                    <div className="font-medium">D</div>
-                    <div className="m-2">{respuestas[3]}</div>
-                  </div>
+              )}
+              <div className="flex justify-around w-full mb-3 gap-1 m-1">
+                <div
+                  id="res1"
+                  className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
+                >
+                  <div className="font-medium">A</div>
+                  <div className="m-2">{respuestas[0]}</div>
+                </div>
+                <div
+                  id="res2"
+                  className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
+                >
+                  <div className="font-medium">B</div>
+                  <div className="m-2">{respuestas[1]}</div>
+                </div>
+                <div
+                  id="res3"
+                  className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
+                >
+                  <div className="font-medium">C</div>
+                  <div className="m-2">{respuestas[2]}</div>
+                </div>
+                <div
+                  id="res4"
+                  className="border-2 border-black rounded-md w-60 h-fit min-h-28 flex flex-col items-center justify-around bg-azul-oscuro text-white"
+                >
+                  <div className="font-medium">D</div>
+                  <div className="m-2">{respuestas[3]}</div>
                 </div>
               </div>
             </div>
           </header>
           <main className="flex flex-col justify-center h-[20%]">
             <div>
-              <div className="flex justify-around font-bold mb-2">
+              <div className="flex justify-around font-medium mb-2">
                 <div>A</div>
                 <div>B</div>
                 <div>C</div>
@@ -517,7 +525,7 @@ export function CatchIt() {
                 <div className="flex justify-around w-full mb-2 gap-1 m-1 items-end">
                   <div
                     id="cont1"
-                    className="h-auto min-w-60 w-auto rounded-lg bg-white flex flex-col justify-between shadow-sm shadow-violet-300"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
                     <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
@@ -526,11 +534,11 @@ export function CatchIt() {
                       >
                         +
                       </button>
-                      <div className="flex justify-center text-black">
-                        {puntosApostados[0]}
-                      </div>
+                      <div className="flex justify-center">
+                      {puntosApostados[0]}
+                    </div>
                       <button
-                        className="m-1 px-1  border-4 border-red-500 bg-red-300 rounded-xl"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(0)}
                       >
                         -
@@ -539,7 +547,7 @@ export function CatchIt() {
                   </div>
                   <div
                     id="cont2"
-                    className="h-auto min-w-60 w-auto  rounded-lg bg-white flex flex-col justify-between shadow-sm shadow-violet-300"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
                     <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
@@ -548,21 +556,21 @@ export function CatchIt() {
                       >
                         +
                       </button>
-                      <div className="flex justify-center text-black">
-                        {puntosApostados[1]}
-                      </div>
+                      <div className="flex justify-center">
+                      {puntosApostados[1]}
+                    </div>
                       <button
-                        className="m-1 px-1  border-4 border-red-500 bg-red-300 rounded-xl"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(1)}
                       >
                         -
                       </button>
                     </div>
-
+                    
                   </div>
                   <div
                     id="cont3"
-                    className="h-auto min-w-60 w-auto  rounded-lg bg-white flex flex-col justify-between shadow-sm shadow-violet-300"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro"
                   >
                     <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
@@ -571,21 +579,21 @@ export function CatchIt() {
                       >
                         +
                       </button>
-                      <div className="flex justify-center text-black">
-                        {puntosApostados[2]}
-                      </div>
+                      <div className="flex justify-center">
+                      {puntosApostados[2]}
+                    </div>
                       <button
-                        className="m-1 px-1  border-4 border-red-500 bg-red-300 rounded-xl"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(2)}
                       >
                         -
                       </button>
                     </div>
-
+                   
                   </div>
                   <div
                     id="cont4"
-                    className="h-auto min-w-60 w-auto  rounded-lg bg-white flex flex-col justify-between shadow-sm shadow-violet-300 items-center"
+                    className="h-16 w-60 ring-4 ring-azul-oscuro rounded-lg bg-zinc-400 flex flex-col justify-between shadow-lg shadow-azul-oscuro items-center"
                   >
                     <div className="flex justify-between items-center w-full text-3xl font-semibold">
                       <button
@@ -594,11 +602,11 @@ export function CatchIt() {
                       >
                         +
                       </button>
-                      <div className="flex justify-center text-black">
-                        {puntosApostados[3]}
+                      <div >
+                      {puntosApostados[3]}
                       </div>
                       <button
-                        className="m-1 px-1  border-4 border-red-500 bg-red-300 rounded-xl"
+                        className="m-1 border-4 border-red-500 px-1 bg-red-300 rounded-xl"
                         onClick={() => handleDecrement(3)}
                       >
                         -
