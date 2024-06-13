@@ -26,6 +26,7 @@ export function LogIn(props) {
             setError();
             sessionStorage.setItem("userId", response.data.id);
             setUser(response.data.id);
+            sessionStorage.removeItem("estaInicio");
             navigate("/bienvenida");
         } catch (e) {
             setError("Credenciales inválidas, vuelve a intentarlo")
@@ -42,22 +43,22 @@ export function LogIn(props) {
                     </header>
                     <main className='flex justify-center items-center'>
                         <div className="bg-white bg-opacity-80 backdrop-blur-lg p-8 rounded-lg shadow-md w-full max-w-md">
-                            <h2 className="text-3xl font-normal mb-6 text-center">Inicia Sesión</h2>
+                            <h2 className="text-3xl font-titulo2 mb-6 text-center">Inicia Sesión</h2>
 
                             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                                 <div>
-                                    <label htmlFor="username" className="block text-sm font-normal text-gray-700 font-semibold">Usuario:</label>
+                                    <label htmlFor="username" className="block text-sm font-titulo2 text-gray-700 font-semibold">Usuario:</label>
                                     <input type="text" id="username" name="username" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("username")} />
                                 </div>
 
                                 <div>
-                                    <label htmlFor="password" className="block text-sm font-normal text-gray-700 font-semibold">Contraseña:</label>
+                                    <label htmlFor="password" className="block text-sm font-titulo2 text-gray-700 font-semibold">Contraseña:</label>
                                     <input type="password" id="password" name="password" className="mt-1 p-2 w-full border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
                                         {...register("password")} />
                                 </div>
 
-                                <button type="submit" className="w-full px-4 py-2 bg-amber-500/90 hover:bg-amber-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-normal rounded-md text-white">Iniciar Sesión</button>
+                                <button type="submit" className="w-full px-4 py-2 bg-amber-500/90 hover:bg-amber-300 focus:ring-4 focus:outline-none focus:ring-blue-300 font-titulo2 rounded-md text-white">Iniciar Sesión</button>
                                 <Link to="/registro" className="flex justify-center hover:animate-jump" href="#">¿No tienes cuenta? Regístrate</Link>
                             </form>
                         </div>

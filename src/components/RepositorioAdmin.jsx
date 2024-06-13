@@ -68,7 +68,7 @@ function RepositorioAdmin() {
 
   const irRepo = () => {
     navigate("/bienvenida");
-    sessionStorage.removeItem("estaInicio")
+    sessionStorage.removeItem("estaInicio");
   };
 
   const handleSelectChange = (event) => {
