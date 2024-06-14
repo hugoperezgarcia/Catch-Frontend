@@ -28,9 +28,13 @@ function Preguntas() {
   }, [])
 
   const goBack = () => {
-    sessionStorage.removeItem("estaInicio")
-    navigate("/bienvenida");
+    navigate(-1);
   };
+
+  function switchInicio() {
+    const newValue = !sessionStorage.getItem("estaInicio");
+    sessionStorage.setItem("estaInicio", newValue);
+  }
 
   return (
     <>
@@ -76,7 +80,7 @@ function Preguntas() {
                   <option value="dificultad">Dificultad</option>
                 </select>
               </div>
-              <button className="w-8 h-8" onClick={goBack}>
+              <button className="w-8 h-8" onClick={switchInicio}>
               <LogoHome />
             </button>
           </div>

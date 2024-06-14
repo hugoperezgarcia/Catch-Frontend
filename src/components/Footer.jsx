@@ -53,6 +53,13 @@ export const Footer = () => {
                     <LogoGithub />
                   </a>
                 </li>
+                <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
+                  <a
+                    href="https://www.linkedin.com/in/hugo-p%C3%A9rez-garc%C3%ADa-7681ab2b4/"
+                  >
+                    <LogoLinkedin />
+                  </a>
+                </li>
               </ul>
             </div>
           </div>

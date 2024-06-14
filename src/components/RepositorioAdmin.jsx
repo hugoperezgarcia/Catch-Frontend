@@ -120,9 +120,6 @@ function RepositorioAdmin() {
                 <option value="nivel">Nivel</option>
                 <option value="dificultad">Dificultad</option>
               </select>
-              <div className="bg-purple-600 py-3 px-5 text-white font-semibold rounded-lg hover:shadow-lg transition duration-3000 cursor-pointer">
-                <span>Buscar</span>
-              </div>
               <div>
                 {sessionStorage.getItem("estaInicio") ? (
                   <button
