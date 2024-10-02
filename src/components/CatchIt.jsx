@@ -283,11 +283,11 @@ export function CatchIt() {
   }
 
   function habilitarBotones() {
-    setTimeout(()=>{
+    setTimeout(() => {
       botones.forEach((boton) => {
         boton.disabled = false;
       });
-    },1000);
+    }, 1000);
   }
 
   function resetearColorPreguntas() {
@@ -316,7 +316,7 @@ export function CatchIt() {
         document.getElementById(`cont${i}`).classList.add("animate-reverse");
       }
 
-      if( document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)){
+      if (document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)) {
         document.getElementById(`res${i}`).classList.replace("bg-purple-800/70", "bg-green-600");
       }
     }
@@ -335,7 +335,7 @@ export function CatchIt() {
         document.getElementById(`cont${i}`).classList.remove("animate-reverse");
       }
 
-      if( document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)){
+      if (document.getElementById(`res${i}`) == document.getElementById(`res${numTrampillaCorrecta}`)) {
         document.getElementById(`res${i}`).classList.replace("bg-green-600", "bg-purple-800/70");
       }
     }
@@ -435,24 +435,25 @@ export function CatchIt() {
             </div>
             <div className="h-full rounded-lg mt-3 me-5 flex-grow flex flex-col items-center bg-gradient-to-br from-indigo-400 to-purple-400 shadow-lg">
               <div className="flex w-full justify-around mt-2 text-black">
-                {preguntas.map((pregunta, index) =>{
+                {preguntas.slice((rondaActual - 1) * 8, rondaActual * 8).map((pregunta, index) => {
                   let restaRonda = 8 * (rondaActual - 1);
-                  let numpreg = index - restaRonda;
-                  let numpregActual = Number((numPreguntaActual) - restaRonda);
+                  let numpreg = index; // Ya que estamos usando un slice, index empieza en 0
+                  let numpregActual = Number(numPreguntaActual - restaRonda);
                   let id = "numPreg" + numpreg;
-                  let className = "rounded-full w-10 h-10 flex justify-center items-center font-medium shadow-sm shadow-violet-300 "
-                  if(index < numpregActual){
-                    className += "bg-green-600 text-white"
-                  }else{
-                    className += "bg-white"
+
+                  let className = "rounded-full w-10 h-10 flex justify-center items-center font-medium shadow-sm shadow-violet-300 ";
+
+                  if (numpreg < numpregActual) {
+                    className += "bg-green-600 text-white";
+                  } else {
+                    className += "bg-white";
                   }
-                  return(<div
-                    id={id}
-                    className={className}
-                    key={index}
-                  >
-                    {numpreg + 1}
-                  </div>)
+
+                  return (
+                    <div id={id} className={className} key={index}>
+                      {numpreg + 1}
+                    </div>
+                  );
                 })}
               </div>
 
