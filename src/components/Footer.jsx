@@ -8,6 +8,7 @@ export const Footer = () => {
           <a
             className="md:max-w- lg:col-span-3 flex items-center gap-5 text-pretty"
             href="https://www.comunidad.madrid/servicios/educacion/es-stemadrid"
+            target="_blank"
           >
             <img src="/LogoStem.png" alt="Logo Stem" className="h-12" />
             <div className="mt-0 lg:max-w-md">
@@ -27,6 +28,7 @@ export const Footer = () => {
                 <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
                   <a
                     href="https://github.com/hugomorenoo"
+                    target="_blank"
                   >
                     <LogoGithub />
                   </a>
@@ -34,6 +36,7 @@ export const Footer = () => {
                 <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
                   <a
                     href="www.linkedin.com/in/hugo-moreno-fernández-561b3a2b1"
+                    target="_blank"
                   >
                     <LogoLinkedin />
                   </a>
@@ -49,6 +52,7 @@ export const Footer = () => {
                 <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
                   <a
                     href="https://github.com/hugoooooooooooooooooooooooooooo"
+                    target="_blank"
                   >
                     <LogoGithub />
                   </a>
@@ -56,6 +60,7 @@ export const Footer = () => {
                 <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
                   <a
                     href="https://www.linkedin.com/in/hugo-p%C3%A9rez-garc%C3%ADa-7681ab2b4/"
+                    target="_blank"
                   >
                     <LogoLinkedin />
                   </a>
