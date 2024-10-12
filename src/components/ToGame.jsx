@@ -35,7 +35,7 @@ export function ToGame() {
           className="h-screen flex items-center justify-center"
           id="toGame"
         >
-          <div class="absolute top-0 z-[-2] h-screen w-screen bg-yellow-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(247,255,0,1),rgba(255,255,255,0))]"></div>
+          <div className="absolute top-0 z-[-2] h-screen w-screen bg-yellow-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(247,255,0,1),rgba(255,255,255,0))]"></div>
           <div className="z-10 bg-violet-100 p-8 rounded-xl shadow-md w-full max-w-md animate-flip-up animate-delay-1000 animate-ease-in-out shadow-violet-500">
             <h2 className="text-3xl font-normal mb-6 text-center text-black">
               Unirse a sala

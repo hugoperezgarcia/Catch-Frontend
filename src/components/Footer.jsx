@@ -14,7 +14,7 @@ export const Footer = () => {
             <div className="mt-0 lg:max-w-md">
               <p className="text-sm text-black">
                 Proyecto impulsado gracias a la financiación y ayuda del
-                proyecto SteMadrid.
+                proyecto STEMadrid.
               </p>
             </div>
           </a>
@@ -24,8 +24,8 @@ export const Footer = () => {
               <p className="font-semibold tracking-wide text-black">
                 Hugo Moreno
               </p>
-              <ul className="mt-1 flex justify-start">
-                <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
+              <ul className="mt-1 flex justify-start items-center">
+                <li className="transition-colors duration-300 text-black rounded-lg">
                   <a
                     href="https://github.com/hugomorenoo"
                     target="_blank"
@@ -33,9 +33,9 @@ export const Footer = () => {
                     <LogoGithub />
                   </a>
                 </li>
-                <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
+                <li className="transition-colors duration-300 text-black rounded-lg">
                   <a
-                    href="www.linkedin.com/in/hugo-moreno-fernández-561b3a2b1"
+                    href="https://www.linkedin.com/in/hugo-moreno-fernández-561b3a2b1"
                     target="_blank"
                   >
                     <LogoLinkedin />
@@ -48,8 +48,8 @@ export const Footer = () => {
               <p className="font-semibold tracking-wide text-black">
                 Hugo Pérez
               </p>
-              <ul className="mt-1 flex justify-start">
-                <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
+              <ul className="mt-1 flex justify-start items-center">
+                <li className="transition-colors duration-300 text-black rounded-lg">
                   <a
                     href="https://github.com/hugoooooooooooooooooooooooooooo"
                     target="_blank"
@@ -57,7 +57,7 @@ export const Footer = () => {
                     <LogoGithub />
                   </a>
                 </li>
-                <li className="transition-colors duration-300 text-black rounded-lg p-1 size-10">
+                <li className="transition-colors duration-300 text-black rounded-lg">
                   <a
                     href="https://www.linkedin.com/in/hugo-p%C3%A9rez-garc%C3%ADa-7681ab2b4/"
                     target="_blank"

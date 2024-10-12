@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { React, useState, useEffect } from "react";
-import { LogoDelete, LogoHome, LogoEditar } from "./Icons";
+import { LogoDelete, LogoHome, LogoEditar, LogoCopiar } from "./Icons";
 import { UseUser } from "../hooks/UseUser";
 import Loader from "./Loader";
 import { useAxios } from "../context/axiosContext";
@@ -20,6 +20,7 @@ function RepositorioAdmin() {
   const editedId = location.state?.editedId;
   const navigate = useNavigate();
   const [caracteristica, setCaracteristica] = useState("all");
+  const [code] = useState("");
 
 
   useEffect(() => {
@@ -75,6 +76,17 @@ function RepositorioAdmin() {
     setCaracteristica(event.target.value);
 };
 
+
+const handleCopy = async (textToCopy) => {
+  try {
+    await navigator.clipboard.writeText(textToCopy);
+    setMensaje("Codigo copiado correctamente");
+  } catch (err) {
+    alert('Error al copiar el código. Por favor, intenta nuevamente.');
+    console.error('Error al copiar el texto: ', err);
+  }
+};
+
   return (
     <>
       {loading ? (
@@ -100,9 +112,9 @@ function RepositorioAdmin() {
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
                     d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                   />
                 </svg>
@@ -146,7 +158,7 @@ function RepositorioAdmin() {
             {partidasFiltradas.map((partida) => (
               <div
                 key={partida.id}
-                className="rounded-lg p-10 bg-white shadow-xl shadow-violet-900 w-80 h-52 text-xl hover:animate-jump hover:cursor-pointer font-normal"
+                className="rounded-lg p-10 bg-white shadow-xl shadow-violet-900 w-80 h-52 text-xl hover:animate-jump font-normal"
               >
                 <div className="w-full h-1/2 flex justify-between">
                   <Link to={"/editPartida/" + partida.id}>
@@ -155,7 +167,7 @@ function RepositorioAdmin() {
                     </div>
                   </Link>
                   <div
-                    className="w-5"
+                    className="w-5 cursor-pointer"
                     onClick={() => deletePartida(partida.id)}
                   >
                     <LogoDelete />
@@ -165,9 +177,7 @@ function RepositorioAdmin() {
                   <h1 className="font-semibold text-2xl uppercase flex justify-center items-start">
                     {partida.titulo}
                   </h1>
-                  <p className="flex justify-center items-start">
-                    {partida.id}
-                  </p>
+                  <div className="flex justify-center items-center gap-2 cursor-pointer" onClick={() => handleCopy(partida.id)}><LogoCopiar />{partida.id}</div>
                 </div>
               </div>
             ))}

@@ -28,13 +28,10 @@ function Registro() {
                 });
                 navigate("/login");
             } catch (e) {
-                if (e.response.status === 400) {
-                    setError("La clave de administrador no es correcta");
-                } else {
-                    setError("Error de conexión, compruebe la conexión a internet");
-                }
+                setError("Algo ha fallado intentalo de nuevo");
             } finally {
                 setLoading(false);
+                sessionStorage.removeItem("estaInicio");
             }
         } else {
             setError("Las contraseñas no son iguales, vuelve a intentarlo")
@@ -52,7 +49,8 @@ function Registro() {
                     <HeaderInicio registro={true}/>
                     <main className='flex justify-center items-center h-full'>
                         <div className="bg-white bg-opacity-80 backdrop-blur-lg p-8 rounded-lg shadow-md w-full max-w-md animate-flip-up animate-ease-in-out">
-                            <h2 className="text-3xl font-titulo1 mb-6 text-center">Regístrate</h2>
+                            {error ? (<span className="p-2 bg-red-600 text-white rounded-md w-full justify-center flex">{error}</span>) : ""}
+                            <h2 className="text-3xl font-titulo1 my-6 text-center">Regístrate</h2>
 
                             <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                                 <div>

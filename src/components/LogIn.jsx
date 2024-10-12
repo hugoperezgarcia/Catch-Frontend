@@ -1,18 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 import { useAxios } from '../context/axiosContext';
 import { UseUser } from '../hooks/UseUser';
-import { LogoHome } from './Icons';
 import Loader from './Loader';
+import { HeaderInicio } from "./HeaderInicio";
 
-export function LogIn(props) {
+export function LogIn() {
     const [loading, setLoading] = useState(false);
     const { register, handleSubmit } = useForm();
     const { setUser } = UseUser();
     const [error, setError] = useState();
     const navigate = useNavigate();
     const axios = useAxios();
+    const [estainicio, setEstaInicio] = useState();
     
     const onSubmit = async (info) => {
         try {
@@ -26,20 +27,25 @@ export function LogIn(props) {
             setError();
             sessionStorage.setItem("userId", response.data.id);
             setUser(response.data.id);
-            sessionStorage.removeItem("estaInicio");
             navigate("/bienvenida");
         } catch (e) {
             setError("Credenciales inválidas, vuelve a intentarlo")
         } finally {
             setLoading(false);
+            sessionStorage.removeItem("estaInicio");
         }
     }
+
+    useEffect(()=>{
+        setEstaInicio(sessionStorage.getItem("estaInicio"));
+    },[sessionStorage.getItem("estaInicio")]);
 
     return (
         <>
             {loading ? <Loader /> : (
                 <section className="bg-violet-600 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(202,182,255,1),rgba(255,255,255,0))] h-screen" id="admin">
                     <header className='flex justify-end h-1/5 items-start'>
+                    {estainicio ? "" : <HeaderInicio registro={true}/>}
                     </header>
                     <main className='flex justify-center items-center'>
                         <div className="bg-white bg-opacity-80 backdrop-blur-lg p-8 rounded-lg shadow-md w-full max-w-md">

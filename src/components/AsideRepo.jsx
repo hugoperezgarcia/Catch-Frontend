@@ -78,8 +78,7 @@ export function AsideRepo() {
             </button>
           </div>
           <nav className="flex flex-col flex-1 w-64 p-4 mt-4">
-              <Link to="/" onClick={switchInicio}>
-                <a href="#" className="flex items-center space-x-2 hover:text-white px-2 py-5 font-normal font-semibold">
+              <Link to="/" onClick={switchInicio} className="flex items-center space-x-2 hover:text-white px-2 py-5 font-normal font-semibold">
                   <svg
                     className="w-6 h-6"
                     aria-hidden="true"
@@ -95,7 +94,6 @@ export function AsideRepo() {
                       d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                     />
                   </svg>
-                </a>
               </Link>
             <div className="flex flex-col gap-10">
               <Link
@@ -158,9 +156,9 @@ export function AsideRepo() {
             stroke="currentColor"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M4 6h16M4 12h16M4 18h16"
             />
           </svg>
